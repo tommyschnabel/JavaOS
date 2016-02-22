@@ -1,12 +1,13 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
-import edu.ksu.operatingsystems.javaos.storage.*;
+import edu.ksu.operatingsystems.javaos.storage.DefaultDisk;
+import edu.ksu.operatingsystems.javaos.storage.DefaultRam;
 
-public class LongTermScheduler {
+/**
+ * Created by Calvin on 2/22/16.
+ */
+public interface LongTermScheduler {
 
-    public void loadProcessInMemory(int processID, Disk disk, Ram ram)
-    {
-        ram.addProgramToMemoryByProcessID(processID, disk);
-    }
+    void loadProcessInMemory(int processID, DefaultDisk defaultDisk, DefaultRam defaultRAM);
 
 }

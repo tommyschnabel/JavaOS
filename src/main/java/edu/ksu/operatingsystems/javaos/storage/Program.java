@@ -1,131 +1,31 @@
 package edu.ksu.operatingsystems.javaos.storage;
 
 /**
- * Created by Calvin on 2/19/16.
+ * Created by Calvin on 2/22/16.
  */
-public class Program {
+public interface Program {
 
-    Integer mID;
-    int mInstructionLocationOnDisk;
-    int mDataLocationOnDisk;
-    int mPriority;
-    int mInstructionSize; // number of words
-    int mInputBuffer; // number of words
-    int mOutputBuffer;
-    int mTemporaryBuffer;
-
-    boolean mInMemory = false;
-
-    //initialized when in RAM
-
-    int mInstructionLocationInMemory;
-    int mDataLocationInMemory;
-
-
-    public void setID(int id)
-    {
-        mID = id;
-    }
-    public void setInstructionLocationOnDisk(int startInstructionIndex)
-    {
-        mInstructionLocationOnDisk = startInstructionIndex;
-    }
-    public void setdataLocationOnDisk(int startDataIndex)
-    {
-        mDataLocationOnDisk = startDataIndex;
-    }
-    public void setPriority(int priority)
-    {
-        mPriority = priority;
-    }
-    public void setInstructionSize(int instructionSize)
-    {
-        mInstructionSize = instructionSize;
-    }
-    public void setInputBuffer(int inputBuffer)
-    {
-        mInputBuffer = inputBuffer;
-    }
-    public void setOutputBuffer(int outputBuffer)
-    {
-        mOutputBuffer = outputBuffer;
-    }
-    public void setTemporaryBuffer(int tempBuffer)
-    {
-        mTemporaryBuffer = tempBuffer;
-    }
-    public void setInMemory(boolean inMemory)
-    {
-        mInMemory = inMemory;
-    }
-    public void setInstructionLocationInMemory(int instructionLocationMemory)
-    {
-        mInstructionLocationInMemory = instructionLocationMemory;
-    }
-    public void setDataLocationInMemory(int dataLocationInMemory)
-    {
-        mDataLocationInMemory = dataLocationInMemory;
-    }
-    public Integer getID()
-    {
-        return mID;
-    }
-    public int getInstructionLocationOnDisk()
-    {
-        return mInstructionLocationOnDisk;
-    }
-    public int getDataLocationOnDisk()
-    {
-        return mDataLocationOnDisk;
-    }
-    public int getPriority()
-    {
-        return mPriority;
-    }
-    public int getInstructionSize()
-    {
-        return mInstructionSize;
-    }
-    public int getInputBuffer()
-    {
-        return mInputBuffer;
-    }
-    public int getOutputBuffer()
-    {
-        return mOutputBuffer;
-    }
-    public int getTemporaryBuffer()
-    {
-        return mTemporaryBuffer;
-    }
-    public boolean inMemory()
-    {
-        return mInMemory;
-    }
-    public int getInstructionLocationInMemory()
-    {
-        return getInstructionLocationInMemory();
-    }
-    public int getDataLocationInMemory()
-    {
-        return getInstructionLocationInMemory();
-    }
-    public void displayProgram()
-    {
-        System.out.println("ID = " + mID);
-        System.out.println("Instruction location on disk = " + mInstructionLocationOnDisk);
-        System.out.println("Data location on disk = " + mDataLocationOnDisk);
-        System.out.println("Priority = " + mPriority);
-        System.out.println("Instruction Size = " + mInstructionSize);
-        System.out.println("Input Buffer = " + mInputBuffer);
-        System.out.println("Output Buffer = " + mOutputBuffer);
-        System.out.println("Temporary Buffer = " + mTemporaryBuffer);
-        System.out.println("In Memory? = " + mInMemory);
-        if (mInMemory) {
-            System.out.println("Instruction In Memory Location = " + mInstructionLocationInMemory);
-            System.out.println("Data In Memory Location = " + mDataLocationInMemory);
-        }
-
-    }
-
+    void setID(int id);
+    void setInstructionLocationOnDisk(int startInstructionIndex);
+    void setDataLocationOnDisk(int startDataIndex);
+    void setPriority(int priority);
+    void setInstructionSize(int instructionSize);
+    void setInputBuffer(int inputBuffer);
+    void setOutputBuffer(int outputBuffer);
+    void setTemporaryBuffer(int tempBuffer);
+    void setInMemory(boolean inMemory);
+    void setInstructionLocationInMemory(int instructionLocationMemory);
+    void setDataLocationInMemory(int dataLocationInMemory);
+    Integer getID();
+    int getInstructionLocationOnDisk();
+    int getDataLocationOnDisk();
+    int getPriority();
+    int getInstructionSize();
+    int getInputBuffer();
+    int getOutputBuffer();
+    int getTemporaryBuffer();
+    boolean inMemory();
+    int getInstructionLocationInMemory();
+    int getDataLocationInMemory();
+    void displayProgram();
 }
