@@ -6,8 +6,14 @@ public interface Executor {
 
     /**
      * Executes the instruction that is loaded in the registers.
-     * @param registers The registers, pre-loaded with the instruction to execute
-     * @param ram The defaultRAM memory, since there may be operations that need to read/write from memory
+     * @param instruction The instruction to execute (each is 32 bits long)
+     * @param instructionPosition The position of the current instruction
+     * @param ram The ram memory, since there may be operations that need to read/write from memory
      */
-    void execute(Byte[] registers, Ram ram);
+    void execute(Integer instruction, Integer instructionPosition, Ram ram);
+
+    /**
+     * Sets the buffers
+     */
+    void setBuffers(Integer inputBuffer, Integer outputBuffer, Integer tempBuffer);
 }
