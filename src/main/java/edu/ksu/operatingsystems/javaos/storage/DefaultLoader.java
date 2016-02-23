@@ -51,22 +51,22 @@ public class DefaultLoader implements Loader {
                     }
                     else if (s.contains("END"))
                     {
-                        DefaultProgram defaultProgram = new DefaultProgram();
+                        Program program = new Program();
 
-                        defaultProgram.setID(ID);
-                        defaultProgram.setInstructionSize(instructionSize);
-                        defaultProgram.setPriority(priority);
+                        program.setID(ID);
+                        program.setInstructionSize(instructionSize);
+                        program.setPriority(priority);
 
-                        defaultProgram.setInputBuffer(inputBuffer);
-                        defaultProgram.setOutputBuffer(outputBuffer);
-                        defaultProgram.setTemporaryBuffer(tempBuffer);
+                        program.setInputBuffer(inputBuffer);
+                        program.setOutputBuffer(outputBuffer);
+                        program.setTemporaryBuffer(tempBuffer);
 
-                        defaultProgram.setInstructionLocationOnDisk(instructionStartPosition);
-                        defaultProgram.setDataLocationOnDisk(dataStartPosition);
+                        program.setInstructionLocationOnDisk(instructionStartPosition);
+                        program.setDataLocationOnDisk(dataStartPosition);
 
-                        defaultDisk.addProgramToProgramList(defaultProgram);
+                        defaultDisk.addProgramToProgramList(program);
 
-                        //defaultProgram.displayProgram();
+                        //program.displayProgram();
 
                     }
                 }

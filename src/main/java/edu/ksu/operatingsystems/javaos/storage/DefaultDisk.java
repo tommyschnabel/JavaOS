@@ -3,7 +3,7 @@ package edu.ksu.operatingsystems.javaos.storage;
 public class DefaultDisk implements Disk {
 
     private char [] diskArray = new char[16384]; // Creates an array of size 16384 ( 2048 words = 16384 hex values )
-    private DefaultProgram[] defaultProgramList = new DefaultProgram[30]; // Creates a list of Programs stored on defaultDisk
+    private Program[] programList = new Program[30]; // Creates a list of Programs stored on defaultDisk
     int currentPositionOnDisk = 0;
 
     public char [] getDisk()
@@ -20,11 +20,11 @@ public class DefaultDisk implements Disk {
             diskArray[currentPositionOnDisk++] = charVal;
         }
     }
-    public void addProgramToProgramList(DefaultProgram defaultProgram)
+    public void addProgramToProgramList(Program program)
     {
-        for (int i = 0; i < defaultProgramList.length; i++) {
-            if (defaultProgramList[i] == null) {
-                defaultProgramList[i] = defaultProgram;
+        for (int i = 0; i < programList.length; i++) {
+            if (programList[i] == null) {
+                programList[i] = program;
                 return;
             }
         }
@@ -39,14 +39,14 @@ public class DefaultDisk implements Disk {
             System.out.print(diskArray[i] + " ");
         }
     }
-    public DefaultProgram findProgram(int programID)
+    public Program findProgram(int programID)
     {
-        for (int i = 0; i < defaultProgramList.length; i++)
+        for (int i = 0; i < programList.length; i++)
         {
-            if (defaultProgramList[i].getID() == programID)
+            if (programList[i].getID() == programID)
             {
                 //System.out.println("I found the program with ID: " + programID );
-                return defaultProgramList[i];
+                return programList[i];
             }
         }
         System.out.println("Failed to find program with ID: " + programID);

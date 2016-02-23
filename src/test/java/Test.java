@@ -1,8 +1,4 @@
-/**
- * Created by Calvin on 2/18/16.
- */
-
-import edu.ksu.operatingsystems.javaos.scheduling.DefaultLongTermScheduler;
+import edu.ksu.operatingsystems.javaos.scheduling.FIFOLongTermScheduler;
 import edu.ksu.operatingsystems.javaos.storage.*;
 
 public class Test {
@@ -10,27 +6,27 @@ public class Test {
     public static void main(String[] args) {
 
         DefaultLoader myDefaultLoader = new DefaultLoader();
-        DefaultRam myDefaultRAM = new DefaultRam();
+        Ram myRAM = null; /** TODO Implement {@link Ram} */
         myDefaultLoader.load("Program-File.txt");
         DefaultDisk myDefaultDisk = myDefaultLoader.getDefaultDisk();
 
         System.out.println("\nDISK\n____");
         myDefaultDisk.displayDisk();
 
-        DefaultLongTermScheduler myDefaultLongTermScheduler = new DefaultLongTermScheduler();
-        myDefaultLongTermScheduler.loadProcessInMemory(1, myDefaultDisk, myDefaultRAM);
-        myDefaultLongTermScheduler.loadProcessInMemory(2, myDefaultDisk, myDefaultRAM);
-        myDefaultLongTermScheduler.loadProcessInMemory(6, myDefaultDisk, myDefaultRAM);
-        myDefaultLongTermScheduler.loadProcessInMemory(4, myDefaultDisk, myDefaultRAM);
+        FIFOLongTermScheduler myFIFOLongTermScheduler = new FIFOLongTermScheduler();
+        myFIFOLongTermScheduler.loadProcessInMemory(1, myDefaultDisk, myRAM);
+        myFIFOLongTermScheduler.loadProcessInMemory(2, myDefaultDisk, myRAM);
+        myFIFOLongTermScheduler.loadProcessInMemory(6, myDefaultDisk, myRAM);
+        myFIFOLongTermScheduler.loadProcessInMemory(4, myDefaultDisk, myRAM);
 
         /*
         System.out.println("\n");
-        DefaultProgram myDefaultProgram = myDefaultDisk.findProgram(1);
-        myDefaultProgram.displayProgram();
+        Program myProgram = myDefaultDisk.findProgram(1);
+        myProgram.displayProgram();
         */
 
         System.out.println("\n\n\n\n\n\n\nMemory\n______");
-        myDefaultRAM.displayRAM();
+        myRAM.displayRAM();
 
     }
 }

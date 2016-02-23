@@ -1,31 +1,125 @@
 package edu.ksu.operatingsystems.javaos.storage;
 
-/**
- * Created by Calvin on 2/22/16.
- */
-public interface Program {
+public class Program {
 
-    void setID(int id);
-    void setInstructionLocationOnDisk(int startInstructionIndex);
-    void setDataLocationOnDisk(int startDataIndex);
-    void setPriority(int priority);
-    void setInstructionSize(int instructionSize);
-    void setInputBuffer(int inputBuffer);
-    void setOutputBuffer(int outputBuffer);
-    void setTemporaryBuffer(int tempBuffer);
-    void setInMemory(boolean inMemory);
-    void setInstructionLocationInMemory(int instructionLocationMemory);
-    void setDataLocationInMemory(int dataLocationInMemory);
-    Integer getID();
-    int getInstructionLocationOnDisk();
-    int getDataLocationOnDisk();
-    int getPriority();
-    int getInstructionSize();
-    int getInputBuffer();
-    int getOutputBuffer();
-    int getTemporaryBuffer();
-    boolean inMemory();
-    int getInstructionLocationInMemory();
-    int getDataLocationInMemory();
-    void displayProgram();
+    private Integer mID;
+    private int mInstructionLocationOnDisk;
+    private int mDataLocationOnDisk;
+    private int mPriority;
+    private int mInstructionSize; // number of words
+    private int mInputBuffer; // number of words
+    private int mOutputBuffer;
+    private int mTemporaryBuffer;
+
+    private boolean mInMemory = false;
+
+    //initialized when in Ram
+
+    private int mInstructionLocationInMemory;
+    private int mDataLocationInMemory;
+
+    public void setID(int id) {
+        mID = id;
+    }
+
+    public void setInstructionLocationOnDisk(int startInstructionIndex) {
+        mInstructionLocationOnDisk = startInstructionIndex;
+    }
+
+    public void setDataLocationOnDisk(int startDataIndex) {
+        mDataLocationOnDisk = startDataIndex;
+    }
+
+    public void setPriority(int priority) {
+        mPriority = priority;
+    }
+
+    public void setInstructionSize(int instructionSize) {
+        mInstructionSize = instructionSize;
+    }
+
+    public void setInputBuffer(int inputBuffer) {
+        mInputBuffer = inputBuffer;
+    }
+
+    public void setOutputBuffer(int outputBuffer) {
+        mOutputBuffer = outputBuffer;
+    }
+
+    public void setTemporaryBuffer(int tempBuffer) {
+        mTemporaryBuffer = tempBuffer;
+    }
+
+    public void setInMemory(boolean inMemory) {
+        mInMemory = inMemory;
+    }
+
+    public void setInstructionLocationInMemory(int instructionLocationMemory) {
+        mInstructionLocationInMemory = instructionLocationMemory;
+    }
+
+    public void setDataLocationInMemory(int dataLocationInMemory) {
+        mDataLocationInMemory = dataLocationInMemory;
+    }
+
+    public Integer getID() {
+        return mID;
+    }
+
+    public int getInstructionLocationOnDisk() {
+        return mInstructionLocationOnDisk;
+    }
+
+    public int getDataLocationOnDisk() {
+        return mDataLocationOnDisk;
+    }
+
+    public int getPriority() {
+        return mPriority;
+    }
+
+    public int getInstructionSize() {
+        return mInstructionSize;
+    }
+
+    public int getInputBuffer() {
+        return mInputBuffer;
+    }
+
+    public int getOutputBuffer() {
+        return mOutputBuffer;
+    }
+
+    public int getTemporaryBuffer() {
+        return mTemporaryBuffer;
+    }
+
+    public boolean inMemory() {
+        return mInMemory;
+    }
+
+    public int getInstructionLocationInMemory() {
+        return mInstructionLocationInMemory;
+    }
+
+    public int getDataLocationInMemory() {
+        return getInstructionLocationInMemory();
+    }
+
+    @Override
+    public String toString() {
+        return "Program{" +
+                "mID=" + mID +
+                ", mInstructionLocationOnDisk=" + mInstructionLocationOnDisk +
+                ", mDataLocationOnDisk=" + mDataLocationOnDisk +
+                ", mPriority=" + mPriority +
+                ", mInstructionSize=" + mInstructionSize +
+                ", mInputBuffer=" + mInputBuffer +
+                ", mOutputBuffer=" + mOutputBuffer +
+                ", mTemporaryBuffer=" + mTemporaryBuffer +
+                ", mInMemory=" + mInMemory +
+                ", mInstructionLocationInMemory=" + mInstructionLocationInMemory +
+                ", mDataLocationInMemory=" + mDataLocationInMemory +
+                '}';
+    }
 }
