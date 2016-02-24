@@ -19,7 +19,6 @@ public class DefaultExecutor implements Executor {
 
     @Override
     public void execute(Integer instruction, Ram ram) {
-        Integer instructionPosition = process.getInstructionLocationInMemory();
         Integer arithmeticType = instruction >> 30;
 
         Integer address;
@@ -31,6 +30,7 @@ public class DefaultExecutor implements Executor {
 
         //Increment the instruction
         //noinspection UnusedAssignment
+        Integer instructionPosition = process.getInstructionLocationInMemory();
         instructionPosition++;
 
         switch (arithmeticType) {
@@ -56,7 +56,7 @@ public class DefaultExecutor implements Executor {
                 opCode = readXBits(instruction, 6);
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
-                doOp(opCode, ram, instructionPosition, firstRegister, secondRegister, destRegister, address);
+                doOp(opCode, ram, firstRegister, secondRegister, destRegister, address);
                 return;
             case 1:
 
@@ -76,7 +76,7 @@ public class DefaultExecutor implements Executor {
                 opCode = readXBits(instruction, 6);
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
-                doOp(opCode, ram, instructionPosition, baseRegister, destRegister, address);
+                doOp(opCode, ram, baseRegister, destRegister, address);
                 return;
             case 2:
 
@@ -88,7 +88,7 @@ public class DefaultExecutor implements Executor {
                 opCode = readXBits(instruction, 6);
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
-                doOp(opCode, ram, instructionPosition, address);
+                doOp(opCode, ram, address);
                 return;
             case 3:
 
@@ -108,7 +108,7 @@ public class DefaultExecutor implements Executor {
                 opCode = readXBits(instruction, 6);
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
-                doOp(opCode, ram, instructionPosition, firstRegister, secondRegister, address);
+                doOp(opCode, ram, firstRegister, secondRegister, address);
                 return;
             default:
 
@@ -124,7 +124,8 @@ public class DefaultExecutor implements Executor {
      * @param registerAddresses The register addresses, with the address part of the instruction as the last entry, if available
      */
     //TODO Finish this
-    private void doOp(int op, Ram ram, Integer instructionPosition, Integer... registerAddresses) {
+    private void doOp(int op, Ram ram, Integer... registerAddresses) {
+        Integer instructionPosition = process.getInstructionLocationInMemory();
 
         //Arithmetic operation
         if ((op >=4 && op <= 10) || op == 16) {
