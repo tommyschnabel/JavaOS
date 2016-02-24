@@ -10,6 +10,7 @@ public class ProcessControlBlock {
     private int mInputBuffer; // number of words
     private int mOutputBuffer;
     private int mTemporaryBuffer;
+    private int mProgramCounter;
 
     private boolean mInMemory = false;
 
