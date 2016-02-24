@@ -5,10 +5,11 @@ public class Test {
 
     public static void main(String[] args) {
 
-        Loader myLoader = new Loader();
-        DefaultRam myRam = new DefaultRam();
-        myLoader.load("Program-File.txt");
-        Disk myDisk = myLoader.getDisk();
+        DefaultLoader myDefaultLoader = new DefaultLoader();
+        DefaultRam myRAM = new DefaultRam();
+
+        myDefaultLoader.load("Program-File.txt");
+        Disk myDefaultDisk = myDefaultLoader.getDefaultDisk();
 
         System.out.println("\nDISK\n____");
         myDefaultDisk.displayDisk();

@@ -2,8 +2,8 @@ package edu.ksu.operatingsystems.javaos.storage;
 
 public interface Ram {
 
-    void addProgramToMemoryByProcessID(int processID, Disk defaultDisk);
-    void addProgramToPCBList(ProcessControlBlock processControlBlock);
+    void addProcessControlBlockToMemoryByProcessID(int processID, Disk defaultDisk);
+    void addProcessControlBlockToPCBList(ProcessControlBlock processControlBlock);
     void displayRAM(); //Provides ability to visualize Ram
     char [] getDisk();
     ProcessControlBlock[] getProcessArray();

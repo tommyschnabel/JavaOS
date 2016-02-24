@@ -75,7 +75,21 @@ public class DefaultRam implements Ram {
         return null;
     }
 
+
+
     public int getCurrentPositionInMemory() {
         return currentPositionInMemory;
     }
+
+
+    public void writeValueToAddress(Integer address, Integer value)
+    {
+        return;
+    }
+
+    public Integer readValueFromAddress(Integer address)
+    {
+        return 0;
+    }
+
 }

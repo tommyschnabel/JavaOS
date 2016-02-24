@@ -7,6 +7,6 @@ public class FIFOLongTermScheduler implements LongTermScheduler {
 
     @Override
     public void loadProcessInMemory(int processID, Disk disk, Ram ram) {
-        ram.addProgramToMemoryByProcessID(processID, disk);
+        ram.addProcessControlBlockToMemoryByProcessID(processID, disk);
     }
 }
