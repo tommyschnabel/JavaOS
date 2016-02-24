@@ -137,4 +137,5 @@ local.properties
 # STS (Spring Tool Suite)
 .springBeans
 
-
+#OSX
+.DS_Store
