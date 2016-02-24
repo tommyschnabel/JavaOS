@@ -4,9 +4,9 @@ public interface Disk {
 
     char [] getDisk();
     void addToDisk(String s);
-    void addProgramToProgramList(Program program);
+    void addProgramToProgramList(ProcessControlBlock processControlBlock);
     void displayDisk();  //This method is just used so I can visualize the DefaultDisk
-    Program findProgram(int programID);
+    ProcessControlBlock findProgram(int programID);
     int getCurrentPositionOnDisk();
 
 }

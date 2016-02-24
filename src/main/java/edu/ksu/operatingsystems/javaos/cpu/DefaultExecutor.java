@@ -1,26 +1,25 @@
 package edu.ksu.operatingsystems.javaos.cpu;
 
+import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
 
 public class DefaultExecutor implements Executor {
 
     private Integer[] registers;
-    private Integer inputBuffer;
-    private Integer outputBuffer;
-    private Integer tempBuffer;
+    private ProcessControlBlock process;
 
     public DefaultExecutor(Integer[] registers) {
         this.registers = registers;
     }
 
-    public void setBuffers(Integer inputBuffer, Integer outputBuffer, Integer tempBuffer) {
-        this.inputBuffer = inputBuffer;
-        this.outputBuffer = outputBuffer;
-        this.tempBuffer = tempBuffer;
+    @Override
+    public void setProcess(ProcessControlBlock process) {
+        this.process = process;
     }
 
     @Override
-    public void execute(Integer instruction, Integer instructionPosition, Ram ram) {
+    public void execute(Integer instruction, Ram ram) {
+        Integer instructionPosition = process.getInstructionLocationInMemory();
         Integer arithmeticType = instruction >> 30;
 
         Integer address;
@@ -169,37 +168,74 @@ public class DefaultExecutor implements Executor {
 
         //Conditional and Immediate Branch
         if ((op >= 11 && op <= 15) || op == 17 || op == 19 || (op >= 21 && op <= 26)) {
+            int baseRegisterAddress = registerAddresses[0];
+            int destinationRegisterAddress = registerAddresses[1];
+
+            Integer baseRegister = registers[baseRegisterAddress];
+            Integer destinationRegister = registers[destinationRegisterAddress];
+            Integer lastBits = registerAddresses[2];
 
             switch (op) {
                 case 2: //ST
+                    ram.writeValueToAddress(lastBits, baseRegister);
                     return;
                 case 3: //LW
+                    destinationRegister = ram.readValueFromAddress(lastBits);
                     return;
                 case 11: //MOVI
+                    //TODO Ask professor about this instruction
+                    // If you're supposed to write to dest-register, how
+                    // can it ever be 0 to indicate data in the last bits
                     return;
                 case 12: //ADDI
+                    destinationRegister += lastBits;
                     return;
                 case 13: //MULI
+                    destinationRegister *= lastBits;
                     return;
                 case 14: //DIVI
+                    destinationRegister /= lastBits;
                     return;
                 case 15: //LDI
+                    //TODO Ask professor about this instruction
+                    // If you're supposed to write to dest-register, how
+                    // can it ever be 0 to indicate data in the last bits
                     return;
                 case 17: //SLTI
+                    destinationRegister = baseRegister < lastBits ? 1 : 0;
                     return;
                 case 19: //NOP
+                    //Intentionally blank
                     return;
                 case 21: //BEQ
+                    if (baseRegister.equals(destinationRegisterAddress)) {
+                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    }
                     return;
                 case 22: //BNE
+                    if (!baseRegister.equals(destinationRegisterAddress)) {
+                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    }
                     return;
                 case 23: //BEZ
+                    if (baseRegister.equals(0)) {
+                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    }
                     return;
                 case 24: //BNZ
+                    if (!baseRegister.equals(0)) {
+                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    }
                     return;
                 case 25: //BGZ
+                    if (baseRegister > 0) {
+                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    }
                     return;
                 case 26: //BLZ
+                    if (baseRegister < 0) {
+                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    }
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
@@ -228,10 +264,10 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 0: //RD
-                    accumulator = inputBuffer;
+                    accumulator = process.getInputBuffer();
                     return;
                 case 1: //WR
-                    outputBuffer = accumulator;
+                    process.setOutputBuffer(accumulator);
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
@@ -239,6 +275,10 @@ public class DefaultExecutor implements Executor {
         }
 
         throw new IllegalArgumentException("Unsupported operation: " + op);
+    }
+
+    private Integer effectiveAddress(Integer baseRegister, Integer address) {
+        return baseRegister + address;
     }
 
     /**

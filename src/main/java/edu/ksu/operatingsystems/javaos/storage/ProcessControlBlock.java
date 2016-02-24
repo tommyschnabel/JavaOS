@@ -1,6 +1,6 @@
 package edu.ksu.operatingsystems.javaos.storage;
 
-public class Program {
+public class ProcessControlBlock {
 
     private Integer mID;
     private int mInstructionLocationOnDisk;
@@ -15,7 +15,7 @@ public class Program {
 
     //initialized when in Ram
 
-    private int mInstructionLocationInMemory;
+    private Integer mInstructionLocationInMemory;
     private int mDataLocationInMemory;
 
     public void setID(int id) {

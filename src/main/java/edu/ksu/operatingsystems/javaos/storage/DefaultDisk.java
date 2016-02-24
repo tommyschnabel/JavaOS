@@ -3,7 +3,7 @@ package edu.ksu.operatingsystems.javaos.storage;
 public class DefaultDisk implements Disk {
 
     private char [] diskArray = new char[16384]; // Creates an array of size 16384 ( 2048 words = 16384 hex values )
-    private Program[] programList = new Program[30]; // Creates a list of Programs stored on defaultDisk
+    private ProcessControlBlock[] processControlBlockList = new ProcessControlBlock[30]; // Creates a list of Programs stored on defaultDisk
     int currentPositionOnDisk = 0;
 
     public char [] getDisk()
@@ -20,11 +20,11 @@ public class DefaultDisk implements Disk {
             diskArray[currentPositionOnDisk++] = charVal;
         }
     }
-    public void addProgramToProgramList(Program program)
+    public void addProgramToProgramList(ProcessControlBlock processControlBlock)
     {
-        for (int i = 0; i < programList.length; i++) {
-            if (programList[i] == null) {
-                programList[i] = program;
+        for (int i = 0; i < processControlBlockList.length; i++) {
+            if (processControlBlockList[i] == null) {
+                processControlBlockList[i] = processControlBlock;
                 return;
             }
         }
@@ -39,14 +39,14 @@ public class DefaultDisk implements Disk {
             System.out.print(diskArray[i] + " ");
         }
     }
-    public Program findProgram(int programID)
+    public ProcessControlBlock findProgram(int programID)
     {
-        for (int i = 0; i < programList.length; i++)
+        for (int i = 0; i < processControlBlockList.length; i++)
         {
-            if (programList[i].getID() == programID)
+            if (processControlBlockList[i].getID() == programID)
             {
                 //System.out.println("I found the program with ID: " + programID );
-                return programList[i];
+                return processControlBlockList[i];
             }
         }
         System.out.println("Failed to find program with ID: " + programID);

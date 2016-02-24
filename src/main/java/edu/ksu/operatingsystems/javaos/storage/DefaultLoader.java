@@ -51,20 +51,20 @@ public class DefaultLoader implements Loader {
                     }
                     else if (s.contains("END"))
                     {
-                        Program program = new Program();
+                        ProcessControlBlock processControlBlock = new ProcessControlBlock();
 
-                        program.setID(ID);
-                        program.setInstructionSize(instructionSize);
-                        program.setPriority(priority);
+                        processControlBlock.setID(ID);
+                        processControlBlock.setInstructionSize(instructionSize);
+                        processControlBlock.setPriority(priority);
 
-                        program.setInputBuffer(inputBuffer);
-                        program.setOutputBuffer(outputBuffer);
-                        program.setTemporaryBuffer(tempBuffer);
+                        processControlBlock.setInputBuffer(inputBuffer);
+                        processControlBlock.setOutputBuffer(outputBuffer);
+                        processControlBlock.setTemporaryBuffer(tempBuffer);
 
-                        program.setInstructionLocationOnDisk(instructionStartPosition);
-                        program.setDataLocationOnDisk(dataStartPosition);
+                        processControlBlock.setInstructionLocationOnDisk(instructionStartPosition);
+                        processControlBlock.setDataLocationOnDisk(dataStartPosition);
 
-                        defaultDisk.addProgramToProgramList(program);
+                        defaultDisk.addProgramToProgramList(processControlBlock);
 
                         //program.displayProgram();
 
