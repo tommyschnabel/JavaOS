@@ -54,4 +54,8 @@ public interface Ram {
      * @return The value stored in the address
      */
     Integer readValueFromAddress(Integer address);
+
+
+    void removeProcessFromMemory(Integer ID);
+
 }

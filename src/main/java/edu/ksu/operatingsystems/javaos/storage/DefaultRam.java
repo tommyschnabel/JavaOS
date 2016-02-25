@@ -65,9 +65,10 @@ public class DefaultRam implements Ram {
     }
 
     public ProcessControlBlock getProcessByID(int ID) {
+
         for (int i = 0; i < processArray.length; i++) {
             if (processArray[i].getID() == ID) {
-                System.out.println("I found the program with ID: " + ID);
+                //System.out.println("I found the program with ID: " + ID);
                 return processArray[i];
             }
         }
@@ -90,6 +91,16 @@ public class DefaultRam implements Ram {
     public Integer readValueFromAddress(Integer address)
     {
         return 0;
+    }
+
+    public void removeProcessFromMemory(Integer ID)
+    {
+        ProcessControlBlock processToRemove = getProcessByID(ID);
+
+        //Null out process instructions and data in memory
+
+        //Null out process in the PCB list
+
     }
 
 }

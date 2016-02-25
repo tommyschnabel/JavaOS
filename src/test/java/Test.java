@@ -16,9 +16,9 @@ public class Test {
 
         FIFOLongTermScheduler myFIFOLongTermScheduler = new FIFOLongTermScheduler();
         myFIFOLongTermScheduler.loadProcessInMemory(1, myDefaultDisk, myRAM);
-        myFIFOLongTermScheduler.loadProcessInMemory(2, myDefaultDisk, myRAM);
+        /*myFIFOLongTermScheduler.loadProcessInMemory(2, myDefaultDisk, myRAM);
         myFIFOLongTermScheduler.loadProcessInMemory(6, myDefaultDisk, myRAM);
-        myFIFOLongTermScheduler.loadProcessInMemory(4, myDefaultDisk, myRAM);
+        myFIFOLongTermScheduler.loadProcessInMemory(4, myDefaultDisk, myRAM);*/
 
         /*
         System.out.println("\n");
@@ -28,6 +28,9 @@ public class Test {
 
         System.out.println("\n\n\n\n\n\n\nMemory\n______");
         myRAM.displayRAM();
+
+        //myRAM.removeProcessFromMemory(1);
+        //myRAM.displayRAM();
 
     }
 }

@@ -14,12 +14,19 @@ public class ProcessControlBlock {
 
     private boolean mInMemory = false;
 
-    //initialized when in Ram
+    /**
+     * Initialized when in Ram
+     *
+     */
 
     private Integer mInstructionLocationInMemory;
     private int mDataLocationInMemory;
 
-    public void setID(int id) {
+    /**
+     *
+     */
+
+    public void setID(Integer id) {
         mID = id;
     }
 
