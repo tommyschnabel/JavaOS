@@ -59,6 +59,19 @@ public class DefaultRam implements Ram {
         }
     }
 
+    public void displayPCBList()
+    {
+        for (int i = 0; i < processArray.length; i++)
+        {
+            if (processArray[i] != null)
+            {
+                System.out.println("Process ID: " + processArray[i].getID());
+                System.out.println("Instruction Start: " + processArray[i].getInstructionLocationInMemory());
+                System.out.println("Process Size: " + processArray[i].getProcessSize());
+            }
+        }
+    }
+
     public char[] getDisk() {
         return diskArray;
     }
@@ -151,9 +164,46 @@ public class DefaultRam implements Ram {
         // We should call a disk refactor in this scenario
     }
 
-    public void setCurrentPositionInMemory(int currentPosition)
+    public void defrag()
     {
-        currentPositionInMemory = currentPosition;
+        int amtOfSpaces = 0;
+        for (int i = 0; i < diskArray.length; i++)
+        {
+            if (diskArray[i] == '\u0000') // '\u0000' = unicode for char null
+            {
+                amtOfSpaces++;
+            }
+            else
+            {
+                if (amtOfSpaces != 0)
+                {
+                    //defrag
+                    System.out.println("\nI found a space with " + amtOfSpaces + " spots that are null");
+                    for (int j = 0; j < processArray.length; j++)
+                    {
+                        if ( processArray[j] != null )
+                        {
+                            if (processArray[j].getInstructionLocationInMemory() >= i)
+                            {
+                                int newInstructionLocation = processArray[j].getInstructionLocationInMemory() - amtOfSpaces;
+                                int newDataLocation        = processArray[j].getDataLocationInMemory() - amtOfSpaces;
+                                processArray[j].setInstructionLocationInMemory(newInstructionLocation);
+                                processArray[j].setDataLocationInMemory(newDataLocation);
+                            }
+                        }
+                    }
+                    for (int k = i; k < diskArray.length; k++ )
+                    {
+                        diskArray[k-amtOfSpaces] = diskArray[k];
+                    }
+                    for (int l = diskArray.length - amtOfSpaces; l < amtOfSpaces; l++)
+                    {
+                        diskArray[l] = '\u0000';
+                    }
+                    amtOfSpaces = 0;
+                }
+            }
+        }
     }
 
 }

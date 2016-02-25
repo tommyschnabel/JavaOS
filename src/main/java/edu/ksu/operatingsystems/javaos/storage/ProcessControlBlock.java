@@ -112,7 +112,7 @@ public class ProcessControlBlock {
     }
 
     public int getDataLocationInMemory() {
-        return getInstructionLocationInMemory();
+        return mDataLocationInMemory;
     }
 
     public int getProcessSize()

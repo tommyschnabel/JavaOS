@@ -25,6 +25,12 @@ public interface Ram {
      * Fetches the disk's char array to the user
      * @return returns the disk's char array
      */
+
+    /**
+     * Displays process list in memory
+     */
+    void displayPCBList();
+
     char [] getDisk();
 
     /**
@@ -68,10 +74,7 @@ public interface Ram {
      */
     int findSpotForProcess(ProcessControlBlock PCB);
 
-    /**
-     * Sets the current position of the iterator in Memory
-     * @param currentPosition the position we want to set the iterator to
-     */
-    void setCurrentPositionInMemory(int currentPosition);
+    void defrag();
+
 
 }
