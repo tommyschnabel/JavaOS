@@ -43,7 +43,7 @@ public class DefaultDisk implements Disk {
     {
         for (int i = 0; i < processControlBlockList.length; i++)
         {
-            if (processControlBlockList[i].getID() == programID)
+            if (processControlBlockList[i].getID().equals(programID))
             {
                 //System.out.println("I found the program with ID: " + programID );
                 return processControlBlockList[i];

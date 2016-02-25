@@ -20,14 +20,14 @@ public class DefaultRam implements Ram {
 
         currentPositionInMemory = findSpotForProcess(programToAdd);
 
-        instructionStart = currentPositionInMemory;
+        instructionStart = programToAdd.getInstructionLocationOnDisk();
         instructionEnd = instructionStart + programToAdd.getInstructionSize();
         dataStart = instructionEnd;
         dataEnd = programToAdd.getInputBuffer() +
                 programToAdd.getOutputBuffer() +
                 programToAdd.getTemporaryBuffer();
 
-        programToAdd.setInstructionLocationInMemory(instructionStart);
+        programToAdd.setInstructionLocationInMemory(currentPositionInMemory);
         programToAdd.setDataLocationInMemory(dataStart);
         programToAdd.setInMemory(true);
 
@@ -120,6 +120,9 @@ public class DefaultRam implements Ram {
         int startLocation = processToRemove.getInstructionLocationInMemory();
         int offset        = processToRemove.getProcessSize();
 
+        System.out.println("StartLocation = " + startLocation);
+        System.out.println("offset = " + offset);
+
         for (int i = startLocation; i < (startLocation + offset); i++)
         {
             diskArray[i] = '\u0000'; // '\u0000' = unicode for char null
@@ -160,12 +163,12 @@ public class DefaultRam implements Ram {
             }
         }
         System.out.println("Memory is FULL");
-        throw new OutOfMemoryError(); //Got to the end of the method so there is no more room
-        // We should call a disk refactor in this scenario
+            throw new OutOfMemoryError(); //Got to the end of the method so there is no more room
     }
 
     public void defrag()
     {
+        System.out.println("Defragging memory");
         int amtOfSpaces = 0;
         for (int i = 0; i < diskArray.length; i++)
         {
@@ -194,11 +197,8 @@ public class DefaultRam implements Ram {
                     }
                     for (int k = i; k < diskArray.length; k++ )
                     {
-                        diskArray[k-amtOfSpaces] = diskArray[k];
-                    }
-                    for (int l = diskArray.length - amtOfSpaces; l < amtOfSpaces; l++)
-                    {
-                        diskArray[l] = '\u0000';
+                        diskArray[k-amtOfSpaces] = diskArray[k]; // transfers the char to the new spot
+                        diskArray[k] = '\u0000'; // nulls out the chars after we transfer
                     }
                     amtOfSpaces = 0;
                 }

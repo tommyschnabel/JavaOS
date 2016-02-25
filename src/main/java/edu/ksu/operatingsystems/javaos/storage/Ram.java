@@ -68,12 +68,17 @@ public interface Ram {
     void removeProcessFromMemory(Integer ID);
 
     /**
-     * Finds a spot in Memory where the Process specified will fit
-     * @param PCB The Process that we need to find a spot for
+     * Finds a spot in Memory where the Process specified will fit. This method throws an
+     * out of memory exception when no spaces are found.
+     * @param PCB The Process that we need to find a spot for.
      * @return an int of the start location where the process will fit
      */
     int findSpotForProcess(ProcessControlBlock PCB);
 
+    /**
+     * This method removes the empty (null) spaces in memory to hopefully
+     * make room for additional processes.
+     */
     void defrag();
 
 
