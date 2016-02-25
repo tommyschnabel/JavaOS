@@ -11,6 +11,7 @@ public class ProcessControlBlock {
     private int mOutputBuffer;
     private int mTemporaryBuffer;
     private int mProgramCounter;
+    private int processSize;
 
     private boolean mInMemory = false;
 
@@ -112,6 +113,11 @@ public class ProcessControlBlock {
 
     public int getDataLocationInMemory() {
         return getInstructionLocationInMemory();
+    }
+
+    public int getProcessSize()
+    {
+        return mInstructionSize + mInputBuffer + mOutputBuffer + mTemporaryBuffer;
     }
 
     @Override

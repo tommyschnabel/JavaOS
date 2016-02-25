@@ -55,7 +55,23 @@ public interface Ram {
      */
     Integer readValueFromAddress(Integer address);
 
-
+    /**
+     * Removes a process from the RAM with the specified ID
+     * @param ID the ID of the process we wish to remove
+     */
     void removeProcessFromMemory(Integer ID);
+
+    /**
+     * Finds a spot in Memory where the Process specified will fit
+     * @param PCB The Process that we need to find a spot for
+     * @return an int of the start location where the process will fit
+     */
+    int findSpotForProcess(ProcessControlBlock PCB);
+
+    /**
+     * Sets the current position of the iterator in Memory
+     * @param currentPosition the position we want to set the iterator to
+     */
+    void setCurrentPositionInMemory(int currentPosition);
 
 }

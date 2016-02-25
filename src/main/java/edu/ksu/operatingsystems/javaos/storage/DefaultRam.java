@@ -18,6 +18,8 @@ public class DefaultRam implements Ram {
 
         ProcessControlBlock programToAdd = disk.findProgram(processID);
 
+        currentPositionInMemory = findSpotForProcess(programToAdd);
+
         instructionStart = currentPositionInMemory;
         instructionEnd = instructionStart + programToAdd.getInstructionSize();
         dataStart = instructionEnd;
@@ -40,6 +42,7 @@ public class DefaultRam implements Ram {
     public void addProcessControlBlockToPCBList(ProcessControlBlock program) {
         for (int i = 0; i < processArray.length; i++) {
             if (processArray[i] == null) {
+                program.setInMemory(true);
                 processArray[i] = program;
                 return;
             }
@@ -67,9 +70,10 @@ public class DefaultRam implements Ram {
     public ProcessControlBlock getProcessByID(int ID) {
 
         for (int i = 0; i < processArray.length; i++) {
-            if (processArray[i].getID() == ID) {
-                //System.out.println("I found the program with ID: " + ID);
-                return processArray[i];
+            if (processArray[i] != null) {
+                if (processArray[i].getID() == ID) {
+                    return processArray[i];
+                }
             }
         }
         System.out.println("Failed to find process with ID: " + ID);
@@ -96,11 +100,60 @@ public class DefaultRam implements Ram {
     public void removeProcessFromMemory(Integer ID)
     {
         ProcessControlBlock processToRemove = getProcessByID(ID);
+        processToRemove.setInMemory(false);
 
         //Null out process instructions and data in memory
 
-        //Null out process in the PCB list
+        int startLocation = processToRemove.getInstructionLocationInMemory();
+        int offset        = processToRemove.getProcessSize();
 
+        for (int i = startLocation; i < (startLocation + offset); i++)
+        {
+            diskArray[i] = '\u0000'; // '\u0000' = unicode for char null
+        }
+
+        //Null out process in the PCB list
+        for (int i = 0; i < diskArray.length; i++)
+        {
+            if (processArray[i] != null)
+                if (processArray[i].getID() == ID) {
+                    processArray[i] = null;
+                    break;
+                }
+
+        }
+
+    }
+    public int findSpotForProcess(ProcessControlBlock PCB)
+    {
+        int startLocation = 0;
+        int concurrentFreeSpotsAvailable = 0;
+        int processSize = PCB.getProcessSize();
+
+        for (int i = 0; i < diskArray.length; i++)
+        {
+            if (diskArray[i] == '\u0000')
+            {
+                concurrentFreeSpotsAvailable++;
+                if (concurrentFreeSpotsAvailable >= processSize)
+                {
+                    return startLocation;
+                }
+            }
+            else
+            {
+                startLocation = i + 1;
+                concurrentFreeSpotsAvailable = 0;
+            }
+        }
+        System.out.println("Memory is FULL");
+        throw new OutOfMemoryError(); //Got to the end of the method so there is no more room
+        // We should call a disk refactor in this scenario
+    }
+
+    public void setCurrentPositionInMemory(int currentPosition)
+    {
+        currentPositionInMemory = currentPosition;
     }
 
 }
