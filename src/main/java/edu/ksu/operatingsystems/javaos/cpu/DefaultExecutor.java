@@ -139,7 +139,11 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 4: //MOV
-                    // TODO Ask prof about this, specs are unclear
+                    if (firstOperandRegisterAddress != 0) {
+                        destination = first;
+                    } else {
+                        destination = second;
+                    }
                     return;
                 case 5: //ADD
                     destination = first + second;
@@ -181,12 +185,14 @@ public class DefaultExecutor implements Executor {
                     ram.writeValueToAddress(lastBits, baseRegister);
                     return;
                 case 3: //LW
-                    destinationRegister = ram.readValueFromAddress(lastBits);
+                    destinationRegister = ram.readValueFromAddress(effectiveAddress(baseRegister, lastBits));
                     return;
                 case 11: //MOVI
-                    //TODO Ask professor about this instruction
-                    // If you're supposed to write to dest-register, how
-                    // can it ever be 0 to indicate data in the last bits
+                    if (baseRegisterAddress == 0) {
+                        destinationRegister = effectiveAddress(baseRegister, lastBits);
+                    } else {
+                        destinationRegister = baseRegister;
+                    }
                     return;
                 case 12: //ADDI
                     destinationRegister += lastBits;
@@ -198,9 +204,11 @@ public class DefaultExecutor implements Executor {
                     destinationRegister /= lastBits;
                     return;
                 case 15: //LDI
-                    //TODO Ask professor about this instruction
-                    // If you're supposed to write to dest-register, how
-                    // can it ever be 0 to indicate data in the last bits
+                    if (baseRegisterAddress == 0) {
+                        destinationRegister = effectiveAddress(baseRegister, lastBits);
+                    } else {
+                        destinationRegister = baseRegister;
+                    }
                     return;
                 case 17: //SLTI
                     destinationRegister = baseRegister < lastBits ? 1 : 0;
@@ -252,7 +260,7 @@ public class DefaultExecutor implements Executor {
                     instructionPosition = -1;
                     return;
                 case 20: //JMP
-                    instructionPosition = address;
+                    instructionPosition = effectiveAddress(0, address);
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
@@ -279,7 +287,7 @@ public class DefaultExecutor implements Executor {
     }
 
     private Integer effectiveAddress(Integer baseRegister, Integer address) {
-        return baseRegister + address;
+        return baseRegister + address + process.getDataLocationInMemory();
     }
 
     /**
