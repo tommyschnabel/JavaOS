@@ -11,8 +11,8 @@ public class Test {
         myDefaultLoader.load("Program-File.txt");
         Disk myDefaultDisk = myDefaultLoader.getDefaultDisk();
 
-        //System.out.println("\nDISK\n____");
-        //myDefaultDisk.displayDisk();
+        System.out.println("\nDISK\n____");
+        myDefaultDisk.displayDisk();
 
         ProcessControlBlock bugProcess = myDefaultDisk.findProgram(6);
         System.out.println("start location on disk of process 6 " + bugProcess.getInstructionLocationOnDisk());

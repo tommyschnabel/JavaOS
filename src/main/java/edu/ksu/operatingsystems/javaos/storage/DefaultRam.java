@@ -9,6 +9,7 @@ public class DefaultRam implements Ram {
     private ProcessControlBlock[] processArray = new ProcessControlBlock[30];
     int currentPositionInMemory = 0;
 
+    @Override
     public void addProcessControlBlockToMemoryByProcessID(int processID, Disk disk) {
 
         int instructionStart;
@@ -39,6 +40,7 @@ public class DefaultRam implements Ram {
 
     }
 
+    @Override
     public void addProcessControlBlockToPCBList(ProcessControlBlock program) {
         for (int i = 0; i < processArray.length; i++) {
             if (processArray[i] == null) {
@@ -49,6 +51,7 @@ public class DefaultRam implements Ram {
         }
     }
 
+    @Override
     public void displayRAM() //Provides ability to visualize RAM
     {
         for (int i = 0; i < diskArray.length; i++) {
@@ -59,6 +62,7 @@ public class DefaultRam implements Ram {
         }
     }
 
+    @Override
     public void displayPCBList()
     {
         for (int i = 0; i < processArray.length; i++)
@@ -72,14 +76,17 @@ public class DefaultRam implements Ram {
         }
     }
 
+    @Override
     public char[] getDisk() {
         return diskArray;
     }
 
+    @Override
     public ProcessControlBlock[] getProcessArray() {
         return processArray;
     }
 
+    @Override
     public ProcessControlBlock getProcessByID(int ID) {
 
         for (int i = 0; i < processArray.length; i++) {
@@ -95,21 +102,39 @@ public class DefaultRam implements Ram {
 
 
 
+    @Override
     public int getCurrentPositionInMemory() {
         return currentPositionInMemory;
     }
 
 
-    public void writeValueToAddress(Integer address, Integer value)
+    @Override
+    public void writeValueToAddress(Integer startAddress, String value)
     {
-        return;
+        if (value == null)
+        {
+            System.out.println("The string passed in was null. No value was written.");
+            return;
+        }
+
+        for (int i = 0; i < value.length(); i++)
+        {
+            diskArray[startAddress+i] = value.charAt(i);
+        }
     }
 
-    public Integer readValueFromAddress(Integer address)
+    @Override
+    public String readValueFromAddress(Integer startAddress, int lengthToRead)
     {
-        return 0;
+        String val = "";
+
+        for (int i = startAddress; i < startAddress + lengthToRead; i++)
+            val += diskArray[i];
+
+        return val;
     }
 
+    @Override
     public void removeProcessFromMemory(Integer ID)
     {
         ProcessControlBlock processToRemove = getProcessByID(ID);
@@ -132,7 +157,7 @@ public class DefaultRam implements Ram {
         for (int i = 0; i < diskArray.length; i++)
         {
             if (processArray[i] != null)
-                if (processArray[i].getID() == ID) {
+                if (processArray[i].getID().equals(ID)) {
                     processArray[i] = null;
                     break;
                 }
@@ -140,6 +165,8 @@ public class DefaultRam implements Ram {
         }
 
     }
+
+    @Override
     public int findSpotForProcess(ProcessControlBlock PCB)
     {
         int startLocation = 0;
@@ -166,6 +193,7 @@ public class DefaultRam implements Ram {
             throw new OutOfMemoryError(); //Got to the end of the method so there is no more room
     }
 
+    @Override
     public void defrag()
     {
         System.out.println("Defragging memory");

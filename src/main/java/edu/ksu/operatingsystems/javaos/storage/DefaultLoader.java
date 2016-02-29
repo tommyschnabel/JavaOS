@@ -14,6 +14,7 @@ public class DefaultLoader implements Loader {
     int instructionStartPosition;
     int dataStartPosition;
 
+    @Override
     public boolean load(String fileName) {
 
         try {
@@ -86,6 +87,7 @@ public class DefaultLoader implements Loader {
         return true;
     }
 
+    @Override
     public DefaultDisk getDefaultDisk()
     {
         return defaultDisk;

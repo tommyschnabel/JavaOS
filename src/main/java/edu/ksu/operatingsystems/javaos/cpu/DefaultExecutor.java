@@ -182,10 +182,10 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 2: //ST
-                    ram.writeValueToAddress(lastBits, baseRegister);
+                   //TODO ram.writeValueToAddress(lastBits, baseRegister);
                     return;
                 case 3: //LW
-                    destinationRegister = ram.readValueFromAddress(effectiveAddress(baseRegister, lastBits));
+                  //TODO  destinationRegister = ram.readValueFromAddress(effectiveAddress(baseRegister, lastBits));
                     return;
                 case 11: //MOVI
                     if (baseRegisterAddress == 0) {

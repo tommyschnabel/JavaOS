@@ -6,10 +6,13 @@ public class DefaultDisk implements Disk {
     private ProcessControlBlock[] processControlBlockList = new ProcessControlBlock[30]; // Creates a list of Programs stored on defaultDisk
     int currentPositionOnDisk = 0;
 
+    @Override
     public char [] getDisk()
     {
         return diskArray;
     }
+
+    @Override
     public void addToDisk(String s)
     {
         // hex string in this format: 0xC050005C
@@ -20,6 +23,8 @@ public class DefaultDisk implements Disk {
             diskArray[currentPositionOnDisk++] = charVal;
         }
     }
+
+    @Override
     public void addProgramToProgramList(ProcessControlBlock processControlBlock)
     {
         for (int i = 0; i < processControlBlockList.length; i++) {
@@ -29,6 +34,8 @@ public class DefaultDisk implements Disk {
             }
         }
     }
+
+    @Override
     public void displayDisk()  //This method is just used so I can visualize the DefaultDisk
     {
         for (int i = 0; i < diskArray.length; i++) {
@@ -39,6 +46,8 @@ public class DefaultDisk implements Disk {
             System.out.print(diskArray[i] + " ");
         }
     }
+
+    @Override
     public ProcessControlBlock findProgram(int programID)
     {
         for (int i = 0; i < processControlBlockList.length; i++)
@@ -52,6 +61,8 @@ public class DefaultDisk implements Disk {
         System.out.println("Failed to find program with ID: " + programID);
         return null;
     }
+
+    @Override
     public int getCurrentPositionOnDisk()
     {
         return currentPositionOnDisk;

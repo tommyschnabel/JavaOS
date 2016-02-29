@@ -49,17 +49,17 @@ public interface Ram {
 
     /**
      * Writes a value to an address
-     * @param address The address to write to
+     * @param startAddress The address to write to
      * @param value The value to write
      */
-    void writeValueToAddress(Integer address, Integer value);
+    void writeValueToAddress(Integer startAddress, String value);
 
     /**
      * Reads a value from an address
-     * @param address The address to read from
+     * @param startAddress The address to read from
      * @return The value stored in the address
      */
-    Integer readValueFromAddress(Integer address);
+    String readValueFromAddress(Integer startAddress, int lengthToRead);
 
     /**
      * Removes a process from the RAM with the specified ID
