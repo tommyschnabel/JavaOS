@@ -9,7 +9,7 @@ public interface ShortTermScheduler {
      * Schedules all processes in need of scheduling
      * @param pcbArray The array of PCBs in the RAM
      */
-    public void doScheduling(ProcessControlBlock[] pcbArray);
+    void schedule(ProcessControlBlock[] pcbArray);
     
     /**
      * Adds a pcb to the ready queue
