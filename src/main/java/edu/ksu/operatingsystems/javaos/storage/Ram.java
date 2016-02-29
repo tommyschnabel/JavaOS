@@ -57,6 +57,7 @@ public interface Ram {
     /**
      * Reads a value from an address
      * @param startAddress The address to read from
+     * @param lengthToRead Number of hex values to read
      * @return The value stored in the address
      */
     String readValueFromAddress(Integer startAddress, int lengthToRead);

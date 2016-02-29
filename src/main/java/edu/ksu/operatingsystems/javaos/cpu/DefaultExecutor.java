@@ -123,7 +123,6 @@ public class DefaultExecutor implements Executor {
      * @param ram The system ram
      * @param registerAddresses The register addresses, with the address part of the instruction as the last entry, if available
      */
-    //TODO Finish this
     private void doOp(int op, Ram ram, Integer... registerAddresses) {
         Integer instructionPosition = process.getInstructionLocationInMemory();
 
@@ -182,10 +181,16 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 2: //ST
-                   //TODO ram.writeValueToAddress(lastBits, baseRegister);
+                   ram.writeValueToAddress(lastBits, Integer.toHexString(baseRegister));
                     return;
                 case 3: //LW
-                  //TODO  destinationRegister = ram.readValueFromAddress(effectiveAddress(baseRegister, lastBits));
+                    destinationRegister = Integer.parseInt(
+                        ram.readValueFromAddress(
+                            effectiveAddress(baseRegister, lastBits),
+                            8 //Read 8 hex values (32 bits)
+                        ),
+                        16 //Convert from base 16 (hex)
+                    );
                     return;
                 case 11: //MOVI
                     if (baseRegisterAddress == 0) {
