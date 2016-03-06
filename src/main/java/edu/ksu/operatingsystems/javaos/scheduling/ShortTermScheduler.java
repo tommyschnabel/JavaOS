@@ -1,7 +1,7 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
-import java.util.*;
-import edu.ksu.operatingsystems.javaos.storage.Ram;
+import java.util.LinkedList;
+import edu.ksu.operatingsystems.javaos.storage.*;
 
 public interface ShortTermScheduler {
     

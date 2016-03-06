@@ -1,30 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.ksu.operatingsystems.javaos.scheduling;
 
 import edu.ksu.operatingsystems.javaos.storage.*;
 import java.util.*;
 
-/**
- *
- * @author DefaultPC
- */
 public class DefaultShortTermScheduler implements ShortTermScheduler {
     
     private LinkedList<ProcessControlBlock> newQueue = new LinkedList<>();
     private LinkedList<ProcessControlBlock> suspendQueue = new LinkedList<>();
     private LinkedList<ProcessControlBlock> readyQueue = new LinkedList<>();
     private LinkedList<ProcessControlBlock> waitQueue = new LinkedList<>();
-    private ProcessControlBlock processToAdd; //For later use if we decide to use SJF or another scheduling system.
     
     /*@Override
     */
     public void schedule(ProcessControlBlock[] pcbArray){
         for(int i = 0; i < pcbArray.length; i++){
-            addToReadyQueue(pcbArray[i]);
+            if(pcbArray[i] != null)
+                addToReadyQueue(pcbArray[i]);
         }
        
     }
@@ -33,6 +24,14 @@ public class DefaultShortTermScheduler implements ShortTermScheduler {
     */
     public void addToReadyQueue(ProcessControlBlock pcb){
         readyQueue.add(pcb);
+        
+       /* for(int i = 0; i < readyQueue.size(); i++)
+        {
+            if(pcb.getPriority() < readyQueue.get(i).getPriority()){
+                readyQueue.add(i,pcb);
+                return;
+            }
+        } */ //This is for use when we do priority based scheduling.
     }
     
     /*@Override
@@ -73,4 +72,9 @@ public class DefaultShortTermScheduler implements ShortTermScheduler {
         waitQueue = newWaitQueue;
     }
     
+    ProcessControlBlock copyPCBAtIndex(int i, LinkedList<ProcessControlBlock> List){
+        ProcessControlBlock copy = List.get(i);
+        List.remove(i);
+        return copy;
+    }
 }
