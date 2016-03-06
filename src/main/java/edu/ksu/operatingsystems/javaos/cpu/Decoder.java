@@ -8,5 +8,5 @@ public interface Decoder {
      * @param instruction The instruction to decode
      * @param registers The registers to store the decoded instruction in
      */
-    void decode(Byte[] instruction, Byte[] registers);
+    int decode(byte[] instruction);
 }

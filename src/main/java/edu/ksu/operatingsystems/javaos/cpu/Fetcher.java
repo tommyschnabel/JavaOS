@@ -1,6 +1,8 @@
 package edu.ksu.operatingsystems.javaos.cpu;
 
+import edu.ksu.operatingsystems.javaos.storage.DefaultRam;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
+import edu.ksu.operatingsystems.javaos.storage.Ram;
 
 public interface Fetcher {
 
@@ -10,5 +12,5 @@ public interface Fetcher {
      * @param processControlBlock The {@link edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock} that's currently running
      * @return The Byte array with the instruction
      */
-    Byte[] fetch(ProcessControlBlock processControlBlock);
+    byte[] fetch(ProcessControlBlock processControlBlock, DefaultRam ram);
 }
