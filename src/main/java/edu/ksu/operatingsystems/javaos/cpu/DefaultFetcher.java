@@ -6,7 +6,7 @@ import edu.ksu.operatingsystems.javaos.storage.Ram;
 
 public class DefaultFetcher implements Fetcher{
 
-	public byte[] fetch(ProcessControlBlock processControlBlock, DefaultRam ram) {
+	public byte[] fetch(ProcessControlBlock processControlBlock, Ram ram) {
 		int address = processControlBlock.getInstructionLocationInMemory();
 		String instruction = ram.readValueFromAddress(address, 8);
 		return instruction.getBytes();

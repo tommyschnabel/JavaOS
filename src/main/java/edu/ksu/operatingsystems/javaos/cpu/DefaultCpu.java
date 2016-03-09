@@ -2,6 +2,7 @@ package edu.ksu.operatingsystems.javaos.cpu;
 
 import edu.ksu.operatingsystems.javaos.storage.DefaultRam;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
+import edu.ksu.operatingsystems.javaos.storage.Ram;
 
 public class DefaultCpu implements Cpu {
 
@@ -12,12 +13,12 @@ public class DefaultCpu implements Cpu {
      * All other registers are general purpose registers
      */
     private Integer[] registers;
-    private DefaultFetcher fetcher;
-    private DefaultDecoder decoder;
-    private DefaultExecutor executor;
-    private DefaultRam ram;
+    private Fetcher fetcher;
+    private Decoder decoder;
+    private Executor executor;
+    private Ram ram;
     
-    public DefaultCpu(DefaultRam ram) {
+    public DefaultCpu(Ram ram) {
         registers = new Integer[16];
         fetcher = new DefaultFetcher();
         decoder = new DefaultDecoder();
