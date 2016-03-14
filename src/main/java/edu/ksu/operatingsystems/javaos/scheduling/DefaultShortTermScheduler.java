@@ -39,7 +39,17 @@ public class DefaultShortTermScheduler implements ShortTermScheduler {
     public void addToWaitQueue(ProcessControlBlock pcb){
         waitQueue.add(pcb);
     }
-    
+
+    @Override
+    public ProcessControlBlock[] getProcesses(Ram ram) {
+        return new ProcessControlBlock[0];
+    }
+
+    @Override
+    public void scheduleIfNecessary() {
+
+    }
+
     public LinkedList<ProcessControlBlock> getNewQueue(){
         return newQueue;
     }

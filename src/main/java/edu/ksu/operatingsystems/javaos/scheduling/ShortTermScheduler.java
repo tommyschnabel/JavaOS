@@ -30,4 +30,6 @@ public interface ShortTermScheduler {
      * @return 
      */
     public ProcessControlBlock[] getProcesses(Ram ram);
+
+    void scheduleIfNecessary();
 }
