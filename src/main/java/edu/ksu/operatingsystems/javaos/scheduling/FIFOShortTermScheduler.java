@@ -8,10 +8,10 @@ import java.util.LinkedList;
 
 public class FIFOShortTermScheduler implements ShortTermScheduler {
     
-    private LinkedList<ProcessControlBlock> newQueue = new LinkedList<>();
-    private LinkedList<ProcessControlBlock> suspendQueue = new LinkedList<>();
-    private LinkedList<ProcessControlBlock> readyQueue = new LinkedList<>();
-    private LinkedList<ProcessControlBlock> waitQueue = new LinkedList<>();
+    private LinkedList<ProcessControlBlock> newQueue = new LinkedList<ProcessControlBlock>();
+    private LinkedList<ProcessControlBlock> suspendQueue = new LinkedList<ProcessControlBlock>();
+    private LinkedList<ProcessControlBlock> readyQueue = new LinkedList<ProcessControlBlock>();
+    private LinkedList<ProcessControlBlock> waitQueue = new LinkedList<ProcessControlBlock>();
 
     private Dispatcher dispatcher;
     private Ram ram;
@@ -52,7 +52,7 @@ public class FIFOShortTermScheduler implements ShortTermScheduler {
         ProcessControlBlock[] processes = ram.getProcesses();
         for (int i = processes.length - 1; i >= 0; --i) {
             ProcessControlBlock process = processes[i];
-            if (process.isFinished()) {
+            if (process != null && process.isFinished()) {
                 ram.removeProcessFromMemory(process.getID());
             }
         }

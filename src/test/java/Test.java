@@ -2,7 +2,7 @@ import edu.ksu.operatingsystems.javaos.scheduling.FIFOLongTermScheduler;
 import edu.ksu.operatingsystems.javaos.storage.*;
 
 public class Test {
-
+/*
     public static void main(String[] args) {
 
         DefaultLoader myDefaultLoader = new DefaultLoader();
@@ -70,4 +70,5 @@ public class Test {
         myRAM.displayPCBList();
         myRAM.displayRAM();
     }
+    */
 }
