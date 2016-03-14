@@ -142,8 +142,8 @@ public class DefaultRam implements Ram {
         int startLocation = processToRemove.getInstructionLocationInMemory();
         int offset        = processToRemove.getProcessSize();
 
-        System.out.println("StartLocation = " + startLocation);
-        System.out.println("offset = " + offset);
+        //System.out.println("StartLocation = " + startLocation);
+        //System.out.println("offset = " + offset);
 
         for (int i = startLocation; i < (startLocation + offset); i++)
         {
@@ -186,7 +186,7 @@ public class DefaultRam implements Ram {
                 concurrentFreeSpotsAvailable = 0;
             }
         }
-        System.out.println("Memory is FULL");
+        //System.out.println("Memory is FULL");
             throw new OutOfMemoryError(); //Got to the end of the method so there is no more room
     }
 
@@ -216,7 +216,7 @@ public class DefaultRam implements Ram {
                 if (amtOfSpaces != 0)
                 {
                     //defrag
-                    System.out.println("\nI found a space with " + amtOfSpaces + " spots that are null");
+                    //System.out.println("\nI found a space with " + amtOfSpaces + " spots that are null");
                     for (int j = 0; j < processes.length; j++)
                     {
                         if ( processes[j] != null )
