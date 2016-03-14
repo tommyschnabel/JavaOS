@@ -37,7 +37,7 @@ public interface Ram {
      * Fetches the array of PCBs on Ram
      * @return an array of PCBs
      */
-    ProcessControlBlock[] getProcessArray();
+    ProcessControlBlock[] getProcesses();
 
     /**
      * Fetches the process by ID specified
@@ -45,6 +45,7 @@ public interface Ram {
      * @return the PCB of the process with the specified ID
      */
     ProcessControlBlock getProcessByID(int ID);
+
     int getCurrentPositionInMemory();
 
     /**
@@ -75,6 +76,13 @@ public interface Ram {
      * @return an int of the start location where the process will fit
      */
     int findSpotForProcess(ProcessControlBlock PCB);
+
+    /**
+     * Figures out whether there is enough room to put a given process into memory
+     * @param pcb The process to check for
+     * @return Whether there is room for it
+     */
+    boolean isRoomForProcess(ProcessControlBlock pcb);
 
     /**
      * This method removes the empty (null) spaces in memory to hopefully

@@ -7,8 +7,13 @@ public class DefaultExecutor implements Executor {
 
     private Integer[] registers;
     private ProcessControlBlock process;
+    private Ram ram;
 
-    public DefaultExecutor(Integer[] registers) {
+    public DefaultExecutor(
+            Ram ram,
+            Integer[] registers
+    ) {
+        this.ram = ram;
         this.registers = registers;
     }
 
@@ -18,7 +23,7 @@ public class DefaultExecutor implements Executor {
     }
 
     @Override
-    public void execute(Integer instruction, Ram ram) {
+    public void execute(Integer instruction) {
         Integer arithmeticType = instruction >> 30;
 
         Integer address;
@@ -31,7 +36,6 @@ public class DefaultExecutor implements Executor {
         //Increment the instruction
         //noinspection UnusedAssignment
         Integer instructionPosition = process.getInstructionLocationInMemory();
-        instructionPosition++;
 
         switch (arithmeticType) {
             case 0:
@@ -57,7 +61,7 @@ public class DefaultExecutor implements Executor {
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
                 doOp(opCode, ram, firstRegister, secondRegister, destRegister, address);
-                return;
+                break;
             case 1:
 
                 //Get the address
@@ -77,7 +81,7 @@ public class DefaultExecutor implements Executor {
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
                 doOp(opCode, ram, baseRegister, destRegister, address);
-                return;
+                break;
             case 2:
 
                 //Get the address
@@ -89,7 +93,7 @@ public class DefaultExecutor implements Executor {
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
                 doOp(opCode, ram, address);
-                return;
+                break;
             case 3:
 
                 //Get the address
@@ -109,12 +113,14 @@ public class DefaultExecutor implements Executor {
                 instruction = instruction >> 6; // Not really needed, but for good measure
 
                 doOp(opCode, ram, firstRegister, secondRegister, address);
-                return;
+                break;
             default:
 
                 //If an integer bit-shifted 30 bits isn't one of the above we have much bigger problems
                 throw new IllegalArgumentException("Unsupported arithmetic operation: " + arithmeticType);
         }
+
+        instructionPosition++;
     }
 
     /**

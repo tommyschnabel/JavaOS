@@ -9,10 +9,4 @@ public interface Loader {
      */
     boolean load(String fileName);
 
-    /**
-     * Fetches the disk that we will be loading data into.
-     * @return The disk we will load data into
-     */
-    Disk getDefaultDisk();
-
 }

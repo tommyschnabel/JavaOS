@@ -1,13 +1,10 @@
 package edu.ksu.operatingsystems.javaos.storage;
 
-/**
- * Created by Calvin on 2/24/16.
- */
 public class DefaultRam implements Ram {
 
     private char[] diskArray = new char[8192]; // Creates an array of size 8192 ( 1024 words = 8192 hex values )
-    private ProcessControlBlock[] processArray = new ProcessControlBlock[30];
-    int currentPositionInMemory = 0;
+    private ProcessControlBlock[] processes = new ProcessControlBlock[30];
+    private int currentPositionInMemory = 0;
 
     @Override
     public void addProcessControlBlockToMemoryByProcessID(int processID, Disk disk) {
@@ -38,14 +35,15 @@ public class DefaultRam implements Ram {
             diskArray[currentPositionInMemory++] = myDisk[i];
         }
 
+        addProcessControlBlockToPCBList(programToAdd);
     }
 
     @Override
     public void addProcessControlBlockToPCBList(ProcessControlBlock program) {
-        for (int i = 0; i < processArray.length; i++) {
-            if (processArray[i] == null) {
+        for (int i = 0; i < processes.length; i++) {
+            if (processes[i] == null) {
                 program.setInMemory(true);
-                processArray[i] = program;
+                processes[i] = program;
                 return;
             }
         }
@@ -65,13 +63,13 @@ public class DefaultRam implements Ram {
     @Override
     public void displayPCBList()
     {
-        for (int i = 0; i < processArray.length; i++)
+        for (int i = 0; i < processes.length; i++)
         {
-            if (processArray[i] != null)
+            if (processes[i] != null)
             {
-                System.out.println("Process ID: " + processArray[i].getID());
-                System.out.println("Instruction Start: " + processArray[i].getInstructionLocationInMemory());
-                System.out.println("Process Size: " + processArray[i].getProcessSize());
+                System.out.println("Process ID: " + processes[i].getID());
+                System.out.println("Instruction Start: " + processes[i].getInstructionLocationInMemory());
+                System.out.println("Process Size: " + processes[i].getProcessSize());
             }
         }
     }
@@ -81,18 +79,17 @@ public class DefaultRam implements Ram {
         return diskArray;
     }
 
-    @Override
-    public ProcessControlBlock[] getProcessArray() {
-        return processArray;
+    public ProcessControlBlock[] getProcesses() {
+        return processes;
     }
 
     @Override
     public ProcessControlBlock getProcessByID(int ID) {
 
-        for (int i = 0; i < processArray.length; i++) {
-            if (processArray[i] != null) {
-                if (processArray[i].getID() == ID) {
-                    return processArray[i];
+        for (int i = 0; i < processes.length; i++) {
+            if (processes[i] != null) {
+                if (processes[i].getID() == ID) {
+                    return processes[i];
                 }
             }
         }
@@ -156,9 +153,9 @@ public class DefaultRam implements Ram {
         //Null out process in the PCB list
         for (int i = 0; i < diskArray.length; i++)
         {
-            if (processArray[i] != null)
-                if (processArray[i].getID().equals(ID)) {
-                    processArray[i] = null;
+            if (processes[i] != null)
+                if (processes[i].getID().equals(ID)) {
+                    processes[i] = null;
                     break;
                 }
 
@@ -194,6 +191,16 @@ public class DefaultRam implements Ram {
     }
 
     @Override
+    public boolean isRoomForProcess(ProcessControlBlock pcb) {
+        try {
+            findSpotForProcess(pcb);
+            return true;
+        } catch (OutOfMemoryError oom) {
+            return false;
+        }
+    }
+
+    @Override
     public void defrag()
     {
         System.out.println("Defragging memory");
@@ -210,16 +217,16 @@ public class DefaultRam implements Ram {
                 {
                     //defrag
                     System.out.println("\nI found a space with " + amtOfSpaces + " spots that are null");
-                    for (int j = 0; j < processArray.length; j++)
+                    for (int j = 0; j < processes.length; j++)
                     {
-                        if ( processArray[j] != null )
+                        if ( processes[j] != null )
                         {
-                            if (processArray[j].getInstructionLocationInMemory() >= i)
+                            if (processes[j].getInstructionLocationInMemory() >= i)
                             {
-                                int newInstructionLocation = processArray[j].getInstructionLocationInMemory() - amtOfSpaces;
-                                int newDataLocation        = processArray[j].getDataLocationInMemory() - amtOfSpaces;
-                                processArray[j].setInstructionLocationInMemory(newInstructionLocation);
-                                processArray[j].setDataLocationInMemory(newDataLocation);
+                                int newInstructionLocation = processes[j].getInstructionLocationInMemory() - amtOfSpaces;
+                                int newDataLocation        = processes[j].getDataLocationInMemory() - amtOfSpaces;
+                                processes[j].setInstructionLocationInMemory(newInstructionLocation);
+                                processes[j].setDataLocationInMemory(newDataLocation);
                             }
                         }
                     }

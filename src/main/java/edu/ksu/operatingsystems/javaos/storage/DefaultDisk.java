@@ -4,7 +4,7 @@ public class DefaultDisk implements Disk {
 
     private char [] diskArray = new char[16384]; // Creates an array of size 16384 ( 2048 words = 16384 hex values )
     private ProcessControlBlock[] processControlBlockList = new ProcessControlBlock[30]; // Creates a list of Programs stored on defaultDisk
-    int currentPositionOnDisk = 0;
+    private int currentPositionOnDisk = 0;
 
     @Override
     public char [] getDisk()
@@ -66,6 +66,11 @@ public class DefaultDisk implements Disk {
     public int getCurrentPositionOnDisk()
     {
         return currentPositionOnDisk;
+    }
+
+    @Override
+    public ProcessControlBlock[] getProcesses() {
+        return processControlBlockList;
     }
 
 }

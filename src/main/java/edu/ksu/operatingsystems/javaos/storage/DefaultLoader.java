@@ -4,15 +4,19 @@ import java.io.*;
 
 public class DefaultLoader implements Loader {
 
-    DefaultDisk defaultDisk = new DefaultDisk();
-    int ID;
-    int instructionSize;
-    int priority;
-    int inputBuffer;
-    int outputBuffer;
-    int tempBuffer;
-    int instructionStartPosition;
-    int dataStartPosition;
+    private Disk disk;
+    private int ID;
+    private int instructionSize;
+    private int priority;
+    private int inputBuffer;
+    private int outputBuffer;
+    private int tempBuffer;
+    private int instructionStartPosition;
+    private int dataStartPosition;
+
+    public DefaultLoader(Disk disk) {
+        this.disk = disk;
+    }
 
     @Override
     public boolean load(String fileName) {
@@ -26,11 +30,11 @@ public class DefaultLoader implements Loader {
             {
                 if (s.startsWith("0x"))
                 {
-                    defaultDisk.addToDisk(s); //hex characters
+                    disk.addToDisk(s); //hex characters
                 }
                 else
                 {
-                    int currentDiskPosition = defaultDisk.getCurrentPositionOnDisk();
+                    int currentDiskPosition = disk.getCurrentPositionOnDisk();
 
                     if (s.contains("JOB"))
                     {
@@ -65,7 +69,7 @@ public class DefaultLoader implements Loader {
                         processControlBlock.setInstructionLocationOnDisk(instructionStartPosition);
                         processControlBlock.setDataLocationOnDisk(dataStartPosition);
 
-                        defaultDisk.addProgramToProgramList(processControlBlock);
+                        disk.addProgramToProgramList(processControlBlock);
 
                         //program.displayProgram();
 
@@ -85,12 +89,6 @@ public class DefaultLoader implements Loader {
         }
 
         return true;
-    }
-
-    @Override
-    public DefaultDisk getDefaultDisk()
-    {
-        return defaultDisk;
     }
 
 }

@@ -9,7 +9,7 @@ public class Test {
         DefaultRam myRAM = new DefaultRam();
 
         myDefaultLoader.load("Program-File.txt");
-        Disk myDefaultDisk = myDefaultLoader.getDefaultDisk();
+        Disk myDefaultDisk = myDefaultLoader.getDisk();
 
         System.out.println("\nDISK\n____");
         myDefaultDisk.displayDisk();

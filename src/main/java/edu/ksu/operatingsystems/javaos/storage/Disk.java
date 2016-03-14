@@ -39,4 +39,10 @@ public interface Disk {
      */
     int getCurrentPositionOnDisk();
 
+    /**
+     * Gets an array of all the processes on disk
+     * @return The process array
+     */
+    ProcessControlBlock[] getProcesses();
+
 }

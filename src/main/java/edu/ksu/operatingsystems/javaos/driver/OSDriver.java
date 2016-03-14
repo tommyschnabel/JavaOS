@@ -2,14 +2,11 @@ package edu.ksu.operatingsystems.javaos.driver;
 
 import edu.ksu.operatingsystems.javaos.cpu.Cpu;
 import edu.ksu.operatingsystems.javaos.cpu.DefaultCpu;
-import edu.ksu.operatingsystems.javaos.scheduling.DefaultShortTermScheduler;
 import edu.ksu.operatingsystems.javaos.scheduling.FIFOLongTermScheduler;
+import edu.ksu.operatingsystems.javaos.scheduling.FIFOShortTermScheduler;
 import edu.ksu.operatingsystems.javaos.scheduling.LongTermScheduler;
 import edu.ksu.operatingsystems.javaos.scheduling.ShortTermScheduler;
-import edu.ksu.operatingsystems.javaos.storage.DefaultLoader;
-import edu.ksu.operatingsystems.javaos.storage.Disk;
-import edu.ksu.operatingsystems.javaos.storage.Loader;
-import edu.ksu.operatingsystems.javaos.storage.Ram;
+import edu.ksu.operatingsystems.javaos.storage.*;
 
 public class OSDriver {
 	
@@ -18,19 +15,18 @@ public class OSDriver {
 	private ShortTermScheduler shortTermScheduler;
 	private Cpu cpu;
 
-    private Disk disk;
-    private Ram ram;
+    private OSDriver(){
+        Disk disk = new DefaultDisk();
+        Ram ram = new DefaultRam();
 
-	private OSDriver(){
-		loader = new DefaultLoader();
-		longTermScheduler = new FIFOLongTermScheduler();
-		shortTermScheduler = new DefaultShortTermScheduler();
-		cpu = new DefaultCpu();
+        cpu = new DefaultCpu(ram);
+        loader = new DefaultLoader(disk);
+        longTermScheduler = new FIFOLongTermScheduler(disk, ram);
+        shortTermScheduler = new FIFOShortTermScheduler(ram, cpu);
 	}
 
     public static void main(String[] args) {
 
-    	// TODO Fix syntax to work with the rest of the project.
         OSDriver osDriver = new OSDriver();
         if (!osDriver.getLoader().load("Program-File.txt")) {
             throw new RuntimeException("Couldn't load file");
@@ -39,7 +35,7 @@ public class OSDriver {
         while (true) {
             osDriver.getLongTermScheduler().scheduleIfNecessary();
             osDriver.getShortTermScheduler().scheduleIfNecessary();
-//            osDriver.getCpu().
+            osDriver.getCpu().run();
     	}
     }
 

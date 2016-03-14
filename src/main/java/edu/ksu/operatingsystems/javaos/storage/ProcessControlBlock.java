@@ -15,17 +15,18 @@ public class ProcessControlBlock {
 
     private boolean mInMemory = false;
 
+    private Integer[] processState;
+
     /**
      * Initialized when in Ram
-     *
      */
-
     private Integer mInstructionLocationInMemory;
     private int mDataLocationInMemory;
+    private int lastInstructionLocationInMemory;
 
-    /**
-     *
-     */
+    public boolean isFinished() {
+        return mInstructionLocationInMemory > lastInstructionLocationInMemory;
+    }
 
     public void setID(Integer id) {
         mID = id;
@@ -118,6 +119,22 @@ public class ProcessControlBlock {
     public int getProcessSize()
     {
         return mInstructionSize + mInputBuffer + mOutputBuffer + mTemporaryBuffer;
+    }
+
+    public int getLastInstructionLocationInMemory() {
+        return lastInstructionLocationInMemory;
+    }
+
+    public void setLastInstructionLocationInMemory(int lastInstructionLocationInMemory) {
+        this.lastInstructionLocationInMemory = lastInstructionLocationInMemory;
+    }
+
+    public Integer[] getProcessState() {
+        return processState;
+    }
+
+    public void setProcessState(Integer[] processState) {
+        this.processState = processState;
     }
 
     @Override

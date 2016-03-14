@@ -1,41 +1,43 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
-import edu.ksu.operatingsystems.javaos.storage.*;
-import java.util.*;
+import edu.ksu.operatingsystems.javaos.cpu.Cpu;
+import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
+import edu.ksu.operatingsystems.javaos.storage.Ram;
 
-public class DefaultShortTermScheduler implements ShortTermScheduler {
+import java.util.LinkedList;
+
+public class FIFOShortTermScheduler implements ShortTermScheduler {
     
     private LinkedList<ProcessControlBlock> newQueue = new LinkedList<>();
     private LinkedList<ProcessControlBlock> suspendQueue = new LinkedList<>();
     private LinkedList<ProcessControlBlock> readyQueue = new LinkedList<>();
     private LinkedList<ProcessControlBlock> waitQueue = new LinkedList<>();
-    
-    /*@Override
-    */
-    public void schedule(ProcessControlBlock[] pcbArray){
-        for(int i = 0; i < pcbArray.length; i++){
-            if(pcbArray[i] != null)
-                addToReadyQueue(pcbArray[i]);
-        }
-       
+
+    private Dispatcher dispatcher;
+    private Ram ram;
+
+    private ProcessControlBlock currentProcess;
+
+    public FIFOShortTermScheduler(Ram ram, Cpu cpu) {
+        this.ram = ram;
+        this.dispatcher = new DefaultDispatcher(cpu);
     }
     
-    /*@Override
-    */
+    @Override
+    public void schedule(ProcessControlBlock[] pcbArray){
+        for (ProcessControlBlock pcb : pcbArray) {
+            if (pcb != null && !readyQueue.contains(pcb)) {
+                addToReadyQueue(pcb);
+            }
+        }
+    }
+    
+    @Override
     public void addToReadyQueue(ProcessControlBlock pcb){
         readyQueue.add(pcb);
-        
-       /* for(int i = 0; i < readyQueue.size(); i++)
-        {
-            if(pcb.getPriority() < readyQueue.get(i).getPriority()){
-                readyQueue.add(i,pcb);
-                return;
-            }
-        } */ //This is for use when we do priority based scheduling.
     }
     
-    /*@Override
-    */
+    @Override
     public void addToWaitQueue(ProcessControlBlock pcb){
         waitQueue.add(pcb);
     }
@@ -47,7 +49,19 @@ public class DefaultShortTermScheduler implements ShortTermScheduler {
 
     @Override
     public void scheduleIfNecessary() {
+        ProcessControlBlock[] processes = ram.getProcesses();
+        for (int i = processes.length - 1; i >= 0; --i) {
+            ProcessControlBlock process = processes[i];
+            if (process.isFinished()) {
+                ram.removeProcessFromMemory(process.getID());
+            }
+        }
 
+        schedule(ram.getProcesses());
+
+        if (currentProcess == null || currentProcess.isFinished()) {
+            dispatcher.dispatchProcessToCPU(readyQueue);
+        }
     }
 
     public LinkedList<ProcessControlBlock> getNewQueue(){

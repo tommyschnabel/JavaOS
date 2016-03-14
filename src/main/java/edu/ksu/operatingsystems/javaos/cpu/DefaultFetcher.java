@@ -1,6 +1,5 @@
 package edu.ksu.operatingsystems.javaos.cpu;
 
-import edu.ksu.operatingsystems.javaos.storage.DefaultRam;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
 
