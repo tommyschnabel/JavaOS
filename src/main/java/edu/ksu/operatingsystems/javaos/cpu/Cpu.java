@@ -12,7 +12,7 @@ public interface Cpu {
     /**
      * @return The cpu's registers
      */
-    int[] getRegisters();
+    long[] getRegisters();
 
     /**
      * Set the process that is loaded into the registers

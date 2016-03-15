@@ -11,8 +11,8 @@ public class DefaultDecoder implements Decoder{
 		String hex = new String(instruction);
 		System.out.println("Instruction: " + hex);
 
-        if (hex.equals("08050000")) {
-            int a =1;
+        if (hex.equals("C10000AC")) {
+            int a =1; // Debug point
         }
 
         return addZeroIfNecessary(

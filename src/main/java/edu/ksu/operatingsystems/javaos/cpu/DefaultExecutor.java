@@ -8,13 +8,13 @@ public class DefaultExecutor implements Executor {
 
     private static int WORD_HEX_LENGTH = 8;
 
-    private int[] registers;
+    private long[] registers;
     private ProcessControlBlock process;
     private Ram ram;
 
     public DefaultExecutor(
             Ram ram,
-            int[] registers
+            long[] registers
     ) {
         this.ram = ram;
         this.registers = registers;
@@ -27,23 +27,23 @@ public class DefaultExecutor implements Executor {
 
     @Override
     public void execute(String instruction) {
-        Pair<Integer, String> result = readFromRight(instruction, 2);
-        Integer arithmeticType = result.getFirst();
+        Pair<Long, String> result = readFromRight(instruction, 2);
+        Long arithmeticType = result.getFirst();
         instruction = result.getSecond();
 
-        Integer address = null;
-        Integer destRegister = null;
-        Integer firstRegister = null;
-        Integer secondRegister = null;
-        Integer baseRegister = null;
+        Long address = null;
+        Long destRegister = null;
+        Long firstRegister = null;
+        Long secondRegister = null;
+        Long baseRegister = null;
         Integer opCode = null;
 
-        switch (arithmeticType) {
+        switch (arithmeticType.intValue()) {
             case 0:
 
                 //Get the op code
                 result = readFromRight(instruction, 6);
-                opCode = result.getFirst();
+                opCode = result.getFirst().intValue();
                 instruction = result.getSecond();
 
                 //Get the source register for the first operand
@@ -67,7 +67,7 @@ public class DefaultExecutor implements Executor {
 
                 //Get the op code
                 result = readFromRight(instruction, 6);
-                opCode = result.getFirst();
+                opCode = result.getFirst().intValue();
                 instruction = result.getSecond();
 
                 //Get the source register for the first operand
@@ -91,7 +91,7 @@ public class DefaultExecutor implements Executor {
 
                 //Get the op code
                 result = readFromRight(instruction, 6);
-                opCode = result.getFirst();
+                opCode = result.getFirst().intValue();
                 instruction = result.getSecond();
 
                 //Get the address
@@ -105,7 +105,7 @@ public class DefaultExecutor implements Executor {
 
                 //Get the op code
                 result = readFromRight(instruction, 6);
-                opCode = result.getFirst();
+                opCode = result.getFirst().intValue();
                 instruction = result.getSecond();
 
                 //Get the first register
@@ -143,18 +143,19 @@ public class DefaultExecutor implements Executor {
      * @param ram The system ram
      * @param registerAddresses The register addresses, with the address part of the instruction as the last entry, if available
      */
-    private void doOp(int op, Ram ram, Integer... registerAddresses) {
+    private void doOp(int op, Ram ram, Long... registerAddresses) {
 
         //Arithmetic operation
         if ((op >=4 && op <= 10) || op == 16) {
-            int firstOperandRegisterAddress = registerAddresses[0];
-            int secondOperandRegisterAddress = registerAddresses[1];
-            int destinationRegisterAddress = registerAddresses[2];
+            int firstOperandRegisterAddress = registerAddresses[0].intValue();
+            int secondOperandRegisterAddress = registerAddresses[1].intValue();
+            int destinationRegisterAddress = registerAddresses[2].intValue();
+            int destinationAddress = destinationRegisterAddress;
 
             switch (op) {
                 case 4: //MOV
-                    if (firstOperandRegisterAddress != 0) {
-                        registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress];
+                    if (secondOperandRegisterAddress == 0) {
+                        ram.writeValueToAddress(destinationAddress, String.valueOf(registers[firstOperandRegisterAddress]));
                     } else {
                         registers[destinationRegisterAddress] = registers[secondOperandRegisterAddress];
                     }
@@ -187,19 +188,19 @@ public class DefaultExecutor implements Executor {
 
         //Conditional and Immediate Branch
         if (op == 2 || op == 3 || (op >= 11 && op <= 15) || op == 17 || op == 19 || (op >= 21 && op <= 26)) {
-            int baseRegisterAddress = registerAddresses[0];
-            int destinationRegisterAddress = registerAddresses[1];
+            int baseRegisterAddress = registerAddresses[0].intValue();
+            int destinationRegisterAddress = registerAddresses[1].intValue();
 
-            Integer lastBits = registerAddresses[2];
+            Long lastBits = registerAddresses[2];
 
             switch (op) {
                 case 2: //ST
-                   ram.writeValueToAddress(lastBits, Integer.toHexString(registers[baseRegisterAddress]));
+                   ram.writeValueToAddress(lastBits.intValue(), Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()));
                     return;
                 case 3: //LW
                     registers[destinationRegisterAddress] = Integer.parseInt(
                         ram.readValueFromAddress(
-                            effectiveAddress(registers[baseRegisterAddress], lastBits),
+                            effectiveAddress(((Long) registers[baseRegisterAddress]).intValue(), lastBits.intValue()),
                             8 //Read 8 hex values (32 bits)
                         ),
                         16 //Convert from base 16 (hex)
@@ -236,32 +237,32 @@ public class DefaultExecutor implements Executor {
                     return;
                 case 21: //BEQ
                     if (registers[baseRegisterAddress] == destinationRegisterAddress) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
                     }
                     return;
                 case 22: //BNE
                     if (registers[baseRegisterAddress] != destinationRegisterAddress) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
                     }
                     return;
                 case 23: //BEZ
                     if (registers[baseRegisterAddress] == 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
                     }
                     return;
                 case 24: //BNZ
                     if (registers[baseRegisterAddress] != 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
                     }
                     return;
                 case 25: //BGZ
                     if (registers[baseRegisterAddress] > 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
                     }
                     return;
                 case 26: //BLZ
                     if (registers[baseRegisterAddress] < 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
                     }
                     return;
                 default:
@@ -271,14 +272,14 @@ public class DefaultExecutor implements Executor {
 
         //Unconditional jump
         if (op == 18 || op == 20) {
-            int address = registerAddresses[0];
+            long address = registerAddresses[0];
 
             switch (op) {
                 case 18: //HLT
                     process.setInstructionLocationInMemory(-1);
                     return;
                 case 20: //JMP
-                    process.setInstructionLocationInMemory(effectiveAddress(0, address));
+                    process.setInstructionLocationInMemory(((Long) effectiveAddress(0L, address)).intValue());
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
@@ -287,23 +288,26 @@ public class DefaultExecutor implements Executor {
 
         //IO
         if (op == 0 || op == 1) {
-            int accumulatorPosition = 0;
+            long accumulatorPosition = 0;
+            int registerOneAddress = registerAddresses[0].intValue();
+            Integer registerTwoAddress = registerAddresses[1].intValue();
+            Integer address = registerAddresses[2].intValue();
 
             switch (op) {
                 case 0: //RD
-                    System.out.println("inputBufferLength: " + process.getInputBufferLength());
-                    System.out.println("inputBufferLocation: " + process.getInputBufferLocation());
-                    System.out.println("inputBuffer: " +
-                            ram.readValueFromAddress(process.getInputBufferLocation(), process.getInputBufferLength()));
-                    registers[accumulatorPosition] =
-                            Integer.parseInt(
-                                    ram.readValueFromAddress(process.getInputBufferLocation(), process.getInputBufferLength())
-                            );
+                    if (address == null) {
+                        registers[registerOneAddress] = registers[registerTwoAddress];
+                    } else {
+                        registers[registerOneAddress] = Long.parseLong(
+                                ram.readValueFromAddress(address, 8),
+                                16
+                        );
+                    }
                     return;
                 case 1: //WR
                     ram.writeValueToAddress(
                             process.getOutputBufferLocation(),
-                            String.valueOf(registers[accumulatorPosition])
+                            String.valueOf(registers[((Long) accumulatorPosition).intValue()])
                     );
                     return;
                 default:
@@ -314,13 +318,17 @@ public class DefaultExecutor implements Executor {
         throw new IllegalArgumentException("Unsupported operation: " + op);
     }
 
+    private Long effectiveAddress(Long baseRegister, Long address) {
+        return baseRegister + address + process.getDataLocationInMemory();
+    }
+
     private Integer effectiveAddress(Integer baseRegister, Integer address) {
         return baseRegister + address + process.getDataLocationInMemory();
     }
 
-    private Pair<Integer, String> readFromRight(String readFrom, int numberOfCharacters) {
-        Integer value = Integer.parseInt(readFrom.substring(0, numberOfCharacters), 2);
+    private Pair<Long, String> readFromRight(String readFrom, int numberOfCharacters) {
+        Long value = Long.parseLong(readFrom.substring(0, numberOfCharacters), 2);
         String result = readFrom.substring(numberOfCharacters);
-        return new Pair<Integer, String>(value, result);
+        return new Pair<Long, String>(value, result);
     }
 }

@@ -15,7 +15,7 @@ public class ProcessControlBlock {
 
     private boolean mInMemory = false;
 
-    private Integer[] processState;
+    private Long[] processState;
 
     /**
      * Initialized when in Ram
@@ -145,11 +145,11 @@ public class ProcessControlBlock {
         this.lastInstructionLocationInMemory = lastInstructionLocationInMemory;
     }
 
-    public Integer[] getProcessState() {
+    public Long[] getProcessState() {
         return processState;
     }
 
-    public void setProcessState(Integer[] processState) {
+    public void setProcessState(Long[] processState) {
         this.processState = processState;
     }
 
