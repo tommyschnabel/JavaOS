@@ -23,10 +23,13 @@ public class ProcessControlBlock {
     private Integer mOriginalInstructionLocationInMemory;
     private Integer mInstructionLocationInMemory;
     private int mDataLocationInMemory;
-    private int lastInstructionLocationInMemory;
+    private Integer lastInstructionLocationInMemory;
 
     public boolean isFinished() {
-        return mInstructionLocationInMemory > lastInstructionLocationInMemory;
+        if (mInstructionLocationInMemory != null || lastInstructionLocationInMemory != null) {
+            return mInstructionLocationInMemory > lastInstructionLocationInMemory;
+        }
+        return false;
     }
 
     public void setID(Integer id) {
