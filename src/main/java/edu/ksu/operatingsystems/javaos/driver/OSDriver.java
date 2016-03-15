@@ -32,11 +32,15 @@ public class OSDriver {
             throw new RuntimeException("Couldn't load file");
         }
 
-        while (true) {
-            osDriver.getLongTermScheduler().scheduleIfNecessary();
+        LongTermScheduler longTermScheduler = osDriver.longTermScheduler;
+
+        while (!longTermScheduler.allProcessesFinished()) {
+            longTermScheduler.scheduleIfNecessary();
             osDriver.getShortTermScheduler().scheduleIfNecessary();
             osDriver.getCpu().run();
     	}
+
+        System.out.println("All processes finished");
     }
 
     public Loader getLoader() {

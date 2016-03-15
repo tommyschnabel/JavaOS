@@ -22,10 +22,21 @@ public class FIFOLongTermScheduler implements LongTermScheduler {
     @Override
     public void scheduleIfNecessary() {
         for (ProcessControlBlock pcb : disk.getProcesses()) {
-            if (!pcb.inMemory() && ram.isRoomForProcess(pcb)) {
+            if (!pcb.inMemory() && !pcb.isFinished() && ram.isRoomForProcess(pcb)) {
                 ram.addProcessControlBlockToMemoryByProcessID(pcb.getID(), disk);
             }
         }
+    }
+
+    @Override
+    public boolean allProcessesFinished() {
+        for (ProcessControlBlock pcb : disk.getProcesses()) {
+            if (!pcb.isFinished()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
