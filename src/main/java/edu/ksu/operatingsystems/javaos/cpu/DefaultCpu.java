@@ -11,7 +11,7 @@ public class DefaultCpu implements Cpu {
      * Register-1 is the Zero register
      * All other registers are general purpose registers
      */
-    private Integer[] registers;
+    private int[] registers;
     private Fetcher fetcher;
     private Decoder decoder;
     private Executor executor;
@@ -20,7 +20,7 @@ public class DefaultCpu implements Cpu {
     private ProcessControlBlock currentProcess;
     
     public DefaultCpu(Ram ram) {
-        registers = new Integer[16];
+        registers = new int[16];
         fetcher = new DefaultFetcher();
         decoder = new DefaultDecoder();
         executor = new DefaultExecutor(ram, registers);
@@ -35,7 +35,7 @@ public class DefaultCpu implements Cpu {
     }
 
     @Override
-    public Integer[] getRegisters() {
+    public int[] getRegisters() {
         return registers;
     }
 

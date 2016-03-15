@@ -40,7 +40,7 @@ public class DefaultDispatcher implements Dispatcher {
             return;
         }
 
-        Integer[] registers = cpu.getRegisters();
+        int[] registers = cpu.getRegisters();
 
         for (int i = 0; i < registers.length - 1; i++) {
             registers[i] = pcb.getProcessState()[i];
@@ -48,12 +48,7 @@ public class DefaultDispatcher implements Dispatcher {
     }
 
     private void loadRegisterStateIntoPCB(ProcessControlBlock pcb) {
-        Integer[] registers = cpu.getRegisters();
-
-        if (registers == null) {
-            return;
-        }
-
+        int[] registers = cpu.getRegisters();
         Integer[] processState;
 
         if (pcb.getProcessState() == null) {

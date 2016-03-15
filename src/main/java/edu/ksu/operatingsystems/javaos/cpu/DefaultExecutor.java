@@ -8,13 +8,13 @@ public class DefaultExecutor implements Executor {
 
     private static int WORD_HEX_LENGTH = 8;
 
-    private Integer[] registers;
+    private int[] registers;
     private ProcessControlBlock process;
     private Ram ram;
 
     public DefaultExecutor(
             Ram ram,
-            Integer[] registers
+            int[] registers
     ) {
         this.ram = ram;
         this.registers = registers;
@@ -189,7 +189,7 @@ public class DefaultExecutor implements Executor {
         }
 
         //Conditional and Immediate Branch
-        if ((op >= 11 && op <= 15) || op == 17 || op == 19 || (op >= 21 && op <= 26)) {
+        if (op == 2 || op == 3 || (op >= 11 && op <= 15) || op == 17 || op == 19 || (op >= 21 && op <= 26)) {
             int baseRegisterAddress = registerAddresses[0];
             int destinationRegisterAddress = registerAddresses[1];
 
@@ -211,7 +211,7 @@ public class DefaultExecutor implements Executor {
                     );
                     return;
                 case 11: //MOVI
-                    if (baseRegisterAddress == 0) {
+                    if (destinationRegisterAddress == 0) {
                         destinationRegister = effectiveAddress(baseRegister, lastBits);
                     } else {
                         destinationRegister = baseRegister;
