@@ -12,8 +12,13 @@ public class DefaultDecoder implements Decoder{
 		System.out.println("Instruction: " + hex);
 		//Parsing hex as a base 16 number to integer
 		//int val = Integer.parseInt(hex, 16);
+
+
+		/* Logic to convert hex to decimal
 		String totalString = "";
 		String toAdd = "";
+
+
 		for (int i = 0; i < hex.length(); i++)
 		{
 			toAdd = "" + Integer.decode("0x" + String.valueOf(hex.charAt(i)));
@@ -25,6 +30,14 @@ public class DefaultDecoder implements Decoder{
 		}
 
 		return totalString;
+		*/
+
+		/* logic to convert hex to binary */
+		String s = Integer.toBinaryString(Integer.parseInt(hex, 16));
+
+		return s;
+
+
 	}
 
 }
