@@ -294,7 +294,10 @@ public class DefaultExecutor implements Executor {
                     registers[accumulatorPosition] = process.getInputBuffer();
                     return;
                 case 1: //WR
-                    process.setOutputBuffer(registers[accumulatorPosition]);
+                    ram.writeValueToAddress(
+                            process.getOutputBuffer(),
+                            String.valueOf(registers[accumulatorPosition])
+                    );
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
