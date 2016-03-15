@@ -9,7 +9,7 @@ public interface Executor {
      * @param instruction The instruction to execute (each is 32 bits long)
      * @param ram The ram memory, since there may be operations that need to read/write from memory
      */
-    void execute(Integer instruction);
+    void execute(String instruction);
 
     /**
      * Sets the process that's currently executing

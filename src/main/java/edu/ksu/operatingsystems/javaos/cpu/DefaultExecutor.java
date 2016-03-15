@@ -23,7 +23,7 @@ public class DefaultExecutor implements Executor {
     }
 
     @Override
-    public void execute(Integer instruction) {
+    public void execute(String instruction) {
         Integer arithmeticType = instruction >> 30;
 
         Integer address;

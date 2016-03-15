@@ -7,5 +7,5 @@ public interface Decoder {
      * instruction into the registers to be executed
      * @param instruction The instruction to decode
      */
-    int decode(byte[] instruction);
+    String decode(byte[] instruction);
 }

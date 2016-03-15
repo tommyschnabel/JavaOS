@@ -29,7 +29,7 @@ public class DefaultCpu implements Cpu {
     
     public void run() {
     	byte[] instruction = fetcher.fetch(currentProcess, ram);
-    	int decodedInstruction = decoder.decode(instruction);
+    	String decodedInstruction = decoder.decode(instruction);
     	executor.setProcess(currentProcess);
     	executor.execute(decodedInstruction);
     }
