@@ -144,7 +144,6 @@ public class DefaultExecutor implements Executor {
      * @param registerAddresses The register addresses, with the address part of the instruction as the last entry, if available
      */
     private void doOp(int op, Ram ram, Integer... registerAddresses) {
-        Integer instructionPosition = process.getInstructionLocationInMemory();
 
         //Arithmetic operation
         if ((op >=4 && op <= 10) || op == 16) {
@@ -152,38 +151,34 @@ public class DefaultExecutor implements Executor {
             int secondOperandRegisterAddress = registerAddresses[1];
             int destinationRegisterAddress = registerAddresses[2];
 
-            Integer first = registers[firstOperandRegisterAddress];
-            Integer second = registers[secondOperandRegisterAddress];
-            Integer destination = registers[destinationRegisterAddress];
-
             switch (op) {
                 case 4: //MOV
                     if (firstOperandRegisterAddress != 0) {
-                        destination = first;
+                        registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress];
                     } else {
-                        destination = second;
+                        registers[destinationRegisterAddress] = registers[secondOperandRegisterAddress];
                     }
                     return;
                 case 5: //ADD
-                    destination = first + second;
+                    registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress] + registers[secondOperandRegisterAddress];
                     return;
                 case 6: //SUB
-                    destination = first - second;
+                    registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress] - registers[secondOperandRegisterAddress];
                     return;
                 case 7: //MUL
-                    destination = first * second;
+                    registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress] * registers[secondOperandRegisterAddress];
                     return;
                 case 8: //DIV
-                    destination = first / second;
+                    registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress] / registers[secondOperandRegisterAddress];
                     return;
                 case 9: //AND
-                    destination = first & second;
+                    registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress] & registers[secondOperandRegisterAddress];
                     return;
                 case 10: //OR
-                    destination = first | second;
+                    registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress] | registers[secondOperandRegisterAddress];
                     return;
                 case 16: //SLT
-                    destination = first < second ? 1 : 0;
+                    registers[destinationRegisterAddress] = registers[firstOperandRegisterAddress] < registers[secondOperandRegisterAddress] ? 1 : 0;
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
@@ -195,18 +190,16 @@ public class DefaultExecutor implements Executor {
             int baseRegisterAddress = registerAddresses[0];
             int destinationRegisterAddress = registerAddresses[1];
 
-            Integer baseRegister = registers[baseRegisterAddress];
-            Integer destinationRegister = registers[destinationRegisterAddress];
             Integer lastBits = registerAddresses[2];
 
             switch (op) {
                 case 2: //ST
-                   ram.writeValueToAddress(lastBits, Integer.toHexString(baseRegister));
+                   ram.writeValueToAddress(lastBits, Integer.toHexString(registers[baseRegisterAddress]));
                     return;
                 case 3: //LW
-                    destinationRegister = Integer.parseInt(
+                    registers[destinationRegisterAddress] = Integer.parseInt(
                         ram.readValueFromAddress(
-                            effectiveAddress(baseRegister, lastBits),
+                            effectiveAddress(registers[baseRegisterAddress], lastBits),
                             8 //Read 8 hex values (32 bits)
                         ),
                         16 //Convert from base 16 (hex)
@@ -214,61 +207,61 @@ public class DefaultExecutor implements Executor {
                     return;
                 case 11: //MOVI
                     if (destinationRegisterAddress == 0) {
-                        destinationRegister = effectiveAddress(baseRegister, lastBits);
+                        registers[destinationRegisterAddress] = effectiveAddress(registers[baseRegisterAddress], lastBits);
                     } else {
-                        destinationRegister = baseRegister;
+                        registers[destinationRegisterAddress] = registers[baseRegisterAddress];
                     }
                     return;
                 case 12: //ADDI
-                    destinationRegister += lastBits;
+                    registers[destinationRegisterAddress] += lastBits;
                     return;
                 case 13: //MULI
-                    destinationRegister *= lastBits;
+                    registers[destinationRegisterAddress] *= lastBits;
                     return;
                 case 14: //DIVI
-                    destinationRegister /= lastBits;
+                    registers[destinationRegisterAddress] /= lastBits;
                     return;
                 case 15: //LDI
                     if (baseRegisterAddress == 0) {
-                        destinationRegister = effectiveAddress(baseRegister, lastBits);
+                        registers[destinationRegisterAddress] = effectiveAddress(registers[baseRegisterAddress], lastBits);
                     } else {
-                        destinationRegister = baseRegister;
+                        registers[destinationRegisterAddress] = registers[baseRegisterAddress];
                     }
                     return;
                 case 17: //SLTI
-                    destinationRegister = baseRegister < lastBits ? 1 : 0;
+                    registers[destinationRegisterAddress] = registers[baseRegisterAddress] < lastBits ? 1 : 0;
                     return;
                 case 19: //NOP
                     //Intentionally blank
                     return;
                 case 21: //BEQ
-                    if (baseRegister.equals(destinationRegisterAddress)) {
-                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    if (registers[baseRegisterAddress] == destinationRegisterAddress) {
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
                     }
                     return;
                 case 22: //BNE
-                    if (!baseRegister.equals(destinationRegisterAddress)) {
-                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    if (registers[baseRegisterAddress] != destinationRegisterAddress) {
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
                     }
                     return;
                 case 23: //BEZ
-                    if (baseRegister.equals(0)) {
-                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    if (registers[baseRegisterAddress] == 0) {
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
                     }
                     return;
                 case 24: //BNZ
-                    if (!baseRegister.equals(0)) {
-                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    if (registers[baseRegisterAddress] != 0) {
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
                     }
                     return;
                 case 25: //BGZ
-                    if (baseRegister > 0) {
-                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    if (registers[baseRegisterAddress] > 0) {
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
                     }
                     return;
                 case 26: //BLZ
-                    if (baseRegister < 0) {
-                        instructionPosition = effectiveAddress(baseRegister, lastBits);
+                    if (registers[baseRegisterAddress] < 0) {
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits));
                     }
                     return;
                 default:
@@ -282,10 +275,10 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 18: //HLT
-                    instructionPosition = -1;
+                    process.setInstructionLocationInMemory(-1);
                     return;
                 case 20: //JMP
-                    instructionPosition = effectiveAddress(0, address);
+                    process.setInstructionLocationInMemory(effectiveAddress(0, address));
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
@@ -294,14 +287,14 @@ public class DefaultExecutor implements Executor {
 
         //IO
         if (op == 0 || op == 1) {
-            Integer accumulator = registers[0];
+            int accumulatorPosition = 0;
 
             switch (op) {
                 case 0: //RD
-                    accumulator = process.getInputBuffer();
+                    registers[accumulatorPosition] = process.getInputBuffer();
                     return;
                 case 1: //WR
-                    process.setOutputBuffer(accumulator);
+                    process.setOutputBuffer(registers[accumulatorPosition]);
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");

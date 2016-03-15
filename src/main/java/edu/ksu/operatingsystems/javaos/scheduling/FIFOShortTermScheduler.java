@@ -1,10 +1,10 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
+import java.util.LinkedList;
+
 import edu.ksu.operatingsystems.javaos.cpu.Cpu;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
-
-import java.util.LinkedList;
 
 public class FIFOShortTermScheduler implements ShortTermScheduler {
     
@@ -53,6 +53,13 @@ public class FIFOShortTermScheduler implements ShortTermScheduler {
         for (int i = processes.length - 1; i >= 0; --i) {
             ProcessControlBlock process = processes[i];
             if (process != null && process.isFinished()) {
+                System.out.println(
+                        String.format(
+                                "Process %s is finished, removing from memory",
+                                process.getID()
+                        )
+                );
+
                 ram.removeProcessFromMemory(process.getID());
             }
         }

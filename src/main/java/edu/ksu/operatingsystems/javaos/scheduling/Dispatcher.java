@@ -1,8 +1,8 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
-import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
-
 import java.util.LinkedList;
+
+import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 
 public interface Dispatcher {
     
