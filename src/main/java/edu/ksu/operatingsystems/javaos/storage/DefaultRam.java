@@ -26,6 +26,7 @@ public class DefaultRam implements Ram {
                 programToAdd.getTemporaryBuffer();
 
         programToAdd.setInstructionLocationInMemory(currentPositionInMemory);
+        programToAdd.setOriginalInstructionLocationInMemory(currentPositionInMemory);
         programToAdd.setLastInstructionLocationInMemory(instructionEnd);
         programToAdd.setDataLocationInMemory(dataStart);
         programToAdd.setInMemory(true);
@@ -140,7 +141,7 @@ public class DefaultRam implements Ram {
 
         //Null out process instructions and data in memory
 
-        int startLocation = processToRemove.getInstructionLocationInMemory();
+        int startLocation = processToRemove.getOriginalInstructionLocationInMemory();
         int offset        = processToRemove.getProcessSize();
 
         //System.out.println("StartLocation = " + startLocation);
@@ -161,7 +162,6 @@ public class DefaultRam implements Ram {
                 }
 
         }
-
     }
 
     @Override
@@ -222,11 +222,12 @@ public class DefaultRam implements Ram {
                     {
                         if ( processes[j] != null )
                         {
-                            if (processes[j].getInstructionLocationInMemory() >= i)
+                            if (processes[j].getOriginalInstructionLocationInMemory() >= i)
                             {
-                                int newInstructionLocation = processes[j].getInstructionLocationInMemory() - amtOfSpaces;
+                                int newInstructionLocation = processes[j].getOriginalInstructionLocationInMemory() - amtOfSpaces;
                                 int newDataLocation        = processes[j].getDataLocationInMemory() - amtOfSpaces;
                                 processes[j].setInstructionLocationInMemory(newInstructionLocation);
+                                processes[j].setOriginalInstructionLocationInMemory(newInstructionLocation);
                                 processes[j].setDataLocationInMemory(newDataLocation);
                             }
                         }

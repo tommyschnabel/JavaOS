@@ -20,6 +20,7 @@ public class ProcessControlBlock {
     /**
      * Initialized when in Ram
      */
+    private Integer mOriginalInstructionLocationInMemory;
     private Integer mInstructionLocationInMemory;
     private int mDataLocationInMemory;
     private int lastInstructionLocationInMemory;
@@ -67,6 +68,10 @@ public class ProcessControlBlock {
     public void setInstructionLocationInMemory(int instructionLocationMemory) {
         mInstructionLocationInMemory = instructionLocationMemory;
     }
+    public void setOriginalInstructionLocationInMemory(int instructionLocationInMemory)
+    {
+        mOriginalInstructionLocationInMemory = instructionLocationInMemory;
+    }
 
     public void setDataLocationInMemory(int dataLocationInMemory) {
         mDataLocationInMemory = dataLocationInMemory;
@@ -110,6 +115,11 @@ public class ProcessControlBlock {
 
     public int getInstructionLocationInMemory() {
         return mInstructionLocationInMemory;
+    }
+
+    public int getOriginalInstructionLocationInMemory()
+    {
+        return mOriginalInstructionLocationInMemory;
     }
 
     public int getDataLocationInMemory() {

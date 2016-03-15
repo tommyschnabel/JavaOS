@@ -132,7 +132,9 @@ public class DefaultExecutor implements Executor {
         }
 
         //Increment the instruction
+        //process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
         process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
+
     }
 
     /**
@@ -316,6 +318,6 @@ public class DefaultExecutor implements Executor {
     private Pair<Integer, String> readFromRight(String readFrom, int numberOfCharacters) {
         Integer value = Integer.parseInt(readFrom.substring(0, numberOfCharacters), 2);
         String result = readFrom.substring(numberOfCharacters);
-        return new Pair<>(value, result);
+        return new Pair<Integer, String>(value, result);
     }
 }
