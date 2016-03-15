@@ -23,10 +23,6 @@ public class DefaultDecoder implements Decoder{
      * instruction is less than 8
      */
     private String addZeroIfNecessary(String instruction, String binary) {
-//        if (instruction.matches("^[^0-7].*$")) {
-//            return binary;
-//        }
-
         if (binary.length() < 32) {
             for (int i = 32 - binary.length(); i > 0; i--) {
                 binary = "0" + binary;
