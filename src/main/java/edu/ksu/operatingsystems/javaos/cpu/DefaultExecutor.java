@@ -291,11 +291,18 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 0: //RD
-                    registers[accumulatorPosition] = process.getInputBuffer();
+                    System.out.println("inputBufferLength: " + process.getInputBufferLength());
+                    System.out.println("inputBufferLocation: " + process.getInputBufferLocation());
+                    System.out.println("inputBuffer: " +
+                            ram.readValueFromAddress(process.getInputBufferLocation(), process.getInputBufferLength()));
+                    registers[accumulatorPosition] =
+                            Integer.parseInt(
+                                    ram.readValueFromAddress(process.getInputBufferLocation(), process.getInputBufferLength())
+                            );
                     return;
                 case 1: //WR
                     ram.writeValueToAddress(
-                            process.getOutputBuffer(),
+                            process.getOutputBufferLocation(),
                             String.valueOf(registers[accumulatorPosition])
                     );
                     return;

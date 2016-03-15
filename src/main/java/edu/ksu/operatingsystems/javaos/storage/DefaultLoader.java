@@ -66,9 +66,9 @@ public class DefaultLoader implements Loader {
                         processControlBlock.setInstructionSize(instructionSize);
                         processControlBlock.setPriority(priority);
 
-                        processControlBlock.setInputBuffer(inputBuffer);
-                        processControlBlock.setOutputBuffer(outputBuffer);
-                        processControlBlock.setTemporaryBuffer(tempBuffer);
+                        processControlBlock.setInputBufferLength(inputBuffer);
+                        processControlBlock.setOutputBufferLength(outputBuffer);
+                        processControlBlock.setTemporaryBufferLength(tempBuffer);
 
                         processControlBlock.setInstructionLocationOnDisk(instructionStartPosition);
                         processControlBlock.setDataLocationOnDisk(dataStartPosition);

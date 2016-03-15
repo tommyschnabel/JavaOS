@@ -7,9 +7,9 @@ public class ProcessControlBlock {
     private int mDataLocationOnDisk;
     private int mPriority;
     private int mInstructionSize; // number of words
-    private int mInputBuffer; // number of words
-    private int mOutputBuffer;
-    private int mTemporaryBuffer;
+    private int mInputBufferLength; // number of words
+    private int mOutputBufferLength;
+    private int mTemporaryBufferLength;
     private int mProgramCounter;
     private int processSize;
 
@@ -52,16 +52,16 @@ public class ProcessControlBlock {
         mInstructionSize = instructionSize;
     }
 
-    public void setInputBuffer(int inputBuffer) {
-        mInputBuffer = inputBuffer;
+    public void setInputBufferLength(int inputBuffer) {
+        mInputBufferLength = inputBuffer;
     }
 
-    public void setOutputBuffer(int outputBuffer) {
-        mOutputBuffer = outputBuffer;
+    public void setOutputBufferLength(int outputBuffer) {
+        mOutputBufferLength = outputBuffer;
     }
 
-    public void setTemporaryBuffer(int tempBuffer) {
-        mTemporaryBuffer = tempBuffer;
+    public void setTemporaryBufferLength(int tempBuffer) {
+        mTemporaryBufferLength = tempBuffer;
     }
 
     public void setInMemory(boolean inMemory) {
@@ -100,16 +100,16 @@ public class ProcessControlBlock {
         return mInstructionSize;
     }
 
-    public int getInputBuffer() {
-        return mInputBuffer;
+    public int getInputBufferLength() {
+        return mInputBufferLength;
     }
 
-    public int getOutputBuffer() {
-        return mOutputBuffer;
+    public int getOutputBufferLength() {
+        return mOutputBufferLength;
     }
 
-    public int getTemporaryBuffer() {
-        return mTemporaryBuffer;
+    public int getTemporaryBufferLength() {
+        return mTemporaryBufferLength;
     }
 
     public boolean inMemory() {
@@ -131,8 +131,11 @@ public class ProcessControlBlock {
 
     public int getProcessSize()
     {
-        return mInstructionSize + mInputBuffer + mOutputBuffer + mTemporaryBuffer;
+        return mInstructionSize + mInputBufferLength + mOutputBufferLength + mTemporaryBufferLength;
     }
+    public int getInputBufferLocation() { return  mDataLocationInMemory; }
+    public int getOutputBufferLocation() { return mDataLocationInMemory + mInputBufferLength; }
+    public int getTemporaryBufferLocation() { return mDataLocationInMemory + mInputBufferLength + mOutputBufferLength; }
 
     public int getLastInstructionLocationInMemory() {
         return lastInstructionLocationInMemory;
@@ -158,9 +161,9 @@ public class ProcessControlBlock {
                 ", mDataLocationOnDisk=" + mDataLocationOnDisk +
                 ", mPriority=" + mPriority +
                 ", mInstructionSize=" + mInstructionSize +
-                ", mInputBuffer=" + mInputBuffer +
-                ", mOutputBuffer=" + mOutputBuffer +
-                ", mTemporaryBuffer=" + mTemporaryBuffer +
+                ", mInputBufferLength=" + mInputBufferLength +
+                ", mOutputBufferLength=" + mOutputBufferLength +
+                ", mTemporaryBufferLength=" + mTemporaryBufferLength +
                 ", mInMemory=" + mInMemory +
                 ", mInstructionLocationInMemory=" + mInstructionLocationInMemory +
                 ", mDataLocationInMemory=" + mDataLocationInMemory +
