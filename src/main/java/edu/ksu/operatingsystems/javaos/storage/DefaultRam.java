@@ -27,7 +27,14 @@ public class DefaultRam implements Ram {
 
         programToAdd.setInstructionLocationInMemory(currentPositionInMemory);
         programToAdd.setOriginalInstructionLocationInMemory(currentPositionInMemory);
+
+        //System.out.println("instruction start: " + instructionStart);
+        //System.out.println("instruction end: " + instructionEnd);
+        //System.out.println("data start: " + dataStart);
+        //System.out.println("data end: " + dataEnd);
+
         programToAdd.setLastInstructionLocationInMemory(instructionEnd);
+
         programToAdd.setDataLocationInMemory(dataStart);
         programToAdd.setInMemory(true);
 
@@ -110,6 +117,7 @@ public class DefaultRam implements Ram {
     @Override
     public void writeValueToAddress(Integer startAddress, String value)
     {
+        System.out.println("Writing Value: " + value + " to address: " + startAddress );
         if (value == null)
         {
             System.out.println("The string passed in was null. No value was written.");
@@ -224,10 +232,11 @@ public class DefaultRam implements Ram {
                         {
                             if (processes[j].getOriginalInstructionLocationInMemory() >= i)
                             {
-                                int newInstructionLocation = processes[j].getOriginalInstructionLocationInMemory() - amtOfSpaces;
+                                int newOriginalInstructionLocation = processes[j].getOriginalInstructionLocationInMemory() - amtOfSpaces;
+                                int newInstructionLocation = processes[j].getInstructionLocationInMemory() - amtOfSpaces;
                                 int newDataLocation        = processes[j].getDataLocationInMemory() - amtOfSpaces;
                                 processes[j].setInstructionLocationInMemory(newInstructionLocation);
-                                processes[j].setOriginalInstructionLocationInMemory(newInstructionLocation);
+                                processes[j].setOriginalInstructionLocationInMemory(newOriginalInstructionLocation);
                                 processes[j].setDataLocationInMemory(newDataLocation);
                             }
                         }

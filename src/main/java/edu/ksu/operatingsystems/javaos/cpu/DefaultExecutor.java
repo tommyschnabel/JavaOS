@@ -4,6 +4,8 @@ import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
 import edu.ksu.operatingsystems.javaos.util.Pair;
 
+import java.math.BigInteger;
+
 public class DefaultExecutor implements Executor {
 
     private static int WORD_HEX_LENGTH = 8;
@@ -27,6 +29,7 @@ public class DefaultExecutor implements Executor {
 
     @Override
     public void execute(String instruction) {
+        System.out.println("Instruction: " + instruction);
         Pair<Long, String> result = readFromRight(instruction, 2);
         Long arithmeticType = result.getFirst();
         instruction = result.getSecond();
@@ -85,6 +88,8 @@ public class DefaultExecutor implements Executor {
                 address = result.getFirst();
                 instruction = result.getSecond(); // Not really needed, but for good measure
 
+                System.out.println("Address: " + address);
+
                 doOp(opCode, ram, baseRegister, destRegister, address);
                 break;
             case 2:
@@ -132,7 +137,6 @@ public class DefaultExecutor implements Executor {
         }
 
         //Increment the instruction
-        //process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
         process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
 
     }
@@ -276,7 +280,8 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 18: //HLT
-                    process.setInstructionLocationInMemory(-1);
+                    //TODO: refactor code to check for -1
+                    //process.setInstructionLocationInMemory(-1);
                     return;
                 case 20: //JMP
                     process.setInstructionLocationInMemory(((Long) effectiveAddress(0L, address)).intValue());
@@ -299,7 +304,7 @@ public class DefaultExecutor implements Executor {
                         registers[registerOneAddress] = registers[registerTwoAddress];
                     } else {
                         registers[registerOneAddress] = Long.parseLong(
-                                ram.readValueFromAddress(address, 8),
+                                ram.readValueFromAddress(process.getInstructionLocationInMemory() + address, 8),
                                 16
                         );
                     }

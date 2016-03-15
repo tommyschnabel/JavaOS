@@ -27,7 +27,11 @@ public class ProcessControlBlock {
 
     public boolean isFinished() {
         if (mInstructionLocationInMemory != null || lastInstructionLocationInMemory != null) {
-            return mInstructionLocationInMemory > lastInstructionLocationInMemory;
+            if (mInstructionLocationInMemory % 8 == 0)
+                return mInstructionLocationInMemory.equals(-1) || mInstructionLocationInMemory >= lastInstructionLocationInMemory;
+            else
+                System.out.println("ERROR!!!!!! SOMETHING WENT WRONG");
+
         }
         return false;
     }
