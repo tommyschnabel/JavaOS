@@ -14,7 +14,11 @@ public class DefaultDispatcher implements Dispatcher {
     }
 
     @Override
-    public ProcessControlBlock dispatchProcessToCPU(LinkedList<ProcessControlBlock> readyQueue){
+    public ProcessControlBlock dispatchProcessToCPU(LinkedList<ProcessControlBlock> readyQueue) {
+        if (readyQueue.isEmpty()) {
+            return null;
+        }
+
         ProcessControlBlock sendProcess = readyQueue.pop();
 
         loadPCBStateIntoRegisters(sendProcess);

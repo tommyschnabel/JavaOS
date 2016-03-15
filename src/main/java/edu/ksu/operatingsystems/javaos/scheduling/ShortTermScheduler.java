@@ -22,8 +22,7 @@ public interface ShortTermScheduler {
      * @param pcb The pcb to be added to the waitQueue
      */
     public void addToWaitQueue(ProcessControlBlock pcb);
-    
-    
+
     /**
      * Finds the processes that need to be put in the ready queue
      * @param ram The ram from which we will grab the processes

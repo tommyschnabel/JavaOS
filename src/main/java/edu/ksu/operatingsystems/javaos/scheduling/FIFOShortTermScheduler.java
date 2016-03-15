@@ -60,7 +60,7 @@ public class FIFOShortTermScheduler implements ShortTermScheduler {
         schedule(ram.getProcesses());
 
         if (currentProcess == null || currentProcess.isFinished()) {
-            dispatcher.dispatchProcessToCPU(readyQueue);
+            currentProcess = dispatcher.dispatchProcessToCPU(readyQueue);
         }
     }
 

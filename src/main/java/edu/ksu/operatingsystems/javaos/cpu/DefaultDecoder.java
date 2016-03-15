@@ -10,34 +10,24 @@ public class DefaultDecoder implements Decoder{
 		//Turning instruction into string value hex
 		String hex = new String(instruction);
 		System.out.println("Instruction: " + hex);
-		//Parsing hex as a base 16 number to integer
-		//int val = Integer.parseInt(hex, 16);
 
-
-		/* Logic to convert hex to decimal
-		String totalString = "";
-		String toAdd = "";
-
-
-		for (int i = 0; i < hex.length(); i++)
-		{
-			toAdd = "" + Integer.decode("0x" + String.valueOf(hex.charAt(i)));
-			if (toAdd.length() == 1)
-			{
-				toAdd = "0" + toAdd;
-			}
-			totalString += toAdd;
-		}
-
-		return totalString;
-		*/
-
-		/* logic to convert hex to binary */
-		String s = Integer.toBinaryString(Integer.parseInt(hex, 16));
-
-		return s;
-
-
+        return addZeroIfNecessary(
+                hex,
+                Long.toBinaryString(Long.parseLong(hex, 16))
+        );
 	}
+
+    /**
+     * {@link Long#toBinaryString(long)} gets rid of leading 0's.
+     * But we depend on there being one if the first char of the
+     * instruction is less than 8
+     */
+    private String addZeroIfNecessary(String instruction, String binary) {
+        if (instruction.matches("^[0-7].*$")) {
+            return "0" + binary;
+        }
+
+        return binary;
+    }
 
 }

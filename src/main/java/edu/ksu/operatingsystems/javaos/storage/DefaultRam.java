@@ -26,6 +26,7 @@ public class DefaultRam implements Ram {
                 programToAdd.getTemporaryBuffer();
 
         programToAdd.setInstructionLocationInMemory(currentPositionInMemory);
+        programToAdd.setLastInstructionLocationInMemory(instructionEnd);
         programToAdd.setDataLocationInMemory(dataStart);
         programToAdd.setInMemory(true);
 

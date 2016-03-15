@@ -2,8 +2,11 @@ package edu.ksu.operatingsystems.javaos.cpu;
 
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
+import edu.ksu.operatingsystems.javaos.util.Pair;
 
 public class DefaultExecutor implements Executor {
+
+    private static int WORD_HEX_LENGTH = 8;
 
     private Integer[] registers;
     private ProcessControlBlock process;
@@ -24,93 +27,101 @@ public class DefaultExecutor implements Executor {
 
     @Override
     public void execute(String instruction) {
-        Integer arithmeticType = instruction >> 30;
+        Pair<Integer, String> result = readFromRight(instruction, 2);
+        Integer arithmeticType = result.getFirst();
+        instruction = result.getSecond();
 
-        Integer address;
-        Integer destRegister;
-        Integer firstRegister;
-        Integer secondRegister;
-        Integer baseRegister;
-        Integer opCode;
-
-        //Increment the instruction
-        //noinspection UnusedAssignment
-        Integer instructionPosition = process.getInstructionLocationInMemory();
+        Integer address = null;
+        Integer destRegister = null;
+        Integer firstRegister = null;
+        Integer secondRegister = null;
+        Integer baseRegister = null;
+        Integer opCode = null;
 
         switch (arithmeticType) {
             case 0:
 
-                //Last 12 bits never used
-                address = readXBits(instruction, 12);
-                instruction = instruction >> 12;
-
-                //Get the destination register
-                destRegister = readXBits(instruction, 4);
-                instruction = instruction >> 4;
-
-                //Get the source register for the second operand
-                secondRegister = readXBits(instruction, 4);
-                instruction = instruction >> 4;
+                //Get the op code
+                result = readFromRight(instruction, 6);
+                opCode = result.getFirst();
+                instruction = result.getSecond();
 
                 //Get the source register for the first operand
-                firstRegister = readXBits(instruction, 4);
-                instruction = instruction >> 4;
+                result = readFromRight(instruction, 4);
+                firstRegister = result.getFirst();
+                instruction = result.getSecond();
 
-                //Get the op code
-                opCode = readXBits(instruction, 6);
-                instruction = instruction >> 6; // Not really needed, but for good measure
+                //Get the source register for the second operand
+                result = readFromRight(instruction, 4);
+                secondRegister = result.getFirst();
+                instruction = result.getSecond();
 
-                doOp(opCode, ram, firstRegister, secondRegister, destRegister, address);
+                //Get the destination register
+                result = readFromRight(instruction, 4);
+                destRegister = result.getFirst();
+                instruction = result.getSecond(); // Not really needed, but for good measure
+
+                doOp(opCode, ram, firstRegister, secondRegister, destRegister, null);
                 break;
             case 1:
 
-                //Get the address
-                address = readXBits(instruction, 16);
-                instruction = instruction >> 16;
-
-                //Get the destination register
-                destRegister = readXBits(instruction, 4);
-                instruction = instruction >> 4;
+                //Get the op code
+                result = readFromRight(instruction, 6);
+                opCode = result.getFirst();
+                instruction = result.getSecond();
 
                 //Get the source register for the first operand
-                baseRegister = readXBits(instruction, 4);
-                instruction = instruction >> 4;
+                result = readFromRight(instruction, 4);
+                baseRegister = result.getFirst();
+                instruction = result.getSecond();
 
-                //Get the op code
-                opCode = readXBits(instruction, 6);
-                instruction = instruction >> 6; // Not really needed, but for good measure
+                //Get the destination register
+                result = readFromRight(instruction, 4);
+                destRegister = result.getFirst();
+                instruction = result.getSecond();
+
+                //Get the address
+                result = readFromRight(instruction, 16);
+                address = result.getFirst();
+                instruction = result.getSecond(); // Not really needed, but for good measure
 
                 doOp(opCode, ram, baseRegister, destRegister, address);
                 break;
             case 2:
 
-                //Get the address
-                address = readXBits(instruction, 24);
-                instruction = instruction >> 24;
-
                 //Get the op code
-                opCode = readXBits(instruction, 6);
-                instruction = instruction >> 6; // Not really needed, but for good measure
+                result = readFromRight(instruction, 6);
+                opCode = result.getFirst();
+                instruction = result.getSecond();
+
+                //Get the address
+                result = readFromRight(instruction, 24);
+                address = result.getFirst();
+                instruction = result.getSecond(); // Not really needed, but for good measure
 
                 doOp(opCode, ram, address);
                 break;
             case 3:
 
-                //Get the address
-                address = readXBits(instruction, 16);
-                instruction = instruction >> 16;
-
-                //Get the second register
-                secondRegister = readXBits(instruction, 4);
-                instruction = instruction >> 4;
+                //Get the op code
+                result = readFromRight(instruction, 6);
+                opCode = result.getFirst();
+                instruction = result.getSecond();
 
                 //Get the first register
-                firstRegister = readXBits(instruction, 4);
-                instruction = instruction >> 4;
+                result = readFromRight(instruction, 4);
+                firstRegister = result.getFirst();
+                instruction = result.getSecond();
 
-                //Get the op code
-                opCode = readXBits(instruction, 6);
-                instruction = instruction >> 6; // Not really needed, but for good measure
+                //Get the second register
+                result = readFromRight(instruction, 4);
+                secondRegister = result.getFirst();
+                instruction = result.getSecond();
+
+                //Get the address
+                result = readFromRight(instruction, 16);
+                address = result.getFirst();
+                instruction = result.getSecond(); // Not really needed, but for good measure
 
                 doOp(opCode, ram, firstRegister, secondRegister, address);
                 break;
@@ -120,7 +131,8 @@ public class DefaultExecutor implements Executor {
                 throw new IllegalArgumentException("Unsupported arithmetic operation: " + arithmeticType);
         }
 
-        instructionPosition++;
+        //Increment the instruction
+        process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
     }
 
     /**
@@ -137,7 +149,7 @@ public class DefaultExecutor implements Executor {
             int firstOperandRegisterAddress = registerAddresses[0];
             int secondOperandRegisterAddress = registerAddresses[1];
             int destinationRegisterAddress = registerAddresses[2];
-            
+
             Integer first = registers[firstOperandRegisterAddress];
             Integer second = registers[secondOperandRegisterAddress];
             Integer destination = registers[destinationRegisterAddress];
@@ -265,7 +277,7 @@ public class DefaultExecutor implements Executor {
         //Unconditional jump
         if (op == 18 || op == 20) {
             int address = registerAddresses[0];
-            
+
             switch (op) {
                 case 18: //HLT
                     instructionPosition = -1;
@@ -301,13 +313,9 @@ public class DefaultExecutor implements Executor {
         return baseRegister + address + process.getDataLocationInMemory();
     }
 
-    /**
-     * Reads a number of bits off the right side of an integer
-     * @param from The int to read from
-     * @param numBits The number of bits to read
-     * @return The result
-     */
-    private int readXBits(int from, int numBits) {
-        return from - (from >> numBits << numBits);
+    private Pair<Integer, String> readFromRight(String readFrom, int numberOfCharacters) {
+        Integer value = Integer.parseInt(readFrom.substring(0, numberOfCharacters), 2);
+        String result = readFrom.substring(numberOfCharacters);
+        return new Pair<>(value, result);
     }
 }
