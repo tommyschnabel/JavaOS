@@ -34,7 +34,7 @@ public class DefaultLoader implements Loader {
             {
                 if (s.startsWith("0x"))
                 {
-                    disk.addToDisk(s); //hex characters
+                    disk.addToDisk(s.trim()); //hex characters
                 }
                 else
                 {
