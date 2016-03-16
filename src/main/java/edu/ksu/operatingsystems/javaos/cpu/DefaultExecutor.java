@@ -204,17 +204,10 @@ public class DefaultExecutor implements Executor {
                            Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()));
                     return;
                 case 3: //LW
-                    if (destinationRegisterAddress == 0) {
-                        registers[baseRegisterAddress] = lastBits;
-                    } else {
-                        registers[destinationRegisterAddress] = Integer.parseInt(
-                                ram.readValueFromAddress(
-                                        effectiveAddress(((Long) registers[baseRegisterAddress]).intValue(), lastBits.intValue()),
-                                        8 //Read 8 hex values (32 bits)
-                                ),
-                                16 //Convert from base 16 (hex)
-                        );
-                    }
+                    registers[destinationRegisterAddress] = Long.parseLong(
+                            ram.readValueFromAddress(process.getDataLocationInMemory() + lastBits.intValue(), 8), //Read 8 hex values (32 bits)) from address
+                            16 //Convert from base 16 (hex)
+                    );
                     return;
                 case 11: //MOVI
                     if (destinationRegisterAddress == 0) {
