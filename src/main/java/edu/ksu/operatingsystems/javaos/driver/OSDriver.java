@@ -54,7 +54,7 @@ public class OSDriver {
     }
 
     public List<ProcessStats> generateStats() {
-        List<ProcessStats> stats = new ArrayList<>();
+        List<ProcessStats> stats = new ArrayList<ProcessStats>();
         for (ProcessControlBlock pcb : disk.getProcesses()) {
             stats.add(pcb.generateStats());
         }

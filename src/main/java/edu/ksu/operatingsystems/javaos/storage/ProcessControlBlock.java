@@ -200,6 +200,7 @@ public class ProcessControlBlock {
                 .setTimeSpentWaiting(whenAddedToReadyQueue - whenAddedToWaitQueue)
                 .setTimeSpentReady(whenExecutionStarted - whenAddedToReadyQueue)
                 .setTimeSpentExecuting(whenExecutionFinished - whenExecutionStarted)
+                .setAmountOfRAMUsed(getProcessSize())
                 .build();
     }
 
