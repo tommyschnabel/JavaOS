@@ -141,4 +141,4 @@ local.properties
 .DS_Store
 
 #Results
-results.txt
+*results.txt

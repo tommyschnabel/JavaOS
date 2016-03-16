@@ -242,32 +242,32 @@ public class DefaultExecutor implements Executor {
                     return;
                 case 21: //BEQ
                     if (registers[baseRegisterAddress] == registers[destinationRegisterAddress]) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
                     }
                     return;
                 case 22: //BNE
                     if (registers[baseRegisterAddress] != registers[destinationRegisterAddress]) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
                     }
                     return;
                 case 23: //BEZ
                     if (registers[baseRegisterAddress] == 0) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
                     }
                     return;
                 case 24: //BNZ
                     if (registers[baseRegisterAddress] != 0) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
                     }
                     return;
                 case 25: //BGZ
                     if (registers[baseRegisterAddress] > 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits * 2).intValue());
                     }
                     return;
                 case 26: //BLZ
                     if (registers[baseRegisterAddress] < 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits * 2).intValue());
                     }
                     return;
                 default:
