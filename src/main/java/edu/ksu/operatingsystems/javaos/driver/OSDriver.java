@@ -6,12 +6,7 @@ import edu.ksu.operatingsystems.javaos.scheduling.FIFOLongTermScheduler;
 import edu.ksu.operatingsystems.javaos.scheduling.FIFOShortTermScheduler;
 import edu.ksu.operatingsystems.javaos.scheduling.LongTermScheduler;
 import edu.ksu.operatingsystems.javaos.scheduling.ShortTermScheduler;
-import edu.ksu.operatingsystems.javaos.storage.DefaultDisk;
-import edu.ksu.operatingsystems.javaos.storage.DefaultLoader;
-import edu.ksu.operatingsystems.javaos.storage.DefaultRam;
-import edu.ksu.operatingsystems.javaos.storage.Disk;
-import edu.ksu.operatingsystems.javaos.storage.Loader;
-import edu.ksu.operatingsystems.javaos.storage.Ram;
+import edu.ksu.operatingsystems.javaos.storage.*;
 
 public class OSDriver {
 	

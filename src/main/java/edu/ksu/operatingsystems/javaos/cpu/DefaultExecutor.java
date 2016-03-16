@@ -4,8 +4,6 @@ import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
 import edu.ksu.operatingsystems.javaos.util.Pair;
 
-import java.math.BigInteger;
-
 public class DefaultExecutor implements Executor {
 
     private static int WORD_HEX_LENGTH = 8;

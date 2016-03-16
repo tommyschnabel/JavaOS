@@ -1,10 +1,10 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
-import java.util.LinkedList;
-
 import edu.ksu.operatingsystems.javaos.cpu.Cpu;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
+
+import java.util.LinkedList;
 
 public class FIFOShortTermScheduler implements ShortTermScheduler {
     
@@ -26,8 +26,11 @@ public class FIFOShortTermScheduler implements ShortTermScheduler {
     @Override
     public void schedule(ProcessControlBlock[] pcbArray){
         for (ProcessControlBlock pcb : pcbArray) {
-            if (pcb != null && !pcb.isFinished() && !readyQueue.contains(pcb)) {
-                System.out.println("Adding process " + pcb.getID() + " to ready queue");
+            if (pcb != null
+                    && !pcb.isFinished()
+                    && pcb.inMemory()
+                    && !readyQueue.contains(pcb)
+                    && !pcb.equals(currentProcess)) {
                 addToReadyQueue(pcb);
             }
         }

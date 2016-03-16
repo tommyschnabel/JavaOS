@@ -7,6 +7,7 @@ public class DefaultCpu implements Cpu {
 
     /**
      * The cpu has 16 registers, each 32 bits long
+     * (using {@link Long}s because 0xFFFFFFFF < {@link Integer.MAX_VALUE}
      * Register-0 is the accumulator
      * Register-1 is the Zero register
      * All other registers are general purpose registers
