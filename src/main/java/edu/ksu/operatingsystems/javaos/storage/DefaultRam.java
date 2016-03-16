@@ -119,6 +119,10 @@ public class DefaultRam implements Ram {
     @Override
     public void writeValueToAddress(Integer startAddress, String value, ProcessControlBlock p) {
 
+        while (value.length() < 8) {
+            value = "0" + value;
+        }
+
         if (value == null) {
             System.out.println("The string passed in was null. No value was written.");
             return;
