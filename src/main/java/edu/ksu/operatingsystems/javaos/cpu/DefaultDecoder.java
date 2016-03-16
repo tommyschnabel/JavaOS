@@ -11,6 +11,10 @@ public class DefaultDecoder implements Decoder{
 		String hex = new String(instruction);
 		System.out.println("Instruction: " + hex);
 
+        if (hex.equals("56810018")) {
+            int a = 0; //Debug point
+        }
+
         return addZeroIfNecessary(
                 hex,
                 Long.toBinaryString(Long.parseLong(hex, 16))

@@ -198,9 +198,11 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 2: //ST
-                   ram.writeValueToAddress(process.getDataLocationInMemory() + lastBits.intValue(),
+                   ram.writeValueToAddress(
+                           process.getDataLocationInMemory() + lastBits.intValue(),
                            Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()),
-                           process);
+                           process
+                   );
                     return;
                 case 3: //LW
                     registers[destinationRegisterAddress] = Long.parseLong(
@@ -239,22 +241,22 @@ public class DefaultExecutor implements Executor {
                     return;
                 case 21: //BEQ
                     if (registers[baseRegisterAddress] == destinationRegisterAddress) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 22: //BNE
                     if (registers[baseRegisterAddress] != destinationRegisterAddress) {
-                        process.setDataLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 23: //BEZ
                     if (registers[baseRegisterAddress] == 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 24: //BNZ
                     if (registers[baseRegisterAddress] != 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 25: //BGZ
