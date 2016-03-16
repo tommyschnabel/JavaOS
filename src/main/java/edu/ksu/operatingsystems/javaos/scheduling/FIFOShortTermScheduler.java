@@ -26,7 +26,8 @@ public class FIFOShortTermScheduler implements ShortTermScheduler {
     @Override
     public void schedule(ProcessControlBlock[] pcbArray){
         for (ProcessControlBlock pcb : pcbArray) {
-            if (pcb != null && !readyQueue.contains(pcb)) {
+            if (pcb != null && !pcb.isFinished() && !readyQueue.contains(pcb)) {
+                System.out.println("Adding process " + pcb.getID() + " to ready queue");
                 addToReadyQueue(pcb);
             }
         }
