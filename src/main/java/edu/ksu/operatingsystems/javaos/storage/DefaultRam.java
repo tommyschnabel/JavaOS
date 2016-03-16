@@ -123,8 +123,7 @@ public class DefaultRam implements Ram {
         }
 
         if ( (startAddress + value.length()) > p.getOriginalInstructionLocationInMemory() + p.getProcessSize() || startAddress < p.getOriginalInstructionLocationInMemory()) {
-            System.out.println("ERROR: Attempting to write to memory area of another process!!!");
-            return;
+            throw new RuntimeException("ERROR: Process " + p.getID() + " attempting to write to memory area of another process!!!");
         }
 
         System.out.println("Writing Value: " + value + " to address: " + startAddress );
