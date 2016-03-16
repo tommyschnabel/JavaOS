@@ -160,7 +160,7 @@ public class DefaultExecutor implements Executor {
             switch (op) {
                 case 4: //MOV
                     if (secondOperandRegisterAddress == 0) {
-                        ram.writeValueToAddress(destinationAddress, String.valueOf(registers[firstOperandRegisterAddress]));
+                        ram.writeValueToAddress(process.getDataLocationInMemory() + destinationAddress, String.valueOf(registers[firstOperandRegisterAddress]));
                     } else {
                         registers[destinationRegisterAddress] = registers[secondOperandRegisterAddress];
                     }
@@ -200,7 +200,8 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 2: //ST
-                   ram.writeValueToAddress(lastBits.intValue(), Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()));
+                   ram.writeValueToAddress(process.getDataLocationInMemory() + lastBits.intValue(),
+                           Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()));
                     return;
                 case 3: //LW
                     if (destinationRegisterAddress == 0) {
