@@ -115,48 +115,42 @@ public class DefaultRam implements Ram {
 
 
     @Override
-    public void writeValueToAddress(Integer startAddress, String value, ProcessControlBlock p)
-    {
-        if ( (startAddress + value.length()) > p.getOriginalInstructionLocationInMemory() + p.getProcessSize() || startAddress < p.getOriginalInstructionLocationInMemory())
-        {
-            System.out.println("ERROR: Attempting to write to memory area of another process!!!");
-            System.out.println("Tried to write: " + value + " at address: " + startAddress);
-            return;
-        }
+    public void writeValueToAddress(Integer startAddress, String value, ProcessControlBlock p) {
 
-        System.out.println("Writing Value: " + value + " to address: " + startAddress );
-        if (value == null)
-        {
+        if (value == null) {
             System.out.println("The string passed in was null. No value was written.");
             return;
         }
 
-        for (int i = 0; i < value.length(); i++)
-        {
+        if ( (startAddress + value.length()) > p.getOriginalInstructionLocationInMemory() + p.getProcessSize() || startAddress < p.getOriginalInstructionLocationInMemory()) {
+            throw new RuntimeException("ERROR: Process " + p.getID() + " attempting to write to memory area of another process!!!");
+        }
+
+        System.out.println("Writing Value: " + value + " to address: " + startAddress );
+
+        for (int i = 0; i < value.length(); i++) {
             diskArray[startAddress+i] = value.charAt(i);
         }
     }
 
     @Override
-    public String readValueFromAddress(Integer startAddress, int lengthToRead, ProcessControlBlock p)
-    {
-        if ( (startAddress + lengthToRead > p.getOriginalInstructionLocationInMemory() + p.getProcessSize() || startAddress < p.getOriginalInstructionLocationInMemory()) )
-        {
-            System.out.println("ERROR: Attempting to read from memory area of another process!!!");
-            System.out.println("Tried to read value from address: " + startAddress + " for " + lengthToRead + " characters.");
-            return "";
-        }
-        String val = "";
+    public String readValueFromAddress(Integer startAddress, int lengthToRead, ProcessControlBlock p) {
+        if (startAddress + lengthToRead > p.getOriginalInstructionLocationInMemory() + p.getProcessSize()
+                    || startAddress < p.getOriginalInstructionLocationInMemory()) {
 
-        for (int i = startAddress; i < startAddress + lengthToRead; i++)
+            throw new RuntimeException("ERROR: Process " + p.getID() + " attempting to read from memory area of another process!!!");
+        }
+
+        String val = "";
+        for (int i = startAddress; i < startAddress + lengthToRead; i++) {
             val += diskArray[i];
+        }
 
         return val;
     }
 
     @Override
-    public void removeProcessFromMemory(Integer ID)
-    {
+    public void removeProcessFromMemory(Integer ID) {
         ProcessControlBlock processToRemove = getProcessByID(ID);
         processToRemove.setInMemory(false);
 
