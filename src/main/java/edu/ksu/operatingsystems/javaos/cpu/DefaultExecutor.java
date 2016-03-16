@@ -239,22 +239,22 @@ public class DefaultExecutor implements Executor {
                     return;
                 case 21: //BEQ
                     if (registers[baseRegisterAddress] == destinationRegisterAddress) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 22: //BNE
                     if (registers[baseRegisterAddress] != destinationRegisterAddress) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 23: //BEZ
                     if (registers[baseRegisterAddress] == 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 24: //BNZ
                     if (registers[baseRegisterAddress] != 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 25: //BGZ
