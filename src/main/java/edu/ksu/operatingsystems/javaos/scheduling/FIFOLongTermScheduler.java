@@ -23,7 +23,7 @@ public class FIFOLongTermScheduler implements LongTermScheduler {
     public void scheduleIfNecessary() {
         for (ProcessControlBlock pcb : disk.getProcesses()) {
             if (!pcb.inMemory() && !pcb.isFinished() && ram.isRoomForProcess(pcb)) {
-                System.out.println("Adding process " + pcb.getID() + " to queue from Long Term Scheduler");
+                //System.out.println("Adding process " + pcb.getID() + " to queue from Long Term Scheduler");
                 ram.addProcessControlBlockToMemoryByProcessID(pcb.getID(), disk);
             }
         }

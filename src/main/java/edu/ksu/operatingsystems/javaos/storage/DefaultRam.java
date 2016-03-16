@@ -31,7 +31,7 @@ public class DefaultRam implements Ram {
         //System.out.println("data start: " + dataOnDiskStartsAt);
         //System.out.println("data end: " + dataOnDiskEndsAt);
 
-        programToAdd.setLastInstructionLocationInMemory(instructionOnDiskEndsAt);
+        programToAdd.setLastInstructionLocationInMemory(currentPositionInMemory + programToAdd.getInstructionSize());
 
         programToAdd.setDataLocationInMemory(currentPositionInMemory + programToAdd.getInstructionSize());
         programToAdd.setInMemory(true);
@@ -124,10 +124,11 @@ public class DefaultRam implements Ram {
         }
 
         if ( (startAddress + value.length()) > p.getOriginalInstructionLocationInMemory() + p.getProcessSize() || startAddress < p.getOriginalInstructionLocationInMemory()) {
-            throw new RuntimeException("ERROR: Process " + p.getID() + " attempting to write to memory area of another process!!!");
+            throw new RuntimeException("ERROR: Process " + p.getID() + " attempting to write to memory area of another process!!!\n"
+                                        + " Attempted to write to: " + startAddress + " ... with value: " + value);
         }
 
-        System.out.println("Writing Value: " + value + " to address: " + startAddress );
+        //System.out.println("Writing Value: " + value + " to address: " + startAddress );
 
         for (int i = 0; i < value.length(); i++) {
             diskArray[startAddress+i] = value.charAt(i);
@@ -139,7 +140,8 @@ public class DefaultRam implements Ram {
         if (startAddress + lengthToRead > p.getOriginalInstructionLocationInMemory() + p.getProcessSize()
                     || startAddress < p.getOriginalInstructionLocationInMemory()) {
 
-            throw new RuntimeException("ERROR: Process " + p.getID() + " attempting to read from memory area of another process!!!");
+            throw new RuntimeException("ERROR: Process " + p.getID() + " attempting to read from memory area of another process!!!\n"
+                                        + " Attempted to read from address: " + startAddress + " for length: " + lengthToRead);
         }
 
         String val = "";
