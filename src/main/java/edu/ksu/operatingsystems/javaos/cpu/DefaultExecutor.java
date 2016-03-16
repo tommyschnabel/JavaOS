@@ -27,6 +27,7 @@ public class DefaultExecutor implements Executor {
 
     @Override
     public void execute(String instruction) {
+        String originalInstruction = instruction;
         Pair<Long, String> result = readFromRight(instruction, 2);
         Long arithmeticType = result.getFirst();
         instruction = result.getSecond();
@@ -211,8 +212,8 @@ public class DefaultExecutor implements Executor {
                     );
                     return;
                 case 11: //MOVI
-                    if (destinationRegisterAddress == 0) {
-                        registers[destinationRegisterAddress] = effectiveAddress(registers[baseRegisterAddress], lastBits);
+                    if (baseRegisterAddress == 0) {
+                        registers[destinationRegisterAddress] = lastBits;
                     } else {
                         registers[destinationRegisterAddress] = registers[baseRegisterAddress];
                     }
@@ -240,12 +241,12 @@ public class DefaultExecutor implements Executor {
                     //Intentionally blank
                     return;
                 case 21: //BEQ
-                    if (registers[baseRegisterAddress] == destinationRegisterAddress) {
+                    if (registers[baseRegisterAddress] == registers[destinationRegisterAddress]) {
                         process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
                 case 22: //BNE
-                    if (registers[baseRegisterAddress] != destinationRegisterAddress) {
+                    if (registers[baseRegisterAddress] != registers[destinationRegisterAddress]) {
                         process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue());
                     }
                     return;
@@ -299,14 +300,14 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 0: //RD
-                    if (address == null) {
-                        registers[registerOneAddress] = registers[registerTwoAddress];
-                    } else {
-                        registers[registerOneAddress] = Long.parseLong(
-                                ram.readValueFromAddress(process.getInstructionLocationInMemory() + address, 8, process),
-                                16
-                        );
-                    }
+                    registers[registerOneAddress] = Long.parseLong(
+                                ram.readValueFromAddress(
+                                process.getInputBufferLocation(),
+                                8,
+                                process
+                        ),
+                        16
+                    );
                     return;
                 case 1: //WR
                     ram.writeValueToAddress(
