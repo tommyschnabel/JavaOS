@@ -47,7 +47,7 @@ public class ProcessControlBlock {
             throw new RuntimeException(String.format("Error, memory location for process %s is in the wrong spot: %s", mID, mInstructionLocationInMemory));
         }
 
-        return mInstructionLocationInMemory >= lastInstructionLocationInMemory;
+        return false;
     }
 
     public void setID(Integer id) {
