@@ -1,5 +1,6 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
+import edu.ksu.operatingsystems.javaos.cpu.Cpu;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ public interface Dispatcher {
      * Sends a PCB to the CPU through the fetcher
      * @param readyQueue The readyQueue from the ShortTermScheduler
      */
-    ProcessControlBlock dispatchProcessToCPU(LinkedList<ProcessControlBlock> readyQueue);
+    ProcessControlBlock dispatchProcessToCPU(LinkedList<ProcessControlBlock> readyQueue, Cpu cpu);
     
     /**
      * Preforms a contextSwitch on the process in the CPU
@@ -19,6 +20,7 @@ public interface Dispatcher {
      */
     void contextSwitch(
             ProcessControlBlock offCPU,
-            LinkedList<ProcessControlBlock> readyQueue
+            LinkedList<ProcessControlBlock> readyQueue,
+            Cpu cpu
     );
 }

@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OSDriver {
+
+    private static int NUBMER_OF_CORES = 4;
 	
 	private Loader loader;
 	private LongTermScheduler longTermScheduler;
 	private ShortTermScheduler shortTermScheduler;
-	private Cpu cpu;
+	private Cpu[] cpus;
     private Disk disk;
     private Ram ram;
 
@@ -23,20 +25,24 @@ public class OSDriver {
         disk = new DefaultDisk();
         ram = new DefaultRam();
 
-        cpu = new DefaultCpu(ram);
-        Dispatcher dispatcher = new DefaultDispatcher(cpu);
+        cpus = new Cpu[NUBMER_OF_CORES];
+        for (int i = 0; i < NUBMER_OF_CORES; i++) {
+            cpus[i] = new DefaultCpu(ram);
+        }
+
+        Dispatcher dispatcher = new DefaultDispatcher();
 
         loader = new DefaultLoader(disk);
 
         if (driverType == DriverType.FIFO) {
 
             longTermScheduler = new FIFOLongTermScheduler(disk, ram);
-            shortTermScheduler = new FIFOShortTermScheduler(ram, dispatcher);
+            shortTermScheduler = new FIFOShortTermScheduler(ram, dispatcher, cpus);
 
         } else if (driverType == DriverType.Priority) {
 
             longTermScheduler = new PriorityLongTermScheduler(disk, ram);
-            shortTermScheduler = new PriorityShortTermScheduler(ram, dispatcher);
+            shortTermScheduler = new PriorityShortTermScheduler(ram, dispatcher, cpus);
         }
 	}
 
@@ -49,7 +55,10 @@ public class OSDriver {
         while (!longTermScheduler.allProcessesFinished()) {
             longTermScheduler.scheduleIfNecessary();
             shortTermScheduler.scheduleIfNecessary();
-            cpu.run();
+
+            for (Cpu cpu : cpus) {
+                cpu.run();
+            }
         }
     }
 
@@ -74,8 +83,8 @@ public class OSDriver {
         return shortTermScheduler;
     }
 
-    public Cpu getCpu() {
-        return cpu;
+    public Cpu[] getCpus() {
+        return cpus;
     }
 
     public Disk getDisk() {

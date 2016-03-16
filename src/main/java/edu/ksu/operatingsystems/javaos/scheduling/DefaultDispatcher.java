@@ -7,21 +7,15 @@ import java.util.LinkedList;
 
 public class DefaultDispatcher implements Dispatcher {
 
-    private Cpu cpu;
-
-    public DefaultDispatcher(Cpu cpu) {
-        this.cpu = cpu;
-    }
-
     @Override
-    public ProcessControlBlock dispatchProcessToCPU(LinkedList<ProcessControlBlock> readyQueue) {
+    public ProcessControlBlock dispatchProcessToCPU(LinkedList<ProcessControlBlock> readyQueue, Cpu cpu) {
         if (readyQueue.isEmpty()) {
             return null;
         }
 
         ProcessControlBlock sendProcess = readyQueue.pop();
 
-        loadPCBStateIntoRegisters(sendProcess);
+        loadPCBStateIntoRegisters(sendProcess, cpu);
         cpu.setCurrentProcess(sendProcess);
         System.out.println("Executing process " + sendProcess.getID());
 
@@ -29,14 +23,14 @@ public class DefaultDispatcher implements Dispatcher {
     }
     
     @Override
-    public void contextSwitch(ProcessControlBlock offCPU, LinkedList<ProcessControlBlock> readyQueue) {
-        loadRegisterStateIntoPCB(offCPU);
+    public void contextSwitch(ProcessControlBlock offCPU, LinkedList<ProcessControlBlock> readyQueue, Cpu cpu) {
+        loadRegisterStateIntoPCB(offCPU, cpu);
         readyQueue.add(offCPU);
 
-        dispatchProcessToCPU(readyQueue);
+        dispatchProcessToCPU(readyQueue, cpu);
     }
 
-    private void loadPCBStateIntoRegisters(ProcessControlBlock pcb) {
+    private void loadPCBStateIntoRegisters(ProcessControlBlock pcb, Cpu cpu) {
         if (pcb.getProcessState() == null) {
             return;
         }
@@ -48,7 +42,7 @@ public class DefaultDispatcher implements Dispatcher {
         }
     }
 
-    private void loadRegisterStateIntoPCB(ProcessControlBlock pcb) {
+    private void loadRegisterStateIntoPCB(ProcessControlBlock pcb, Cpu cpu) {
         long[] registers = cpu.getRegisters();
         Long[] processState;
 

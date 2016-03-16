@@ -19,4 +19,10 @@ public interface Cpu {
      * @param currentProcess The process
      */
     void setCurrentProcess(ProcessControlBlock currentProcess);
+
+    /**
+     * Gets the PCB for the process that's currently running
+     * @return The current process
+     */
+    ProcessControlBlock getCurrentProcess();
 }

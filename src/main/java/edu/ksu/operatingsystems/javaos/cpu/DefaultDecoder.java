@@ -9,11 +9,6 @@ public class DefaultDecoder implements Decoder{
 		
 		//Turning instruction into string value hex
 		String hex = new String(instruction);
-		System.out.println("Instruction: " + hex);
-
-        if (hex.equals("56810018")) {
-            int a = 0; //Debug point
-        }
 
         return addZeroIfNecessary(
                 hex,

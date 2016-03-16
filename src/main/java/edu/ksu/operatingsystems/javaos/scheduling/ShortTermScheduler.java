@@ -1,6 +1,9 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
+import edu.ksu.operatingsystems.javaos.cpu.Cpu;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
+
+import java.util.List;
 
 public interface ShortTermScheduler {
     
@@ -8,7 +11,7 @@ public interface ShortTermScheduler {
      * Schedules all processes in need of scheduling
      * @param pcbArray The array of PCBs in the RAM
      */
-    void schedule(ProcessControlBlock[] pcbArray);
+    void schedule(ProcessControlBlock[] pcbArray, List<ProcessControlBlock> currentProcesses);
     
     /**
      * Adds a pcb to the ready queue

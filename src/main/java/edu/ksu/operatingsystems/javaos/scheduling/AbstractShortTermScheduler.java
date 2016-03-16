@@ -1,9 +1,12 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
+import edu.ksu.operatingsystems.javaos.cpu.Cpu;
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
 import edu.ksu.operatingsystems.javaos.storage.Ram;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class AbstractShortTermScheduler implements ShortTermScheduler {
 
@@ -11,16 +14,13 @@ public abstract class AbstractShortTermScheduler implements ShortTermScheduler {
 
     protected Dispatcher dispatcher;
     protected Ram ram;
+    protected Cpu[] cpus;
 
-    protected ProcessControlBlock currentProcess;
-
-    public AbstractShortTermScheduler(Ram ram, Dispatcher dispatcher) {
+    public AbstractShortTermScheduler(Ram ram, Dispatcher dispatcher, Cpu[] cpus) {
         this.ram = ram;
         this.dispatcher = dispatcher;
+        this.cpus = cpus;
     }
-
-    @Override
-    public abstract void schedule(ProcessControlBlock[] pcbArray);
 
     @Override
     public void cleanupFinishedProcesses() {
@@ -46,11 +46,27 @@ public abstract class AbstractShortTermScheduler implements ShortTermScheduler {
     @Override
     public void scheduleIfNecessary() {
         cleanupFinishedProcesses();
-        schedule(ram.getProcesses());
 
-        if (currentProcess == null || currentProcess.isFinished()) {
-            currentProcess = dispatcher.dispatchProcessToCPU(readyQueue);
-            currentProcess.executionStarted();
+        List<ProcessControlBlock> currentProcesses = new ArrayList<ProcessControlBlock>();
+        for (Cpu cpu : cpus) {
+            currentProcesses.add(cpu.getCurrentProcess());
+        }
+
+        schedule(ram.getProcesses(), currentProcesses);
+
+        for (Cpu cpu : cpus) {
+            ProcessControlBlock currentProcess = cpu.getCurrentProcess();
+
+            if ((currentProcess == null || currentProcess.isFinished()) && !readyQueue.isEmpty()) {
+                currentProcess = dispatcher.dispatchProcessToCPU(readyQueue, cpu);
+
+                currentProcess.executionStarted();
+                cpu.setCurrentProcess(currentProcess);
+            }
+
+            if (currentProcess != null && currentProcess.isFinished()) {
+                cpu.setCurrentProcess(null);
+            }
         }
     }
 
