@@ -39,7 +39,6 @@ public abstract class AbstractShortTermScheduler implements ShortTermScheduler {
                 );
 
                 ram.removeProcessFromMemory(process.getID());
-                process.executionFinished();
             }
         }
     }
