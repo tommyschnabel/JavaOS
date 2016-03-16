@@ -9,38 +9,36 @@ public class DefaultRam implements Ram {
     @Override
     public void addProcessControlBlockToMemoryByProcessID(int processID, Disk disk) {
 
-        int instructionStart;
-        int instructionEnd;
-        int dataStart;
-        int dataEnd;
+        int instructionOnDiskStartsAt;
+        int instructionOnDiskEndsAt;
+        int dataOnDiskEndsAt;
 
         ProcessControlBlock programToAdd = disk.findProgram(processID);
 
         currentPositionInMemory = findSpotForProcess(programToAdd);
 
-        instructionStart = programToAdd.getInstructionLocationOnDisk();
-        instructionEnd = instructionStart + programToAdd.getInstructionSize();
-        dataStart = instructionEnd;
-        dataEnd = programToAdd.getInputBufferLength() +
+        instructionOnDiskStartsAt = programToAdd.getInstructionLocationOnDisk();
+        instructionOnDiskEndsAt = instructionOnDiskStartsAt + programToAdd.getInstructionSize();
+        dataOnDiskEndsAt = programToAdd.getInputBufferLength() +
                 programToAdd.getOutputBufferLength() +
                 programToAdd.getTemporaryBufferLength();
 
         programToAdd.setInstructionLocationInMemory(currentPositionInMemory);
         programToAdd.setOriginalInstructionLocationInMemory(currentPositionInMemory);
 
-        //System.out.println("instruction start: " + instructionStart);
-        //System.out.println("instruction end: " + instructionEnd);
-        //System.out.println("data start: " + dataStart);
-        //System.out.println("data end: " + dataEnd);
+        //System.out.println("instruction start: " + instructionOnDiskStartsAt);
+        //System.out.println("instruction end: " + instructionOnDiskEndsAt);
+        //System.out.println("data start: " + dataOnDiskStartsAt);
+        //System.out.println("data end: " + dataOnDiskEndsAt);
 
-        programToAdd.setLastInstructionLocationInMemory(instructionEnd);
+        programToAdd.setLastInstructionLocationInMemory(instructionOnDiskEndsAt);
 
-        programToAdd.setDataLocationInMemory(dataStart);
+        programToAdd.setDataLocationInMemory(currentPositionInMemory + programToAdd.getInstructionSize());
         programToAdd.setInMemory(true);
 
         char[] myDisk = disk.getDisk();
 
-        for (int i = instructionStart; i < (instructionEnd + dataEnd); i++) {
+        for (int i = instructionOnDiskStartsAt; i < (instructionOnDiskEndsAt + dataOnDiskEndsAt); i++) {
             diskArray[currentPositionInMemory++] = myDisk[i];
         }
 
@@ -77,7 +75,10 @@ public class DefaultRam implements Ram {
             if (processes[i] != null)
             {
                 System.out.println("Process ID: " + processes[i].getID());
-                System.out.println("Instruction Start: " + processes[i].getInstructionLocationInMemory());
+                System.out.println("Instruction Start: " + processes[i].getOriginalInstructionLocationInMemory());
+                System.out.println("InputBuffer Size: " + processes[i].getInputBufferLength());
+                System.out.println("OutputBuffer Size: " + processes[i].getOutputBufferLength());
+                System.out.println("TempBuffer Size: " + processes[i].getTemporaryBufferLength());
                 System.out.println("Process Size: " + processes[i].getProcessSize());
             }
         }
