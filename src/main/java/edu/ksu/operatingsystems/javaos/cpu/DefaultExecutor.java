@@ -29,7 +29,6 @@ public class DefaultExecutor implements Executor {
 
     @Override
     public void execute(String instruction) {
-        System.out.println("Instruction: " + instruction);
         Pair<Long, String> result = readFromRight(instruction, 2);
         Long arithmeticType = result.getFirst();
         instruction = result.getSecond();
@@ -88,8 +87,6 @@ public class DefaultExecutor implements Executor {
                 address = result.getFirst();
                 instruction = result.getSecond(); // Not really needed, but for good measure
 
-                System.out.println("Address: " + address);
-
                 doOp(opCode, ram, baseRegister, destRegister, address);
                 break;
             case 2:
@@ -136,8 +133,12 @@ public class DefaultExecutor implements Executor {
                 throw new IllegalArgumentException("Unsupported arithmetic operation: " + arithmeticType);
         }
 
-        //Increment the instruction
-        process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
+        //Process should halt if instruction location is -1
+        if (process.getInstructionLocationInMemory() != -1) {
+
+            //Increment the instruction
+            process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
+        }
 
     }
 
@@ -202,13 +203,17 @@ public class DefaultExecutor implements Executor {
                    ram.writeValueToAddress(lastBits.intValue(), Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()));
                     return;
                 case 3: //LW
-                    registers[destinationRegisterAddress] = Integer.parseInt(
-                        ram.readValueFromAddress(
-                            effectiveAddress(((Long) registers[baseRegisterAddress]).intValue(), lastBits.intValue()),
-                            8 //Read 8 hex values (32 bits)
-                        ),
-                        16 //Convert from base 16 (hex)
-                    );
+                    if (destinationRegisterAddress == 0) {
+                        registers[baseRegisterAddress] = lastBits;
+                    } else {
+                        registers[destinationRegisterAddress] = Integer.parseInt(
+                                ram.readValueFromAddress(
+                                        effectiveAddress(((Long) registers[baseRegisterAddress]).intValue(), lastBits.intValue()),
+                                        8 //Read 8 hex values (32 bits)
+                                ),
+                                16 //Convert from base 16 (hex)
+                        );
+                    }
                     return;
                 case 11: //MOVI
                     if (destinationRegisterAddress == 0) {
@@ -280,11 +285,10 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 18: //HLT
-                    //TODO: refactor code to check for -1
-                    //process.setInstructionLocationInMemory(-1);
+                    process.setInstructionLocationInMemory(-1);
                     return;
                 case 20: //JMP
-                    process.setInstructionLocationInMemory(((Long) effectiveAddress(0L, address)).intValue());
+                    process.setInstructionLocationInMemory(effectiveAddress(0L, address).intValue());
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");

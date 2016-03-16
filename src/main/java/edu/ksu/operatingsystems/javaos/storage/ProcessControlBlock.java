@@ -26,14 +26,19 @@ public class ProcessControlBlock {
     private Integer lastInstructionLocationInMemory;
 
     public boolean isFinished() {
-        if (mInstructionLocationInMemory != null || lastInstructionLocationInMemory != null) {
-            if (mInstructionLocationInMemory % 8 == 0)
-                return mInstructionLocationInMemory.equals(-1) || mInstructionLocationInMemory >= lastInstructionLocationInMemory;
-            else
-                System.out.println("ERROR!!!!!! SOMETHING WENT WRONG");
-
+        if (mInstructionLocationInMemory == null || lastInstructionLocationInMemory == null) {
+            return false;
         }
-        return false;
+
+        if (mInstructionLocationInMemory.equals(-1)) {
+            return true;
+        }
+
+        if (mInstructionLocationInMemory % 8 != 0) {
+            throw new RuntimeException(String.format("Error, memory location for process %s is in the wrong spot: %s", mID, mInstructionLocationInMemory));
+        }
+
+        return mInstructionLocationInMemory >= lastInstructionLocationInMemory;
     }
 
     public void setID(Integer id) {
