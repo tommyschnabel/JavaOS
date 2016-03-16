@@ -6,7 +6,7 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.7
 
-mainClassName = 'edu.ksu.operatingsystems.javaos.driver.OSDriver'
+mainClassName = 'edu.ksu.operatingsystems.javaos.main.Main'
 
 repositories {
     mavenCentral()

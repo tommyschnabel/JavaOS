@@ -2,11 +2,12 @@ package edu.ksu.operatingsystems.javaos.driver;
 
 import edu.ksu.operatingsystems.javaos.cpu.Cpu;
 import edu.ksu.operatingsystems.javaos.cpu.DefaultCpu;
-import edu.ksu.operatingsystems.javaos.scheduling.FIFOLongTermScheduler;
-import edu.ksu.operatingsystems.javaos.scheduling.FIFOShortTermScheduler;
-import edu.ksu.operatingsystems.javaos.scheduling.LongTermScheduler;
-import edu.ksu.operatingsystems.javaos.scheduling.ShortTermScheduler;
+import edu.ksu.operatingsystems.javaos.scheduling.*;
 import edu.ksu.operatingsystems.javaos.storage.*;
+import edu.ksu.operatingsystems.javaos.util.ProcessStats;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OSDriver {
 	
@@ -14,64 +15,74 @@ public class OSDriver {
 	private LongTermScheduler longTermScheduler;
 	private ShortTermScheduler shortTermScheduler;
 	private Cpu cpu;
+    private Disk disk;
+    private Ram ram;
 
-    private OSDriver(){
-        Disk disk = new DefaultDisk();
-        Ram ram = new DefaultRam();
+    public OSDriver(DriverType driverType) {
+
+        disk = new DefaultDisk();
+        ram = new DefaultRam();
 
         cpu = new DefaultCpu(ram);
+        Dispatcher dispatcher = new DefaultDispatcher(cpu);
+
         loader = new DefaultLoader(disk);
-        longTermScheduler = new FIFOLongTermScheduler(disk, ram);
-        shortTermScheduler = new FIFOShortTermScheduler(ram, cpu);
+
+        if (driverType == DriverType.FIFO) {
+
+            longTermScheduler = new FIFOLongTermScheduler(disk, ram);
+            shortTermScheduler = new FIFOShortTermScheduler(ram, dispatcher);
+
+        } else if (driverType == DriverType.Priority) {
+
+            longTermScheduler = new PriorityLongTermScheduler(disk, ram);
+            shortTermScheduler = new PriorityShortTermScheduler(ram, dispatcher);
+        }
 	}
 
-    public static void main(String[] args) {
+    public void execute() {
 
-        OSDriver osDriver = new OSDriver();
-        if (!osDriver.getLoader().load("Program-File.txt")) {
+        if (!loader.load("Program-File.txt")) {
             throw new RuntimeException("Couldn't load file");
         }
 
-        LongTermScheduler longTermScheduler = osDriver.longTermScheduler;
-
         while (!longTermScheduler.allProcessesFinished()) {
             longTermScheduler.scheduleIfNecessary();
-            osDriver.getShortTermScheduler().scheduleIfNecessary();
-            osDriver.getCpu().run();
-    	}
+            shortTermScheduler.scheduleIfNecessary();
+            cpu.run();
+        }
+    }
 
-        System.out.println("All processes finished");
+    public List<ProcessStats> generateStats() {
+        List<ProcessStats> stats = new ArrayList<>();
+        for (ProcessControlBlock pcb : disk.getProcesses()) {
+            stats.add(pcb.generateStats());
+        }
+
+        return stats;
     }
 
     public Loader getLoader() {
         return loader;
     }
 
-    public void setLoader(Loader loader) {
-        this.loader = loader;
-    }
-
     public LongTermScheduler getLongTermScheduler() {
         return longTermScheduler;
-    }
-
-    public void setLongTermScheduler(LongTermScheduler longTermScheduler) {
-        this.longTermScheduler = longTermScheduler;
     }
 
     public ShortTermScheduler getShortTermScheduler() {
         return shortTermScheduler;
     }
 
-    public void setShortTermScheduler(ShortTermScheduler shortTermScheduler) {
-        this.shortTermScheduler = shortTermScheduler;
-    }
-
     public Cpu getCpu() {
         return cpu;
     }
 
-    public void setCpu(Cpu cpu) {
-        this.cpu = cpu;
+    public Disk getDisk() {
+        return disk;
+    }
+
+    public Ram getRam() {
+        return ram;
     }
 }

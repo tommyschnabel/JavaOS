@@ -133,6 +133,8 @@ public class DefaultRam implements Ram {
         for (int i = 0; i < value.length(); i++) {
             diskArray[startAddress+i] = value.charAt(i);
         }
+
+        p.ioOperationMade();
     }
 
     @Override
@@ -149,6 +151,7 @@ public class DefaultRam implements Ram {
             val += diskArray[i];
         }
 
+        p.ioOperationMade();
         return val;
     }
 

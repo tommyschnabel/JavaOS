@@ -5,9 +5,9 @@ public interface Ram {
     /**
      * Adds instruction and data set to memory
      * @param processID The ID of the process we are adding
-     * @param defaultDisk The Disk we are adding the process from
+     * @param disk The Disk we are adding the process from
      */
-    void addProcessControlBlockToMemoryByProcessID(int processID, Disk defaultDisk);
+    void addProcessControlBlockToMemoryByProcessID(int processID, Disk disk);
 
     /**
      * Adds the Process to the PCB List in Ram

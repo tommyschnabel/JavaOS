@@ -1,7 +1,6 @@
 package edu.ksu.operatingsystems.javaos.scheduling;
 
 import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
-import edu.ksu.operatingsystems.javaos.storage.Ram;
 
 public interface ShortTermScheduler {
     
@@ -15,20 +14,17 @@ public interface ShortTermScheduler {
      * Adds a pcb to the ready queue
      * @param pcb The pcb to be added to the readyQueue
      */
-    public void addToReadyQueue(ProcessControlBlock pcb);
-    
-    /**
-     * Adds instruction and data set to memory
-     * @param pcb The pcb to be added to the waitQueue
-     */
-    public void addToWaitQueue(ProcessControlBlock pcb);
+    void addToReadyQueue(ProcessControlBlock pcb);
 
     /**
-     * Finds the processes that need to be put in the ready queue
-     * @param ram The ram from which we will grab the processes
-     * @return 
+     * Runs regular scheduling cycle. Checks to see if the current process
+     * is finished, and removes it from memory. Also adds processes in memory
+     * to the ready queue if they are not already there
      */
-    public ProcessControlBlock[] getProcesses(Ram ram);
-
     void scheduleIfNecessary();
+
+    /**
+     * Removes any finished processes from memory
+     */
+    void cleanupFinishedProcesses();
 }

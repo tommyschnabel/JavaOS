@@ -1,0 +1,71 @@
+NOTE: All times are in milliseconds
+
+
+AverageTime{driverType=FIFO, averageWaitTime=2083, averageReadyTime=2316, averageExecutionTime=-1458115798554, averageLifetime=-1458115794155, averageNumberOfIoOperations=569}
+
+ProcessStats{id=1, priority=2, timeSpentReady=4, timeSpentWaiting=13, timeSpentExecuting=47, lifetime=64, numberOfIoOperationsMade=29}
+ProcessStats{id=2, priority=4, timeSpentReady=51, timeSpentWaiting=13, timeSpentExecuting=10, lifetime=74, numberOfIoOperationsMade=17}
+ProcessStats{id=3, priority=6, timeSpentReady=61, timeSpentWaiting=13, timeSpentExecuting=14, lifetime=88, numberOfIoOperationsMade=17}
+ProcessStats{id=4, priority=5, timeSpentReady=75, timeSpentWaiting=13, timeSpentExecuting=14, lifetime=102, numberOfIoOperationsMade=23}
+ProcessStats{id=5, priority=3, timeSpentReady=89, timeSpentWaiting=13, timeSpentExecuting=7, lifetime=109, numberOfIoOperationsMade=17}
+ProcessStats{id=6, priority=7, timeSpentReady=96, timeSpentWaiting=13, timeSpentExecuting=6, lifetime=115, numberOfIoOperationsMade=17}
+ProcessStats{id=7, priority=5, timeSpentReady=102, timeSpentWaiting=13, timeSpentExecuting=10, lifetime=125, numberOfIoOperationsMade=23}
+ProcessStats{id=8, priority=16, timeSpentReady=108, timeSpentWaiting=17, timeSpentExecuting=6, lifetime=131, numberOfIoOperationsMade=23}
+ProcessStats{id=9, priority=2, timeSpentReady=114, timeSpentWaiting=17, timeSpentExecuting=5, lifetime=136, numberOfIoOperationsMade=17}
+ProcessStats{id=10, priority=10, timeSpentReady=119, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=140, numberOfIoOperationsMade=17}
+ProcessStats{id=11, priority=3, timeSpentReady=123, timeSpentWaiting=17, timeSpentExecuting=5, lifetime=145, numberOfIoOperationsMade=17}
+ProcessStats{id=12, priority=9, timeSpentReady=128, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=149, numberOfIoOperationsMade=17}
+ProcessStats{id=13, priority=12, timeSpentReady=132, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=153, numberOfIoOperationsMade=17}
+ProcessStats{id=14, priority=2, timeSpentReady=136, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=157, numberOfIoOperationsMade=23}
+ProcessStats{id=15, priority=5, timeSpentReady=140, timeSpentWaiting=17, timeSpentExecuting=3, lifetime=160, numberOfIoOperationsMade=17}
+ProcessStats{id=16, priority=8, timeSpentReady=95, timeSpentWaiting=65, timeSpentExecuting=6, lifetime=166, numberOfIoOperationsMade=23}
+ProcessStats{id=17, priority=4, timeSpentReady=92, timeSpentWaiting=74, timeSpentExecuting=1, lifetime=167, numberOfIoOperationsMade=17}
+ProcessStats{id=18, priority=12, timeSpentReady=78, timeSpentWaiting=89, timeSpentExecuting=2, lifetime=169, numberOfIoOperationsMade=17}
+ProcessStats{id=19, priority=1, timeSpentReady=62, timeSpentWaiting=109, timeSpentExecuting=2, lifetime=173, numberOfIoOperationsMade=17}
+ProcessStats{id=20, priority=2, timeSpentReady=58, timeSpentWaiting=115, timeSpentExecuting=2, lifetime=175, numberOfIoOperationsMade=17}
+ProcessStats{id=21, priority=4, timeSpentReady=66, timeSpentWaiting=103, timeSpentExecuting=2, lifetime=171, numberOfIoOperationsMade=23}
+ProcessStats{id=22, priority=10, timeSpentReady=38, timeSpentWaiting=142, timeSpentExecuting=2, lifetime=182, numberOfIoOperationsMade=17}
+ProcessStats{id=23, priority=5, timeSpentReady=50, timeSpentWaiting=125, timeSpentExecuting=1, lifetime=176, numberOfIoOperationsMade=17}
+ProcessStats{id=24, priority=7, timeSpentReady=43, timeSpentWaiting=136, timeSpentExecuting=1, lifetime=180, numberOfIoOperationsMade=17}
+ProcessStats{id=25, priority=9, timeSpentReady=37, timeSpentWaiting=145, timeSpentExecuting=9, lifetime=191, numberOfIoOperationsMade=17}
+ProcessStats{id=26, priority=4, timeSpentReady=44, timeSpentWaiting=132, timeSpentExecuting=3, lifetime=179, numberOfIoOperationsMade=23}
+ProcessStats{id=27, priority=9, timeSpentReady=42, timeSpentWaiting=149, timeSpentExecuting=9, lifetime=200, numberOfIoOperationsMade=17}
+ProcessStats{id=28, priority=3, timeSpentReady=47, timeSpentWaiting=153, timeSpentExecuting=2, lifetime=202, numberOfIoOperationsMade=17}
+ProcessStats{id=29, priority=1, timeSpentReady=42, timeSpentWaiting=161, timeSpentExecuting=-1458115798740, lifetime=-1458115798537, numberOfIoOperationsMade=16}
+ProcessStats{id=30, priority=8, timeSpentReady=44, timeSpentWaiting=158, timeSpentExecuting=1, lifetime=203, numberOfIoOperationsMade=23}
+
+
+AverageTime{driverType=Priority, averageWaitTime=2083, averageReadyTime=2316, averageExecutionTime=-1458115798554, averageLifetime=-1458115794155, averageNumberOfIoOperations=569}
+
+ProcessStats{id=1, priority=2, timeSpentReady=4, timeSpentWaiting=13, timeSpentExecuting=47, lifetime=64, numberOfIoOperationsMade=29}
+ProcessStats{id=2, priority=4, timeSpentReady=51, timeSpentWaiting=13, timeSpentExecuting=10, lifetime=74, numberOfIoOperationsMade=17}
+ProcessStats{id=3, priority=6, timeSpentReady=61, timeSpentWaiting=13, timeSpentExecuting=14, lifetime=88, numberOfIoOperationsMade=17}
+ProcessStats{id=4, priority=5, timeSpentReady=75, timeSpentWaiting=13, timeSpentExecuting=14, lifetime=102, numberOfIoOperationsMade=23}
+ProcessStats{id=5, priority=3, timeSpentReady=89, timeSpentWaiting=13, timeSpentExecuting=7, lifetime=109, numberOfIoOperationsMade=17}
+ProcessStats{id=6, priority=7, timeSpentReady=96, timeSpentWaiting=13, timeSpentExecuting=6, lifetime=115, numberOfIoOperationsMade=17}
+ProcessStats{id=7, priority=5, timeSpentReady=102, timeSpentWaiting=13, timeSpentExecuting=10, lifetime=125, numberOfIoOperationsMade=23}
+ProcessStats{id=8, priority=16, timeSpentReady=108, timeSpentWaiting=17, timeSpentExecuting=6, lifetime=131, numberOfIoOperationsMade=23}
+ProcessStats{id=9, priority=2, timeSpentReady=114, timeSpentWaiting=17, timeSpentExecuting=5, lifetime=136, numberOfIoOperationsMade=17}
+ProcessStats{id=10, priority=10, timeSpentReady=119, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=140, numberOfIoOperationsMade=17}
+ProcessStats{id=11, priority=3, timeSpentReady=123, timeSpentWaiting=17, timeSpentExecuting=5, lifetime=145, numberOfIoOperationsMade=17}
+ProcessStats{id=12, priority=9, timeSpentReady=128, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=149, numberOfIoOperationsMade=17}
+ProcessStats{id=13, priority=12, timeSpentReady=132, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=153, numberOfIoOperationsMade=17}
+ProcessStats{id=14, priority=2, timeSpentReady=136, timeSpentWaiting=17, timeSpentExecuting=4, lifetime=157, numberOfIoOperationsMade=23}
+ProcessStats{id=15, priority=5, timeSpentReady=140, timeSpentWaiting=17, timeSpentExecuting=3, lifetime=160, numberOfIoOperationsMade=17}
+ProcessStats{id=16, priority=8, timeSpentReady=95, timeSpentWaiting=65, timeSpentExecuting=6, lifetime=166, numberOfIoOperationsMade=23}
+ProcessStats{id=17, priority=4, timeSpentReady=92, timeSpentWaiting=74, timeSpentExecuting=1, lifetime=167, numberOfIoOperationsMade=17}
+ProcessStats{id=18, priority=12, timeSpentReady=78, timeSpentWaiting=89, timeSpentExecuting=2, lifetime=169, numberOfIoOperationsMade=17}
+ProcessStats{id=19, priority=1, timeSpentReady=62, timeSpentWaiting=109, timeSpentExecuting=2, lifetime=173, numberOfIoOperationsMade=17}
+ProcessStats{id=20, priority=2, timeSpentReady=58, timeSpentWaiting=115, timeSpentExecuting=2, lifetime=175, numberOfIoOperationsMade=17}
+ProcessStats{id=21, priority=4, timeSpentReady=66, timeSpentWaiting=103, timeSpentExecuting=2, lifetime=171, numberOfIoOperationsMade=23}
+ProcessStats{id=22, priority=10, timeSpentReady=38, timeSpentWaiting=142, timeSpentExecuting=2, lifetime=182, numberOfIoOperationsMade=17}
+ProcessStats{id=23, priority=5, timeSpentReady=50, timeSpentWaiting=125, timeSpentExecuting=1, lifetime=176, numberOfIoOperationsMade=17}
+ProcessStats{id=24, priority=7, timeSpentReady=43, timeSpentWaiting=136, timeSpentExecuting=1, lifetime=180, numberOfIoOperationsMade=17}
+ProcessStats{id=25, priority=9, timeSpentReady=37, timeSpentWaiting=145, timeSpentExecuting=9, lifetime=191, numberOfIoOperationsMade=17}
+ProcessStats{id=26, priority=4, timeSpentReady=44, timeSpentWaiting=132, timeSpentExecuting=3, lifetime=179, numberOfIoOperationsMade=23}
+ProcessStats{id=27, priority=9, timeSpentReady=42, timeSpentWaiting=149, timeSpentExecuting=9, lifetime=200, numberOfIoOperationsMade=17}
+ProcessStats{id=28, priority=3, timeSpentReady=47, timeSpentWaiting=153, timeSpentExecuting=2, lifetime=202, numberOfIoOperationsMade=17}
+ProcessStats{id=29, priority=1, timeSpentReady=42, timeSpentWaiting=161, timeSpentExecuting=-1458115798740, lifetime=-1458115798537, numberOfIoOperationsMade=16}
+ProcessStats{id=30, priority=8, timeSpentReady=44, timeSpentWaiting=158, timeSpentExecuting=1, lifetime=203, numberOfIoOperationsMade=23}
+
+

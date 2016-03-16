@@ -1,5 +1,7 @@
 package edu.ksu.operatingsystems.javaos.storage;
 
+import edu.ksu.operatingsystems.javaos.util.ProcessStats;
+
 public class ProcessControlBlock {
 
     private Integer mID;
@@ -16,6 +18,13 @@ public class ProcessControlBlock {
     private boolean mInMemory = false;
 
     private Long[] processState;
+
+    //Metrics
+    private long whenAddedToWaitQueue;
+    private long whenAddedToReadyQueue;
+    private long whenExecutionStarted;
+    private long whenExecutionFinished;
+    private int ioOperationCount;
 
     /**
      * Initialized when in Ram
@@ -160,6 +169,38 @@ public class ProcessControlBlock {
 
     public void setProcessState(Long[] processState) {
         this.processState = processState;
+    }
+
+    public void addedToWaitQueue() {
+        whenAddedToWaitQueue = System.currentTimeMillis();
+    }
+
+    public void addedToReadyQueue() {
+        whenAddedToReadyQueue = System.currentTimeMillis();
+    }
+
+    public void executionStarted() {
+        whenExecutionStarted = System.currentTimeMillis();
+    }
+
+    public void executionFinished() {
+        whenExecutionFinished = System.currentTimeMillis();
+    }
+
+    public void ioOperationMade() {
+        ioOperationCount++;
+    }
+
+    public ProcessStats generateStats() {
+
+        return new ProcessStats.Builder()
+                .setId(mID)
+                .setPriority(mPriority)
+                .setNumberOfIoOperationsMade(ioOperationCount)
+                .setTimeSpentWaiting(whenAddedToReadyQueue - whenAddedToWaitQueue)
+                .setTimeSpentReady(whenExecutionStarted - whenAddedToReadyQueue)
+                .setTimeSpentExecuting(whenExecutionFinished - whenExecutionStarted)
+                .build();
     }
 
     @Override
