@@ -1,5 +1,7 @@
 package edu.ksu.operatingsystems.javaos.util;
 
+import edu.ksu.operatingsystems.javaos.storage.Ram;
+
 public class ProcessStats {
 
     //NOTE: If you add something here don't forget to regenerate #toString
@@ -10,6 +12,7 @@ public class ProcessStats {
     private long timeSpentExecuting;
     private long lifetime;
     private int numberOfIoOperationsMade;
+    private double ramSpaceUsed;
 
     private ProcessStats(
             int id,
@@ -17,7 +20,8 @@ public class ProcessStats {
             long timeSpentReady,
             long timeSpentWaiting,
             long timeSpentExecuting,
-            int numberOfIoOperationsMade
+            int numberOfIoOperationsMade,
+            double ramSpaceUsed
     ) {
         this.id = id;
         this.priority = priority;
@@ -25,7 +29,7 @@ public class ProcessStats {
         this.timeSpentReady = timeSpentReady;
         this.timeSpentExecuting = timeSpentExecuting;
         this.numberOfIoOperationsMade = numberOfIoOperationsMade;
-
+        this.ramSpaceUsed = ramSpaceUsed;
         this.lifetime = timeSpentWaiting + timeSpentReady + timeSpentExecuting;
     }
 
@@ -37,6 +41,7 @@ public class ProcessStats {
         private long timeSpentWaiting;
         private long timeSpentExecuting;
         private int numberOfIoOperationsMade;
+        private double ramSpaceUsed;
 
         public ProcessStats build() {
             return new ProcessStats(
@@ -45,7 +50,8 @@ public class ProcessStats {
                     timeSpentReady,
                     timeSpentWaiting,
                     timeSpentExecuting,
-                    numberOfIoOperationsMade
+                    numberOfIoOperationsMade,
+                    ramSpaceUsed
             );
         }
 
@@ -78,6 +84,13 @@ public class ProcessStats {
             this.numberOfIoOperationsMade = numberOfIoOperationsMade;
             return this;
         }
+
+        //TODO: Once we move to using pages this will need to be refactored. However, for now we are pulling the entire program into RAM so this calculation is simple.
+
+        public Builder setAmountOfRAMUsed(int ramSpaceUsed) {
+            this.ramSpaceUsed = ((double)ramSpaceUsed/8192 * 100);
+            return this;
+        }
     }
 
     public int getId() {
@@ -104,6 +117,8 @@ public class ProcessStats {
         return numberOfIoOperationsMade;
     }
 
+    public double getPercentageOfRamSpaceUsed() { return ramSpaceUsed; }
+
     public long getLifetime() {
         return lifetime;
     }
@@ -118,6 +133,7 @@ public class ProcessStats {
                 ", timeSpentExecuting=" + timeSpentExecuting +
                 ", lifetime=" + lifetime +
                 ", numberOfIoOperationsMade=" + numberOfIoOperationsMade +
+                ", percentageOfRamUsed=" + ramSpaceUsed + "%" +
                 '}';
     }
 }
