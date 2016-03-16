@@ -139,3 +139,6 @@ local.properties
 
 #OSX
 .DS_Store
+
+#Results
+results.txt
