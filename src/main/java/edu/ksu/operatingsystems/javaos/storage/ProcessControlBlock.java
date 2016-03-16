@@ -40,6 +40,7 @@ public class ProcessControlBlock {
             return false;
         }
         if (mInstructionLocationInMemory.equals(-1)) {
+            executionFinished();
             return true;
         }
         if (mInstructionLocationInMemory % 8 != 0) {
@@ -183,7 +184,9 @@ public class ProcessControlBlock {
     }
 
     public void executionFinished() {
-        whenExecutionFinished = System.currentTimeMillis();
+        if (whenExecutionFinished == 0) {
+            whenExecutionFinished = System.currentTimeMillis();
+        }
     }
 
     public void ioOperationMade() {
