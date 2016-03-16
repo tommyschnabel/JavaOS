@@ -35,6 +35,7 @@ public class ProcessControlBlock {
     private Integer lastInstructionLocationInMemory;
 
     public boolean isFinished() {
+
         if (mInstructionLocationInMemory == null || lastInstructionLocationInMemory == null) {
             return false;
         }

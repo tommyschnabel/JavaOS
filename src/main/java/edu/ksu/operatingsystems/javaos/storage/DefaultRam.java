@@ -80,6 +80,7 @@ public class DefaultRam implements Ram {
                 System.out.println("OutputBuffer Size: " + processes[i].getOutputBufferLength());
                 System.out.println("TempBuffer Size: " + processes[i].getTemporaryBufferLength());
                 System.out.println("Process Size: " + processes[i].getProcessSize());
+                System.out.println("Last Instruction Location: " + processes[i].getLastInstructionLocationInMemory());
             }
         }
     }

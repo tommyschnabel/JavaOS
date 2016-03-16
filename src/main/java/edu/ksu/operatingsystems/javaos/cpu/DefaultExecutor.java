@@ -244,7 +244,7 @@ public class DefaultExecutor implements Executor {
                     return;
                 case 22: //BNE
                     if (registers[baseRegisterAddress] != destinationRegisterAddress) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
+                        process.setDataLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits).intValue());
                     }
                     return;
                 case 23: //BEZ

@@ -29,7 +29,6 @@ public abstract class AbstractLongTermScheduler implements LongTermScheduler {
                 return false;
             }
         }
-
         return true;
     }
 }
