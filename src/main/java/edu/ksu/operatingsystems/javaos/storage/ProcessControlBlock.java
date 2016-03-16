@@ -39,11 +39,9 @@ public class ProcessControlBlock {
         if (mInstructionLocationInMemory == null || lastInstructionLocationInMemory == null) {
             return false;
         }
-
         if (mInstructionLocationInMemory.equals(-1)) {
             return true;
         }
-
         if (mInstructionLocationInMemory % 8 != 0) {
             throw new RuntimeException(String.format("Error, memory location for process %s is in the wrong spot: %s", mID, mInstructionLocationInMemory));
         }

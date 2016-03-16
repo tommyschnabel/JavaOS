@@ -134,7 +134,6 @@ public class DefaultExecutor implements Executor {
 
         //Process should halt if instruction location is -1
         if (process.getInstructionLocationInMemory() != -1) {
-
             //Increment the instruction
             process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
         }
