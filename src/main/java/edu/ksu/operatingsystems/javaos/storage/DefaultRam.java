@@ -115,8 +115,14 @@ public class DefaultRam implements Ram {
 
 
     @Override
-    public void writeValueToAddress(Integer startAddress, String value)
+    public void writeValueToAddress(Integer startAddress, String value, ProcessControlBlock p)
     {
+        if ( (startAddress + value.length()) > p.getOriginalInstructionLocationInMemory() + p.getProcessSize() || startAddress < p.getOriginalInstructionLocationInMemory())
+        {
+            System.out.println("ERROR: Attempting to write to memory area of another process!!!");
+            return;
+        }
+
         System.out.println("Writing Value: " + value + " to address: " + startAddress );
         if (value == null)
         {
@@ -131,8 +137,13 @@ public class DefaultRam implements Ram {
     }
 
     @Override
-    public String readValueFromAddress(Integer startAddress, int lengthToRead)
+    public String readValueFromAddress(Integer startAddress, int lengthToRead, ProcessControlBlock p)
     {
+        if ( (startAddress + lengthToRead > p.getOriginalInstructionLocationInMemory() + p.getProcessSize() || startAddress < p.getOriginalInstructionLocationInMemory()) )
+        {
+            System.out.println("ERROR: Attempting to read from memory area of another process!!!");
+            return "";
+        }
         String val = "";
 
         for (int i = startAddress; i < startAddress + lengthToRead; i++)

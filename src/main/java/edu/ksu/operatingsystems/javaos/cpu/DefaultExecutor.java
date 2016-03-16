@@ -160,7 +160,7 @@ public class DefaultExecutor implements Executor {
             switch (op) {
                 case 4: //MOV
                     if (secondOperandRegisterAddress == 0) {
-                        ram.writeValueToAddress(process.getDataLocationInMemory() + destinationAddress, String.valueOf(registers[firstOperandRegisterAddress]));
+                        ram.writeValueToAddress(process.getDataLocationInMemory() + destinationAddress, String.valueOf(registers[firstOperandRegisterAddress]), process);
                     } else {
                         registers[destinationRegisterAddress] = registers[secondOperandRegisterAddress];
                     }
@@ -201,11 +201,12 @@ public class DefaultExecutor implements Executor {
             switch (op) {
                 case 2: //ST
                    ram.writeValueToAddress(process.getDataLocationInMemory() + lastBits.intValue(),
-                           Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()));
+                           Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()),
+                           process);
                     return;
                 case 3: //LW
                     registers[destinationRegisterAddress] = Long.parseLong(
-                            ram.readValueFromAddress(process.getDataLocationInMemory() + lastBits.intValue(), 8), //Read 8 hex values (32 bits)) from address
+                            ram.readValueFromAddress(process.getDataLocationInMemory() + lastBits.intValue(), 8, process), //Read 8 hex values (32 bits)) from address
                             16 //Convert from base 16 (hex)
                     );
                     return;
@@ -302,7 +303,7 @@ public class DefaultExecutor implements Executor {
                         registers[registerOneAddress] = registers[registerTwoAddress];
                     } else {
                         registers[registerOneAddress] = Long.parseLong(
-                                ram.readValueFromAddress(process.getInstructionLocationInMemory() + address, 8),
+                                ram.readValueFromAddress(process.getInstructionLocationInMemory() + address, 8, process),
                                 16
                         );
                     }
@@ -310,7 +311,8 @@ public class DefaultExecutor implements Executor {
                 case 1: //WR
                     ram.writeValueToAddress(
                             process.getOutputBufferLocation(),
-                            String.valueOf(registers[((Long) accumulatorPosition).intValue()])
+                            String.valueOf(registers[((Long) accumulatorPosition).intValue()]),
+                            process
                     );
                     return;
                 default:

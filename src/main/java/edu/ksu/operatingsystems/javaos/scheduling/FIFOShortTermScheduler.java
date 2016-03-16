@@ -57,7 +57,7 @@ public class FIFOShortTermScheduler implements ShortTermScheduler {
                         String.format(
                                 "Process %s is finished, removing from memory. Finish value: %s",
                                 process.getID(),
-                                ram.readValueFromAddress(process.getOutputBufferLocation(), process.getOutputBufferLength())
+                                ram.readValueFromAddress(process.getOutputBufferLocation(), process.getOutputBufferLength(), process)
                         )
                 );
 

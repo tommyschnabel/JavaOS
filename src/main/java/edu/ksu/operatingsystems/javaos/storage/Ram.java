@@ -53,7 +53,7 @@ public interface Ram {
      * @param startAddress The address to write to
      * @param value The value to write
      */
-    void writeValueToAddress(Integer startAddress, String value);
+    void writeValueToAddress(Integer startAddress, String value, ProcessControlBlock p);
 
     /**
      * Reads a value from an address
@@ -61,7 +61,7 @@ public interface Ram {
      * @param lengthToRead Number of hex values to read
      * @return The value stored in the address
      */
-    String readValueFromAddress(Integer startAddress, int lengthToRead);
+    String readValueFromAddress(Integer startAddress, int lengthToRead, ProcessControlBlock p);
 
     /**
      * Removes a process from the RAM with the specified ID

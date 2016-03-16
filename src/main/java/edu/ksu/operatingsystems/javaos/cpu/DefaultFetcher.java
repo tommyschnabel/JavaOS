@@ -7,7 +7,7 @@ public class DefaultFetcher implements Fetcher{
 
 	public byte[] fetch(ProcessControlBlock processControlBlock, Ram ram) {
 		int address = processControlBlock.getInstructionLocationInMemory();
-		String instruction = ram.readValueFromAddress(address, 8);
+		String instruction = ram.readValueFromAddress(address, 8, processControlBlock);
 		return instruction.getBytes();
 	}
 
