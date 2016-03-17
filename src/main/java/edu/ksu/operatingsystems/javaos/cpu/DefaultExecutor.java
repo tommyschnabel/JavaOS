@@ -11,6 +11,7 @@ public class DefaultExecutor implements Executor {
     private long[] registers;
     private ProcessControlBlock process;
     private Ram ram;
+    private CpuCache cache;
 
     public DefaultExecutor(
             Ram ram,
@@ -23,6 +24,9 @@ public class DefaultExecutor implements Executor {
     @Override
     public void setProcess(ProcessControlBlock process) {
         this.process = process;
+        cache = new DefaultCpuCache(ram);
+        cache.setProcess(process);
+        cache.addProcessToCache(process);
     }
 
     @Override
@@ -62,7 +66,7 @@ public class DefaultExecutor implements Executor {
                 destRegister = result.getFirst();
                 instruction = result.getSecond(); // Not really needed, but for good measure
 
-                doOp(opCode, ram, firstRegister, secondRegister, destRegister, null);
+                doOp(opCode, cache, firstRegister, secondRegister, destRegister, null);
                 break;
             case 1:
 
@@ -86,7 +90,7 @@ public class DefaultExecutor implements Executor {
                 address = result.getFirst();
                 instruction = result.getSecond(); // Not really needed, but for good measure
 
-                doOp(opCode, ram, baseRegister, destRegister, address);
+                doOp(opCode, cache, baseRegister, destRegister, address);
                 break;
             case 2:
 
@@ -100,7 +104,7 @@ public class DefaultExecutor implements Executor {
                 address = result.getFirst();
                 instruction = result.getSecond(); // Not really needed, but for good measure
 
-                doOp(opCode, ram, address);
+                doOp(opCode, cache, address);
                 break;
             case 3:
 
@@ -124,7 +128,7 @@ public class DefaultExecutor implements Executor {
                 address = result.getFirst();
                 instruction = result.getSecond(); // Not really needed, but for good measure
 
-                doOp(opCode, ram, firstRegister, secondRegister, address);
+                doOp(opCode, cache, firstRegister, secondRegister, address);
                 break;
             default:
 
@@ -133,20 +137,19 @@ public class DefaultExecutor implements Executor {
         }
 
         //Process should halt if instruction location is -1
-        if (process.getInstructionLocationInMemory() != -1) {
+        if (cache.getCachePointer() != -1) {
             //Increment the instruction
-            process.setInstructionLocationInMemory(process.getInstructionLocationInMemory() + WORD_HEX_LENGTH);
+            cache.setCachePointer(cache.getCachePointer() + WORD_HEX_LENGTH);
         }
-
     }
 
     /**
      * Processes the opCode and does the given operation.
      * @param op The op code
-     * @param ram The system ram
+     * @param cache The Cpu's cache
      * @param registerAddresses The register addresses, with the address part of the instruction as the last entry, if available
      */
-    private void doOp(int op, Ram ram, Long... registerAddresses) {
+    private void doOp(int op, CpuCache cache, Long... registerAddresses) {
 
         //Arithmetic operation
         if ((op >=4 && op <= 10) || op == 16) {
@@ -158,7 +161,7 @@ public class DefaultExecutor implements Executor {
             switch (op) {
                 case 4: //MOV
                     if (secondOperandRegisterAddress == 0) {
-                        ram.writeValueToAddress(process.getDataLocationInMemory() + destinationAddress, String.valueOf(registers[firstOperandRegisterAddress]), process);
+                        cache.writeValueToAddress(0, String.valueOf(registers[firstOperandRegisterAddress]));
                     } else {
                         registers[destinationRegisterAddress] = registers[secondOperandRegisterAddress];
                     }
@@ -198,15 +201,12 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 2: //ST
-                   ram.writeValueToAddress(
-                           process.getDataLocationInMemory() + lastBits.intValue(),
-                           Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue()),
-                           process
+                   cache.writeValueToAddress(0, Integer.toHexString(((Long) registers[baseRegisterAddress]).intValue())
                    );
                     return;
                 case 3: //LW
                     registers[destinationRegisterAddress] = Long.parseLong(
-                            ram.readValueFromAddress(process.getDataLocationInMemory() + lastBits.intValue(), 8, process), //Read 8 hex values (32 bits)) from address
+                            cache.readValueFromAddress(cache.getDataLocationInMemory() + lastBits.intValue(), 8), //Read 8 hex values (32 bits)) from address
                             16 //Convert from base 16 (hex)
                     );
                     return;
@@ -241,32 +241,32 @@ public class DefaultExecutor implements Executor {
                     return;
                 case 21: //BEQ
                     if (registers[baseRegisterAddress] == registers[destinationRegisterAddress]) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
+                        cache.setCachePointer(0 + lastBits.intValue() * 2);
                     }
                     return;
                 case 22: //BNE
                     if (registers[baseRegisterAddress] != registers[destinationRegisterAddress]) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
+                        cache.setCachePointer(0 + lastBits.intValue() * 2);
                     }
                     return;
                 case 23: //BEZ
                     if (registers[baseRegisterAddress] == 0) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
+                        cache.setCachePointer(0 + lastBits.intValue() * 2);
                     }
                     return;
                 case 24: //BNZ
                     if (registers[baseRegisterAddress] != 0) {
-                        process.setInstructionLocationInMemory(process.getOriginalInstructionLocationInMemory() + lastBits.intValue() * 2);
+                        cache.setCachePointer(0 + lastBits.intValue() * 2);
                     }
                     return;
                 case 25: //BGZ
                     if (registers[baseRegisterAddress] > 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits * 2).intValue());
+                        cache.setCachePointer(effectiveAddress(registers[baseRegisterAddress], lastBits * 2).intValue());
                     }
                     return;
                 case 26: //BLZ
                     if (registers[baseRegisterAddress] < 0) {
-                        process.setInstructionLocationInMemory(effectiveAddress(registers[baseRegisterAddress], lastBits * 2).intValue());
+                        cache.setCachePointer(effectiveAddress(registers[baseRegisterAddress], lastBits * 2).intValue());
                     }
                     return;
                 default:
@@ -280,10 +280,10 @@ public class DefaultExecutor implements Executor {
 
             switch (op) {
                 case 18: //HLT
-                    process.setInstructionLocationInMemory(-1);
+                    cache.setCachePointer(-1);
                     return;
                 case 20: //JMP
-                    process.setInstructionLocationInMemory(effectiveAddress(0L, address).intValue());
+                    cache.setCachePointer(effectiveAddress(0L, address).intValue());
                     return;
                 default:
                     throw new IllegalArgumentException("Looks like the condition for op distribution is wrong");
@@ -300,19 +300,17 @@ public class DefaultExecutor implements Executor {
             switch (op) {
                 case 0: //RD
                     registers[registerOneAddress] = Long.parseLong(
-                                ram.readValueFromAddress(
-                                process.getInputBufferLocation(),
-                                8,
-                                process
+                                cache.readValueFromAddress(
+                                cache.getInputBufferLocation(),
+                                8
                         ),
                         16
                     );
                     return;
                 case 1: //WR
-                    ram.writeValueToAddress(
-                            process.getOutputBufferLocation(),
-                            String.valueOf(registers[((Long) accumulatorPosition).intValue()]),
-                            process
+                    cache.writeValueToAddress(
+                            cache.getOutputBufferLocation(),
+                            String.valueOf(registers[((Long) accumulatorPosition).intValue()])
                     );
                     return;
                 default:
@@ -324,11 +322,11 @@ public class DefaultExecutor implements Executor {
     }
 
     private Long effectiveAddress(Long baseRegister, Long address) {
-        return baseRegister + address + process.getDataLocationInMemory();
+        return baseRegister + address + cache.getDataLocationInMemory();
     }
 
     private Integer effectiveAddress(Integer baseRegister, Integer address) {
-        return baseRegister + address + process.getDataLocationInMemory();
+        return baseRegister + address + cache.getDataLocationInMemory();
     }
 
     private Pair<Long, String> readFromRight(String readFrom, int numberOfCharacters) {

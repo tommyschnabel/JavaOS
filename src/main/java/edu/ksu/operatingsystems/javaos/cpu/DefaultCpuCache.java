@@ -87,5 +87,30 @@ public class DefaultCpuCache implements CpuCache {
         return processInCache;
     }
 
+    @Override
+    public ProcessControlBlock getProcess() {
+        return mProcess;
+    }
+    @Override
+    public void setProcess(ProcessControlBlock process) {
+        this.mProcess = process;
+    }
+    @Override
+    public int getDataLocationInMemory()
+    {
+        System.out.println("Data location in memory: " + mProcess.getInstructionSize());
+        return mProcess.getInstructionSize();
+    }
+    @Override
+    public int getInputBufferLocation()
+    {
+        return getDataLocationInMemory(); //The input buffer is the first piece of data.
+    }
+    @Override
+    public int getOutputBufferLocation()
+    {
+        return getDataLocationInMemory() + mProcess.getInputBufferLength();
+    }
+
 
 }

@@ -7,15 +7,25 @@ import edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock;
  */
 public interface CpuCache {
 
-    public int getCachePointer();
+    int getCachePointer();
 
-    public void setCachePointer(int cachePointer);
+    void setCachePointer(int cachePointer);
 
-    public void writeValueToAddress(Integer startAddress, String value);
+    void writeValueToAddress(Integer startAddress, String value);
 
-    public String readValueFromAddress(Integer startAddress, int lengthToRead);
+    String readValueFromAddress(Integer startAddress, int lengthToRead);
 
-    public void addProcessToCache(ProcessControlBlock process);
+    void addProcessToCache(ProcessControlBlock process);
 
-    public String removeProcessFromCache();
+    String removeProcessFromCache();
+
+    ProcessControlBlock getProcess();
+
+    void setProcess(ProcessControlBlock process);
+
+    int getDataLocationInMemory();
+
+    int getInputBufferLocation();
+
+    int getOutputBufferLocation();
 }
