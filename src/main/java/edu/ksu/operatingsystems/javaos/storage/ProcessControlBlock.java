@@ -14,6 +14,7 @@ public class ProcessControlBlock {
     private int mTemporaryBufferLength;
     private int mProgramCounter;
     private int processSize;
+    private Integer cachePointer = 0;
 
     private boolean mInMemory = false;
 
@@ -44,6 +45,13 @@ public class ProcessControlBlock {
             return true;
         }
         if (mInstructionLocationInMemory % 8 != 0) {
+            throw new RuntimeException(String.format("Error, memory location for process %s is in the wrong spot: %s", mID, mInstructionLocationInMemory));
+        }
+        if (cachePointer.equals(-1)) {
+            executionFinished();
+            return true;
+        }
+        if (cachePointer % 8 != 0) {
             throw new RuntimeException(String.format("Error, memory location for process %s is in the wrong spot: %s", mID, mInstructionLocationInMemory));
         }
 
@@ -221,5 +229,12 @@ public class ProcessControlBlock {
                 ", mInstructionLocationInMemory=" + mInstructionLocationInMemory +
                 ", mDataLocationInMemory=" + mDataLocationInMemory +
                 '}';
+    }
+    public Integer getCachePointer() {
+        return cachePointer;
+    }
+
+    public void setCachePointer(Integer cachePointer) {
+        this.cachePointer = cachePointer;
     }
 }

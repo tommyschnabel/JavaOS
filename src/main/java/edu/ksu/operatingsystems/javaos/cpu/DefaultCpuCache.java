@@ -24,6 +24,7 @@ public class DefaultCpuCache implements CpuCache {
     }
     @Override
     public void setCachePointer(int cachePointer) {
+        mProcess.setCachePointer(cachePointer);
         this.cachePointer = cachePointer;
     }
 
@@ -33,7 +34,6 @@ public class DefaultCpuCache implements CpuCache {
         while (value.length() < 8) {
             value = "0" + value;
         }
-
         if (value == null) {
             System.out.println("The string passed in was null. No value was written.");
             return;
@@ -98,7 +98,6 @@ public class DefaultCpuCache implements CpuCache {
     @Override
     public int getDataLocationInMemory()
     {
-        System.out.println("Data location in memory: " + mProcess.getInstructionSize());
         return mProcess.getInstructionSize();
     }
     @Override

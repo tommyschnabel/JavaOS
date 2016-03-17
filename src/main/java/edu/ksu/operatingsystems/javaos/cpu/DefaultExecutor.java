@@ -23,10 +23,12 @@ public class DefaultExecutor implements Executor {
 
     @Override
     public void setProcess(ProcessControlBlock process) {
-        this.process = process;
-        cache = new DefaultCpuCache(ram);
-        cache.setProcess(process);
-        cache.addProcessToCache(process);
+        if (this.process != process) {
+            this.process = process;
+            cache = new DefaultCpuCache(ram);
+            cache.setProcess(process);
+            cache.addProcessToCache(process);
+        }
     }
 
     @Override
