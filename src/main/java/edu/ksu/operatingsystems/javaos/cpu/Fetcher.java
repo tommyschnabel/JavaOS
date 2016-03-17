@@ -11,5 +11,5 @@ public interface Fetcher {
      * @param processControlBlock The {@link edu.ksu.operatingsystems.javaos.storage.ProcessControlBlock} that's currently running
      * @return The Byte array with the instruction
      */
-    byte[] fetch(ProcessControlBlock processControlBlock, Ram ram);
+    byte[] fetch(ProcessControlBlock processControlBlock, CpuCache cache);
 }

@@ -55,10 +55,10 @@ public class OSDriver {
         while (!longTermScheduler.allProcessesFinished()) {
             longTermScheduler.scheduleIfNecessary();
             shortTermScheduler.scheduleIfNecessary();
-
             for (Cpu cpu : cpus) {
                 cpu.run();
             }
+            shortTermScheduler.cleanupFinishedProcesses(); //This writes out the results for the last finished process.
         }
     }
 

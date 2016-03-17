@@ -7,7 +7,7 @@ public class DefaultCpu implements Cpu {
 
     /**
      * The cpu has 16 registers, each 32 bits long
-     * (using {@link Long}s because 0xFFFFFFFF < {@link Integer.MAX_VALUE}
+     * (using {@link Long}s because 0xFFFFFFFF < {@link Integer}
      * Register-0 is the accumulator
      * Register-1 is the Zero register
      * All other registers are general purpose registers
@@ -32,11 +32,11 @@ public class DefaultCpu implements Cpu {
         if (currentProcess == null) {
             return;
         }
-
-    	byte[] instruction = fetcher.fetch(currentProcess, ram);
+        executor.setProcess(currentProcess);
+        CpuCache cache = executor.getCpuCache();
+    	byte[] instruction = fetcher.fetch(currentProcess, cache);
     	String decodedInstruction = decoder.decode(instruction);
-    	executor.setProcess(currentProcess);
-    	executor.execute(decodedInstruction);
+        executor.execute(decodedInstruction);
     }
 
     @Override

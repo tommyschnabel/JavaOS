@@ -143,6 +143,12 @@ public class DefaultExecutor implements Executor {
             //Increment the instruction
             cache.setCachePointer(cache.getCachePointer() + WORD_HEX_LENGTH);
         }
+        else
+        {
+            //Process is finished. Removing process from cache.
+            String processVal = cache.removeProcessFromCache();
+            ram.writeValueToAddress(process.getOriginalInstructionLocationInMemory(), processVal, process);
+        }
     }
 
     /**
@@ -335,5 +341,10 @@ public class DefaultExecutor implements Executor {
         Long value = Long.parseLong(readFrom.substring(0, numberOfCharacters), 2);
         String result = readFrom.substring(numberOfCharacters);
         return new Pair<Long, String>(value, result);
+    }
+    @Override
+    public CpuCache getCpuCache()
+    {
+        return cache;
     }
 }
