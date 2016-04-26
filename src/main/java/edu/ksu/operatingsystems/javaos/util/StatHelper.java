@@ -69,13 +69,21 @@ public class StatHelper {
     }
 
     private String getAveragesString() {
-        return "AverageTime{" +
+    	return "TotalTime{" +
                 "driverType=" + driverType +
-                ", averageWaitTime=" + averageWaitTime +
-                ", averageReadyTime=" + averageReadyTime +
-                ", averageExecutionTime=" + averageExecutionTime +
-                ", averageLifetime=" + averageLifetime +
-                ", averageNumberOfIoOperations=" + averageNumberOfIoOperations +
-                '}';
+                ", totalWaitTime=" + averageWaitTime +
+                ", totalReadyTime=" + averageReadyTime +
+                ", totalExecutionTime=" + averageExecutionTime +
+                ", totalLifetime=" + averageLifetime +
+                ", totalNumberOfIoOperations=" + averageNumberOfIoOperations +
+                "}\r\n"+
+                "AverageTime{" +
+                "driverType=" + driverType +
+                ", averageWaitTime=" + (averageWaitTime/30) +
+                ", averageReadyTime=" + (averageReadyTime/30) +
+                ", averageExecutionTime=" + (averageExecutionTime/30) +
+                ", averageLifetime=" + (averageLifetime/30) +
+                ", averageNumberOfIoOperations=" + (averageNumberOfIoOperations/30) +
+                "}";
     }
 }
