@@ -16,7 +16,8 @@ public class Main {
         statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
 
         driverType = DriverType.Priority;
-        executeDriver(new OSDriver(driverType));
+        driver = new OSDriver(driverType);
+        executeDriver(driver);
         statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), false);
     }
 
