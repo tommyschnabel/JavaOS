@@ -49,8 +49,8 @@ public class OSDriver {
             shortTermScheduler = new PriorityShortTermScheduler(ram, dispatcher, cpus);
         } else if (driverType == DriverType.SJF) {
 
-//            longTermScheduler = new SJFLongTermScheduler(disk, ram);
-//            shortTermScheduler = new SJFShortTermScheduler(disk, ram);
+            longTermScheduler = new SJFLongTermScheduler(disk, ram);
+            shortTermScheduler = new SJFShortTermScheduler(ram, dispatcher, cpus);
         }
 	}
 

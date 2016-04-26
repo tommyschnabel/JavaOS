@@ -18,14 +18,17 @@ public class StatHelper {
     private long averageNumberOfIoOperations;
 
     private DriverType driverType;
+    private int numberOfCores;
 
     public void totalStatsAndWriteToFile(
-            DriverType type,
+            DriverType driverType,
+            int numberOfCores,
             List<ProcessStats> results,
             boolean overwriteFile
     ) {
 
-        this.driverType = type;
+        this.driverType = driverType;
+        this.numberOfCores = numberOfCores;
 
         averageWaitTime = 0;
         averageReadyTime = 0;
@@ -43,7 +46,9 @@ public class StatHelper {
 
         PrintWriter out = null;
         try {
-            out = new PrintWriter(new FileOutputStream(type+"."+OUTPUT_FILE, !overwriteFile));
+            out = new PrintWriter(new FileOutputStream(
+                    driverType+"." + Integer.toString(numberOfCores)+"cores."+OUTPUT_FILE,
+                    !overwriteFile));
 
             if (overwriteFile) {
                 out.println("NOTE: All times are in milliseconds");

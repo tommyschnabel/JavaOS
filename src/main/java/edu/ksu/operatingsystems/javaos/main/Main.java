@@ -9,22 +9,43 @@ public class Main {
 
     public static void main(String[] args) {
         DriverType driverType = DriverType.FIFO;
-        OSDriver driver = new OSDriver(driverType, 4);
+        int numberOfCores = 1;
+        OSDriver driver = new OSDriver(driverType, numberOfCores);
         executeDriver(driver);
         StatHelper statHelper = new StatHelper();
-        statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
+        statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
+
+        driverType = DriverType.FIFO;
+        numberOfCores = 4;
+        driver = new OSDriver(driverType, numberOfCores);
+        executeDriver(driver);
+        statHelper = new StatHelper();
+        statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
 
         driverType = DriverType.Priority;
-        driver = new OSDriver(driverType, 4);
+        numberOfCores = 1;
+        driver = new OSDriver(driverType, numberOfCores);
         executeDriver(driver);
-        statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
+        statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
+
+        driverType = DriverType.Priority;
+        numberOfCores = 4;
+        driver = new OSDriver(driverType, numberOfCores);
+        executeDriver(driver);
+        statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
 
 //        driverType = DriverType.SJF;
-//        driver = new OSDriver(driverType);
+//        numberOfCores = 1;
+//        driver = new OSDriver(driverType, numberOfCores);
 //        executeDriver(driver);
-//        statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
-
-        System.out.println("Check the different results.txt files for statistics on the run.");
+//        statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
+//
+//        driverType = DriverType.SJF;
+//        numberOfCores = 4;
+//        driver = new OSDriver(driverType, numberOfCores);
+//        executeDriver(driver);
+//        statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
+//        System.out.println("Check the different results.txt files for statistics on the run.");
     }
 
     private static void executeDriver(OSDriver driver) {
