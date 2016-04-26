@@ -37,5 +37,9 @@ public class Main {
                 pcb.generateStats();
             }
         }
+        System.out.println("Finished executing with driver type= "
+                + driver.getDriverType()
+                + " and number of cores= "
+                + driver.getNumberOfCores());
     }
 }

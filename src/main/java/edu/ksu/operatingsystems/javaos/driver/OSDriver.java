@@ -12,6 +12,7 @@ import java.util.List;
 public class OSDriver {
 
     private int numberOfCores;
+    private DriverType driverType;
 	
 	private Loader loader;
 	private LongTermScheduler longTermScheduler;
@@ -22,6 +23,7 @@ public class OSDriver {
 
     public OSDriver(DriverType driverType, int numberOfCores) {
 
+        this.driverType = driverType;
         this.numberOfCores = numberOfCores;
 
         disk = new DefaultDisk();
@@ -45,6 +47,10 @@ public class OSDriver {
 
             longTermScheduler = new PriorityLongTermScheduler(disk, ram);
             shortTermScheduler = new PriorityShortTermScheduler(ram, dispatcher, cpus);
+        } else if (driverType == DriverType.SJF) {
+
+//            longTermScheduler = new SJFLongTermScheduler(disk, ram);
+//            shortTermScheduler = new SJFShortTermScheduler(disk, ram);
         }
 	}
 
@@ -95,5 +101,14 @@ public class OSDriver {
 
     public Ram getRam() {
         return ram;
+    }
+
+
+    public DriverType getDriverType() {
+        return driverType;
+    }
+
+    public int getNumberOfCores() {
+        return numberOfCores;
     }
 }
