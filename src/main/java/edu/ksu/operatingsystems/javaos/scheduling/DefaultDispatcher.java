@@ -17,7 +17,7 @@ public class DefaultDispatcher implements Dispatcher {
 
         loadPCBStateIntoRegisters(sendProcess, cpu);
         cpu.setCurrentProcess(sendProcess);
-        System.out.println("Executing process " + sendProcess.getID());
+//        System.out.println("Executing process " + sendProcess.getID());
 
         return sendProcess;
     }

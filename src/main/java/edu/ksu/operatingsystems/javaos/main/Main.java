@@ -24,12 +24,11 @@ public class Main {
 
         driver.execute();
 
+        System.out.println("All processes finished");
         for (ProcessControlBlock pcb : driver.getDisk().getProcesses()) {
             if (pcb != null) {
                 System.out.println(pcb.generateStats());
             }
         }
-
-        System.out.println("All processes finished");
     }
 }

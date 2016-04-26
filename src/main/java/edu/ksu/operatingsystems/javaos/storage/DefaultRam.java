@@ -104,7 +104,7 @@ public class DefaultRam implements Ram {
                 }
             }
         }
-        System.out.println("Failed to find process with ID: " + ID);
+//        System.out.println("Failed to find process with ID: " + ID);
         return null;
     }
 
@@ -124,7 +124,7 @@ public class DefaultRam implements Ram {
         }
 
         if (value == null) {
-            System.out.println("The string passed in was null. No value was written.");
+//            System.out.println("The string passed in was null. No value was written.");
             return;
         }
 
@@ -230,7 +230,7 @@ public class DefaultRam implements Ram {
     @Override
     public void defrag()
     {
-        System.out.println("Defragging memory");
+//        System.out.println("Defragging memory");
         int amtOfSpaces = 0;
         for (int i = 0; i < diskArray.length; i++)
         {
