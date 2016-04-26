@@ -30,13 +30,13 @@ public abstract class AbstractShortTermScheduler implements ShortTermScheduler {
 
             //Remove from memory if finished
             if (process != null && process.isFinished()) {
-                System.out.println(
-                        String.format(
-                                "Process %s is finished, removing from memory. Finish value: %s",
-                                process.getID(),
-                                ram.readValueFromAddress(process.getOutputBufferLocation(), process.getOutputBufferLength(), process)
-                        )
-                );
+//                System.out.println(
+//                        String.format(
+//                                "Process %s is finished, removing from memory. Finish value: %s",
+//                                process.getID(),
+//                                ram.readValueFromAddress(process.getOutputBufferLocation(), process.getOutputBufferLength(), process)
+//                        )
+//                );
 
                 ram.removeProcessFromMemory(process.getID());
             }

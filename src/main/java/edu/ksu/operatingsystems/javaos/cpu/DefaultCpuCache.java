@@ -35,7 +35,7 @@ public class DefaultCpuCache implements CpuCache {
             value = "0" + value;
         }
         if (value == null) {
-            System.out.println("The string passed in was null. No value was written.");
+//            System.out.println("The string passed in was null. No value was written.");
             return;
         }
 
@@ -62,7 +62,7 @@ public class DefaultCpuCache implements CpuCache {
         if (!isEmpty)
         {
             System.out.println("There is no room for the process!");
-            System.out.println("Process ID: " + mProcess.getID() + " already exists in cache");
+//            System.out.println("Process ID: " + mProcess.getID() + " already exists in cache");
             return;
         }
         String processFromRam = ram.readValueFromAddress(process.getOriginalInstructionLocationInMemory(),

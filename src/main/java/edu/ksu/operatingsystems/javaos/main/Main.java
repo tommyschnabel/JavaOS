@@ -15,7 +15,8 @@ public class Main {
         statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
 
         driverType = DriverType.Priority;
-        executeDriver(new OSDriver(driverType));
+        driver = new OSDriver(driverType);
+        executeDriver(driver);
         statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), false);
 
 //        driverType = DriverType.SJF;
@@ -28,12 +29,11 @@ public class Main {
 
         driver.execute();
 
+        System.out.println("All processes finished");
         for (ProcessControlBlock pcb : driver.getDisk().getProcesses()) {
             if (pcb != null) {
                 System.out.println(pcb.generateStats());
             }
         }
-
-        System.out.println("All processes finished");
     }
 }
