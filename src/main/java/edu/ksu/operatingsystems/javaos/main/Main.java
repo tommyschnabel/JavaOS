@@ -11,13 +11,17 @@ public class Main {
         DriverType driverType = DriverType.FIFO;
         OSDriver driver = new OSDriver(driverType);
         executeDriver(driver);
-
         StatHelper statHelper = new StatHelper();
         statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
 
         driverType = DriverType.Priority;
         executeDriver(new OSDriver(driverType));
         statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), false);
+
+//        driverType = DriverType.SJF;
+//        driver = new OSDriver(driverType);
+//        executeDriver(driver);
+//        statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
     }
 
     private static void executeDriver(OSDriver driver) {
