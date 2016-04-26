@@ -9,30 +9,32 @@ public class Main {
 
     public static void main(String[] args) {
         DriverType driverType = DriverType.FIFO;
-        OSDriver driver = new OSDriver(driverType);
+        OSDriver driver = new OSDriver(driverType, 4);
         executeDriver(driver);
         StatHelper statHelper = new StatHelper();
         statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
 
         driverType = DriverType.Priority;
-        driver = new OSDriver(driverType);
+        driver = new OSDriver(driverType, 4);
         executeDriver(driver);
-        statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), false);
+        statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
 
 //        driverType = DriverType.SJF;
 //        driver = new OSDriver(driverType);
 //        executeDriver(driver);
 //        statHelper.totalStatsAndWriteToFile(driverType, driver.generateStats(), true);
+
+        System.out.println("Check the different results.txt files for statistics on the run.");
     }
 
     private static void executeDriver(OSDriver driver) {
 
         driver.execute();
 
-        System.out.println("All processes finished");
         for (ProcessControlBlock pcb : driver.getDisk().getProcesses()) {
             if (pcb != null) {
-                System.out.println(pcb.generateStats());
+//                System.out.println(pcb.generateStats());
+                pcb.generateStats();
             }
         }
     }

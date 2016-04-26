@@ -11,7 +11,7 @@ import java.util.List;
 
 public class OSDriver {
 
-    private static int NUMBER_OF_CORES = 4;
+    private int numberOfCores;
 	
 	private Loader loader;
 	private LongTermScheduler longTermScheduler;
@@ -20,13 +20,15 @@ public class OSDriver {
     private Disk disk;
     private Ram ram;
 
-    public OSDriver(DriverType driverType) {
+    public OSDriver(DriverType driverType, int numberOfCores) {
+
+        this.numberOfCores = numberOfCores;
 
         disk = new DefaultDisk();
         ram = new DefaultRam();
 
-        cpus = new Cpu[NUMBER_OF_CORES];
-        for (int i = 0; i < NUMBER_OF_CORES; i++) {
+        cpus = new Cpu[this.numberOfCores];
+        for (int i = 0; i < this.numberOfCores; i++) {
             cpus[i] = new DefaultCpu(ram);
         }
 
