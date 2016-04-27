@@ -34,6 +34,12 @@ public class Main {
         executeDriver(driver);
         statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
 
+        driverType = DriverType.FIFO;
+        numberOfCores = 1;
+        driver = new OSDriver(driverType, numberOfCores);
+        executeDriver(driver);
+
+        statHelper.totalStatsAndWriteToFile(driverType, numberOfCores, driver.generateStats(), true);
 //        driverType = DriverType.SJF;
 //        numberOfCores = 1;
 //        driver = new OSDriver(driverType, numberOfCores);
