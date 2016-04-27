@@ -60,8 +60,8 @@ public class Main {
 
         for (ProcessControlBlock pcb : driver.getDisk().getProcesses()) {
             if (pcb != null) {
-//                System.out.println(pcb.generateStats());
-                pcb.generateStats();
+                System.out.println(pcb.generateStats());
+//                pcb.generateStats();
             }
         }
         System.out.println("Finished executing with driver type= "
